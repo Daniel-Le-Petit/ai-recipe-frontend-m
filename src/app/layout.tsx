@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://aietfinesherbes.com',
+    url: 'https://ai-fines-herbes.vercel.app',
     siteName: 'AI et Fines Herbes',
     images: [
       {
-        url: '/logo-aietfinesherbes.png',
+        url: 'https://ai-fines-herbes.vercel.app/logo-aietfinesherbes.png',
         width: 1200,
         height: 630,
         alt: 'AI et Fines Herbes - Logo',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AI et Fines Herbes - Recettes personnalisées par IA',
     description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
-    images: ['/logo-aietfinesherbes.png'],
+    images: ['https://ai-fines-herbes.vercel.app/logo-aietfinesherbes.png'],
   },
 }
 
