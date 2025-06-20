@@ -17,8 +17,11 @@ export const metadata: Metadata = {
   title: 'AI et Fines Herbes - Recettes personnalisées par IA',
   description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
   icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
     apple: '/favicon.png',
   },
   openGraph: {
@@ -52,6 +55,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
+      <head>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+      </head>
       <body className={`${playfair.variable} ${inter.variable} font-inter min-h-screen antialiased pt-24`} style={{backgroundColor: '#FDFBF5', color: '#333333'}}>
         <AppProvider>
           {children}
