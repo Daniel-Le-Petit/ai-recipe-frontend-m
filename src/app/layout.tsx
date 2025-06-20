@@ -16,6 +16,28 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'AI et Fines Herbes - Recettes personnalisées par IA',
   description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
+  openGraph: {
+    title: 'AI et Fines Herbes - Recettes personnalisées par IA',
+    description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
+    type: 'website',
+    locale: 'fr_FR',
+    url: 'https://aietfinesherbes.com',
+    siteName: 'AI et Fines Herbes',
+    images: [
+      {
+        url: '/logo-aietfinesherbes.png',
+        width: 1200,
+        height: 630,
+        alt: 'AI et Fines Herbes - Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI et Fines Herbes - Recettes personnalisées par IA',
+    description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
+    images: ['/logo-aietfinesherbes.png'],
+  },
 }
 
 export default function RootLayout({
