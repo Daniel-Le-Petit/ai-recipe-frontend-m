@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 400 120" style="enable-background:new 0 0 400 120;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#22C55E;}
+	.st1{fill:#20B251;}
+	.st2{fill:#16a34a;}
+</style>
+
+<!-- Caddie simplifié -->
+<g>
+	<!-- Corps du caddie -->
+	<rect x="10" y="30" width="45" height="30" rx="3" fill="none" stroke="#22C55E" stroke-width="2"/>
+	<!-- Roues -->
+	<circle cx="20" cy="70" r="4" fill="#22C55E"/>
+	<circle cx="45" cy="70" r="4" fill="#22C55E"/>
+	<!-- Poignée -->
+	<line x1="55" y1="35" x2="65" y2="35" stroke="#22C55E" stroke-width="2"/>
+	<line x1="65" y1="35" x2="65" y2="20" stroke="#22C55E" stroke-width="2"/>
+	<!-- Feuilles dans le caddie -->
+	<path d="M20,40 Q25,35 30,40 Q25,45 20,40" fill="#20B251"/>
+	<path d="M35,38 Q40,33 45,38 Q40,43 35,38" fill="#16a34a"/>
+</g>
+
+<!-- Texte AI & -->
+<g>
+	<text x="80" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#22C55E">AI</text>
+	<text x="115" y="45" font-family="Arial, sans-serif" font-size="20" font-weight="normal" fill="#22C55E">&amp;</text>
+</g>
+
+<!-- Texte Fines Herbes -->
+<g>
+	<text x="80" y="70" font-family="Arial, sans-serif" font-size="18" font-weight="normal" fill="#22C55E">Fines Herbes</text>
+</g>
+
+<!-- Feuilles décoratives -->
+<g>
+	<path d="M140,25 Q145,20 150,25 Q145,30 140,25" fill="#20B251"/>
+	<path d="M155,28 Q160,23 165,28 Q160,33 155,28" fill="#16a34a"/>
+</g>
+
+</svg>
