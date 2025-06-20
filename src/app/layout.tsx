@@ -16,6 +16,11 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'AI et Fines Herbes - Recettes personnalisées par IA',
   description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
   openGraph: {
     title: 'AI et Fines Herbes - Recettes personnalisées par IA',
     description: 'Créez des recettes personnalisées grâce à l\'intelligence artificielle, adaptées à vos goûts et contraintes.',
