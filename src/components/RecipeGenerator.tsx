@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Sparkles, Clock, Users, ChefHat, Settings, ArrowRight, Wand2, Utensils, Leaf, X, Plus, ArrowLeft, Check, ShoppingCart, Store, Save, RefreshCw } from 'lucide-react'
 import { useAppContext } from '../context/AppContext'
+import apiService from '../api'
 
 interface Recipe {
   title: string
@@ -164,6 +165,8 @@ export default function RecipeGenerator() {
   const [recipeSaved, setRecipeSaved] = useState(false)
   const [suggestedMealTypes, setSuggestedMealTypes] = useState<string[]>([])
   const [actionChoice, setActionChoice] = useState<'cook' | 'buy' | null>(null)
+  const [isSavingRecipe, setIsSavingRecipe] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   
   const { addToCart, isAuthenticated, setSelectedDistributor: setContextDistributor } = useAppContext()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -401,10 +404,27 @@ export default function RecipeGenerator() {
     }
   }
 
-  const handleRecipeSelection = (recipe: Recipe) => {
-    setSelectedRecipe(recipe)
-    nextStep()
-  }
+  const handleRecipeSelection = async (recipe: Recipe) => {
+    if (isSavingRecipe) return;
+    setIsSavingRecipe(true);
+    setSelectedRecipe(recipe);
+    try {
+      await saveRecipeToStrapi(recipe);
+    } catch (error: any) {
+      // Affiche le message d'erreur Strapi s'il existe
+      if (error?.response?.data?.error?.message) {
+        setErrorMessage(error.response.data.error.message);
+      } else if (error?.message) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Erreur inconnue lors de la sauvegarde.");
+      }
+      setIsSavingRecipe(false);
+      return; // N'avance pas d'étape si erreur
+    }
+    setIsSavingRecipe(false);
+    nextStep();
+  };
 
   const handleActionChoice = (action: 'cook' | 'buy') => {
     setActionChoice(action)
@@ -458,6 +478,47 @@ export default function RecipeGenerator() {
       timestamp: Date.now()
     }
     localStorage.setItem('cookingRecipeData', JSON.stringify(recipeData))
+  }
+
+  // Sauvegarder la recette dans Strapi
+  const saveRecipeToStrapi = async (recipe: Recipe) => {
+    try {
+      // Générer un titre si vide
+      let title = recipe.title && recipe.title.trim() !== ''
+        ? recipe.title
+        : (selectedIngredients.length > 0
+            ? `Recette à base de ${selectedIngredients[0]}`
+            : 'Recette sans titre')
+
+      // Choisir la difficulté (par défaut : 'Facile')
+      let difficulty: 'Facile' | 'Intermédiaire' | 'Difficile' = 'Facile';
+      // (Tu peux améliorer la logique ici si tu veux)
+
+      // Convertir la recette au format Strapi
+      const strapiRecipeData = {
+        title,
+        description: recipe.description,
+        ingredients: recipe.ingredients, // JSON (tableau d'objets)
+        instructions: recipe.steps.map((step, index) => `${index + 1}. ${step.instruction}`).join('\n'),
+        servings: Number(recipe.servings) || 1,
+        difficulty,
+        isRobotCompatible: selectedCookingMode !== 'manual',
+        // Les autres champs sont optionnels
+      }
+
+      const response = await apiService.createRecipe(strapiRecipeData)
+      console.log('Recette sauvegardée dans Strapi:', response)
+      setRecipeSaved(true)
+      
+      // Afficher un toast de succès
+      setShowToast(true)
+      setTimeout(() => setShowToast(false), 3000)
+      
+      return response
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde de la recette:', error)
+      throw error
+    }
   }
 
   // Modifier la fonction pour l'étape 5
@@ -939,6 +1000,7 @@ export default function RecipeGenerator() {
 
                         <button
                           onClick={() => handleRecipeSelection(recipe)}
+                          disabled={isSavingRecipe}
                           className="w-full bg-gradient-to-r from-herb-green to-sage hover:from-herb-dark hover:to-sage-dark text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform text-base"
                         >
                           <div className="flex items-center justify-center space-x-2">
@@ -1145,9 +1207,19 @@ export default function RecipeGenerator() {
           <div className="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center space-x-2 animate-bounce">
             <Check className="h-5 w-5" />
             <span className="font-semibold">
-              ✅ Ingrédients ajoutés au panier ! 
-              {selectedDistributor && ` Prêt pour ${DISTRIBUTORS.find(d => d.id === selectedDistributor)?.name}`}
+              {recipeSaved 
+                ? "✅ Recette sauvegardée dans Strapi !"
+                : `✅ Ingrédients ajoutés au panier ! ${selectedDistributor && ` Prêt pour ${DISTRIBUTORS.find(d => d.id === selectedDistributor)?.name}`}`
+              }
             </span>
+          </div>
+        )}
+
+        {/* Message d'erreur */}
+        {errorMessage && (
+          <div className="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg flex items-center space-x-2 animate-bounce">
+            <span className="font-semibold">{errorMessage}</span>
+            <button onClick={() => setErrorMessage(null)} className="ml-4 underline">Fermer</button>
           </div>
         )}
       </div>
