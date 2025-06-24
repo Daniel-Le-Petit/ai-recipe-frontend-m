@@ -12,6 +12,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || process.env.VITE_APP_STRAPI_A
 
 export default function ConnexionPage() {
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -24,56 +25,53 @@ export default function ConnexionPage() {
     return null
   }
 
-  // Connexion utilisateur existant
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/users?email=${encodeURIComponent(email)}`)
-      const users = await res.json()
+      // Vérifier si l'utilisateur existe
+      const res = await fetch(`${API_URL}/api/users?email=${encodeURIComponent(email)}`);
+      const users = await res.json();
       if (users && users.length > 0) {
-        // Utilisateur trouvé
-        router.push('/mes-recettes')
-      } else {
-        setError("Aucun compte trouvé avec cet email.")
-      }
-    } catch (err) {
-      setError('Erreur de connexion au serveur')
-    }
-    setIsLoading(false)
-  }
-
-  // Création nouvel utilisateur
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
-    try {
-      const registerRes = await fetch(`${API_URL}/api/auth/local/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          username: email,
-          password: 'motdepasseTemporaire' // À remplacer par une vraie logique d'inscription
-        })
-      })
-      if (registerRes.ok) {
-        router.push('/bienvenue')
-      } else {
-        const data = await registerRes.json()
-        if (data && data.error && data.error.message) {
-          setError(data.error.message)
+        // Utilisateur connu : tenter la connexion
+        const loginRes = await fetch(`${API_URL}/api/auth/local`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: email, password })
+        });
+        if (loginRes.ok) {
+          router.push('/mes-recettes');
         } else {
-          setError('Erreur lors de la création du compte')
+          setError('Email ou mot de passe incorrect');
+        }
+      } else {
+        // Utilisateur inconnu : créer le compte
+        const registerRes = await fetch(`${API_URL}/api/auth/local/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            username: email,
+            password
+          })
+        });
+        if (registerRes.ok) {
+          router.push('/bienvenue');
+        } else {
+          const data = await registerRes.json();
+          if (data && data.error && data.error.message) {
+            setError(data.error.message);
+          } else {
+            setError('Erreur lors de la création du compte');
+          }
         }
       }
     } catch (err) {
-      setError('Erreur de connexion au serveur')
+      setError('Erreur de connexion au serveur');
     }
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -102,7 +100,7 @@ export default function ConnexionPage() {
           <div className="max-w-md mx-auto">
             <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
               <div className="p-8">
-                <form onSubmit={handleLogin} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5">
                   {/* Email */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
@@ -116,6 +114,25 @@ export default function ConnexionPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="votre@email.com"
+                        className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-herb-green/30 focus:border-herb-green/50 transition-all duration-300"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Password */}
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
+                      Mot de passe
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="********"
                         className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-herb-green/30 focus:border-herb-green/50 transition-all duration-300"
                         required
                       />
@@ -137,23 +154,25 @@ export default function ConnexionPage() {
                   </div>
 
                   {/* Submit button */}
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-herb-green to-sage hover:from-herb-dark hover:to-sage-dark text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                  >
-                    {isLoading ? (
-                      <>
-                        <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        <span>Connexion en cours...</span>
-                      </>
-                    ) : (
-                      <>
-                        <User className="h-5 w-5" />
-                        <span>Se connecter</span>
-                      </>
-                    )}
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full bg-gradient-to-r from-herb-green to-sage hover:from-herb-dark hover:to-sage-dark text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          <span>Connexion en cours...</span>
+                        </>
+                      ) : (
+                        <>
+                          <User className="h-5 w-5" />
+                          <span>Se connecter</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
 
                   {/* Back to home */}
                   <div className="text-center pt-3">
