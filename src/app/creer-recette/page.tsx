@@ -12,8 +12,6 @@ export default function CreateRecipePage() {
       <Suspense fallback={<div>Chargement du générateur...</div>}>
         <RecipeGenerator />
       </Suspense>
-      <pre>{JSON.stringify(categories, null, 2)}</pre>
-      <pre>{JSON.stringify(recipes, null, 2)}</pre>
       <Footer />
     </main>
   )
