@@ -76,11 +76,6 @@ export default function Home() {
           })
         )}
       </div>
-      {!loading && (
-        <pre style={{ color: 'red', fontSize: 10 }}>
-          {JSON.stringify(recipes, null, 2)}
-        </pre>
-      )}
       <Footer />
     </main>
   );
