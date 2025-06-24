@@ -8,6 +8,8 @@ import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import Link from 'next/link'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || process.env.VITE_APP_STRAPI_API_URL
+
 export default function ConnexionPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,17 +30,36 @@ export default function ConnexionPage() {
     setError('')
     setIsLoading(true)
 
-    // Simulation d'un délai d'API
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    try {
+      // 1. Vérifier si l'utilisateur existe déjà
+      const res = await fetch(`${API_URL}/api/users?email=${encodeURIComponent(email)}`)
+      const users = await res.json()
 
-    const success = login(email, password)
-    
-    if (success) {
-      router.push('/compte')
-    } else {
-      setError('Email ou mot de passe incorrect')
+      if (users && users.length > 0) {
+        // Utilisateur connu : rediriger vers "Mes Recettes"
+        // (Tu peux aussi stocker l'ID ou le token dans le contexte ou le localStorage)
+        router.push('/mes-recettes')
+      } else {
+        // Utilisateur inconnu : créer le user
+        // Ici, on crée un user avec un mot de passe temporaire (à améliorer pour la sécurité)
+        const registerRes = await fetch(`${API_URL}/api/auth/local/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            username: email,
+            password: 'motdepasseTemporaire' // À remplacer par une vraie logique d'inscription
+          })
+        })
+        if (registerRes.ok) {
+          router.push('/bienvenue')
+        } else {
+          setError('Erreur lors de la création du compte')
+        }
+      }
+    } catch (err) {
+      setError('Erreur de connexion au serveur')
     }
-    
     setIsLoading(false)
   }
 
