@@ -30,40 +30,48 @@ export default function ConnexionPage() {
     setError('');
     setIsLoading(true);
     try {
-      // Vérifier si l'utilisateur existe
-      const res = await fetch(`${API_URL}/api/users?email=${encodeURIComponent(email)}`);
-      const users = await res.json();
-      if (users && users.length > 0) {
-        // Utilisateur connu : tenter la connexion
-        const loginRes = await fetch(`${API_URL}/api/auth/local`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ identifier: email, password })
-        });
-        if (loginRes.ok) {
-          router.push('/mes-recettes');
-        } else {
-          setError('Email ou mot de passe incorrect');
+      // 1. Tenter la connexion
+      const loginRes = await fetch(`${API_URL}/api/auth/local`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email, password })
+      });
+      if (loginRes.ok) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user_email', email);
         }
+        router.push('/mes-recettes');
       } else {
-        // Utilisateur inconnu : créer le compte
-        const registerRes = await fetch(`${API_URL}/api/auth/local/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email,
-            username: email,
-            password
-          })
-        });
-        if (registerRes.ok) {
-          router.push('/bienvenue');
+        const loginData = await loginRes.json();
+        if (
+          loginData &&
+          loginData.error &&
+          loginData.error.message === 'Invalid identifier or password'
+        ) {
+          setError('Email ou mot de passe incorrect');
         } else {
-          const data = await registerRes.json();
-          if (data && data.error && data.error.message) {
-            setError(data.error.message);
+          // User n'existe pas (ou autre erreur) : tenter la création
+          const registerRes = await fetch(`${API_URL}/api/auth/local/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              username: email,
+              password
+            })
+          });
+          if (registerRes.ok) {
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('user_email', email);
+            }
+            router.push('/bienvenue');
           } else {
-            setError('Erreur lors de la création du compte');
+            const data = await registerRes.json();
+            if (data && data.error && data.error.message) {
+              setError(data.error.message);
+            } else {
+              setError('Erreur lors de la création du compte');
+            }
           }
         }
       }
