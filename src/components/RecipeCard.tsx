@@ -1,8 +1,8 @@
 import React from 'react'
 import { Clock, Users, ChefHat, Star, Heart, Sparkles } from 'lucide-react'
-import type { StrapiRecipe, RecipeCardProps } from '@/types/api'
+import type { RecipeCardProps } from '@/types/api'
 
-export const RecipeCard: React.FC<RecipeCardProps> = ({
+export const RecipeCard: React.FC<RecipeCardProps & { recipe: any }> = ({
   recipe,
   onStartCooking,
   onFavorite,
@@ -11,12 +11,18 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   showTags = true
 }) => {
   // Fonction pour obtenir l'URL de l'image
-  const getImageUrl = (recipe: StrapiRecipe): string => {
-    if (recipe.attributes.image?.data?.attributes) {
+  const getImageUrl = (recipe: any): string => {
+    // Structure Strapi v4 (avec attributes)
+    if (recipe.attributes?.image?.data?.attributes) {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338'
       const imageUrl = recipe.attributes.image.data.attributes.url
       return imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`
     }
+    // Structure à plat
+    if (recipe.image) {
+      return recipe.image;
+    }
+    // Fallback image
     return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
   }
 
@@ -51,103 +57,90 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div
+      className="bg-gray-900 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group"
+      onClick={() => {
+        const id = recipe.id || recipe.attributes?.id;
+        window.location.href = `/creer-recette?id=${id}&fromCard=1`;
+      }}
+    >
       {/* Image */}
-      <div className="relative h-48 bg-gray-200">
+      <div className="relative h-48 bg-gray-800">
         <img
           src={getImageUrl(recipe)}
-          alt={recipe.attributes.title}
+          alt={recipe.title || recipe.attributes?.title}
           className="w-full h-full object-cover"
           onError={(e) => {
             e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
           }}
         />
-        {recipe.attributes.isRobotCompatible && (
-          <div className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+        {recipe.isRobotCompatible || recipe.attributes?.isRobotCompatible ? (
+          <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
             🤖 Robot
           </div>
-        )}
+        ) : null}
         {showCategory && (
-          <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+          <div className="absolute top-2 left-2 bg-green-700 text-white px-2 py-1 rounded-full text-xs font-medium">
             {getCategoryName(recipe)}
           </div>
         )}
       </div>
 
       {/* Contenu */}
-      <div className="p-4">
-        <h3 className="font-semibold text-lg mb-2 text-gray-800 line-clamp-2">
-          {recipe.attributes.title}
-        </h3>
-        
-        {recipe.attributes.description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-            {recipe.attributes.description}
-          </p>
-        )}
-
-        {/* Métadonnées */}
-        <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-          {recipe.attributes.duration && (
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              {recipe.attributes.duration} min
-            </div>
+      <div className="p-0">
+        <div className="bg-gradient-to-r from-herb-green via-sage to-herb-dark px-4 py-3 rounded-b-xl">
+          <h3 className="font-semibold text-lg mb-1 text-white line-clamp-2">
+            {recipe.title || recipe.attributes?.title}
+          </h3>
+          {(recipe.description || recipe.attributes?.description) && (
+            <p className="text-white/90 text-sm line-clamp-2">
+              {recipe.description || recipe.attributes?.description}
+            </p>
           )}
-          {recipe.attributes.servings && (
-            <div className="flex items-center gap-1">
-              <Users className="w-4 h-4" />
-              {recipe.attributes.servings} pers.
-            </div>
-          )}
-          {recipe.attributes.difficulty && (
-            <div className="flex items-center gap-1">
-              <ChefHat className="w-4 h-4" />
-              {mapDifficulty(recipe.attributes.difficulty)}
-            </div>
-          )}
+          {/* Métadonnées en vert */}
+          <div className="flex items-center gap-4 text-sm text-white mt-2">
+            {(recipe.duration || recipe.attributes?.duration) && (
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4 text-white" />
+                {(recipe.duration || recipe.attributes?.duration)} min
+              </div>
+            )}
+            {(recipe.servings || recipe.attributes?.servings) && (
+              <div className="flex items-center gap-1">
+                <Users className="w-4 h-4 text-white" />
+                {(recipe.servings || recipe.attributes?.servings)} pers.
+              </div>
+            )}
+            {(recipe.difficulty || recipe.attributes?.difficulty) && (
+              <div className="flex items-center gap-1">
+                <ChefHat className="w-4 h-4 text-white" />
+                {mapDifficulty(recipe.difficulty || recipe.attributes?.difficulty)}
+              </div>
+            )}
+            {showRating && (recipe.rating || recipe.attributes?.rating) && (
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-yellow-300 fill-current" />
+                <span className="text-white font-medium">
+                  {(recipe.rating || recipe.attributes?.rating)?.toFixed ? (recipe.rating || recipe.attributes?.rating).toFixed(1) : (recipe.rating || recipe.attributes?.rating)}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Note */}
-        {showRating && recipe.attributes.rating && (
-          <div className="flex items-center gap-1 mb-3">
-            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span className="text-sm font-medium text-gray-700">
-              {recipe.attributes.rating.toFixed(1)}
-            </span>
-          </div>
-        )}
-
         {/* Tags */}
-        {showTags && recipe.attributes.tags && recipe.attributes.tags.length > 0 && (
+        {showTags && (recipe.tags || recipe.attributes?.tags) && (recipe.tags || recipe.attributes?.tags).length > 0 && (
           <div className="flex flex-wrap gap-1 mb-4">
-            {recipe.attributes.tags.slice(0, 3).map((tag, index) => (
+            {(recipe.tags || recipe.attributes?.tags).slice(0, 3).map((tag: string, index: number) => (
               <span
                 key={index}
-                className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+                className="bg-gray-700 text-gray-200 px-2 py-1 rounded-full text-xs"
               >
                 {tag}
               </span>
             ))}
           </div>
         )}
-
-        {/* Actions */}
-        <div className="flex gap-2">
-          <button
-            onClick={handleStartCooking}
-            className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center justify-center gap-2"
-          >
-            <Sparkles className="w-4 h-4" />
-            Commencer
-          </button>
-          <button 
-            onClick={handleFavorite}
-            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-          >
-            <Heart className="w-5 h-5" />
-          </button>
-        </div>
       </div>
     </div>
   )

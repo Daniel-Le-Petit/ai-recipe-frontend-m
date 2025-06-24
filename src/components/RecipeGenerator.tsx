@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Sparkles, Clock, Users, ChefHat, Settings, ArrowRight, Wand2, Utensils, Leaf, X, Plus, ArrowLeft, Check, ShoppingCart, Store, Save, RefreshCw } from 'lucide-react'
 import { useAppContext } from '../context/AppContext'
 import apiService from '../api'
@@ -148,6 +148,7 @@ const DISTRIBUTORS = [
 
 export default function RecipeGenerator() {
   const router = useRouter()
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1)
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([])
   const [ingredientInput, setIngredientInput] = useState('')
@@ -167,9 +168,50 @@ export default function RecipeGenerator() {
   const [actionChoice, setActionChoice] = useState<'cook' | 'buy' | null>(null)
   const [isSavingRecipe, setIsSavingRecipe] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [fromCard, setFromCard] = useState(false)
+  const [hasJumpedToStep3, setHasJumpedToStep3] = useState(false)
   
   const { addToCart, isAuthenticated, setSelectedDistributor: setContextDistributor } = useAppContext()
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const fromCardParam = searchParams.get('fromCard');
+    if (fromCardParam === '1' && !hasJumpedToStep3) {
+      setCurrentStep(3);
+      setHasJumpedToStep3(true);
+    }
+  }, [searchParams, hasJumpedToStep3]);
+
+  useEffect(() => {
+    const recipeId = searchParams.get('id');
+    if (recipeId) {
+      const fetchRecipe = async () => {
+        try {
+          const data = await apiService.getRecipeById(Number(recipeId));
+          const recipe = data.data;
+          if (recipe) {
+            setSelectedIngredients(
+              recipe.attributes.ingredients && Array.isArray(recipe.attributes.ingredients)
+                ? recipe.attributes.ingredients.map((ing: any) => ing.name || ing)
+                : []
+            );
+            setIngredientInput('');
+            setMealType('');
+            setServings(recipe.attributes.servings ? String(recipe.attributes.servings) : '4');
+            setDietary('');
+            if (recipe.attributes.isRobotCompatible) {
+              setSelectedCookingMode('thermomix');
+            } else {
+              setSelectedCookingMode('manual');
+            }
+          }
+        } catch (e) {
+          // Gestion d'erreur silencieuse
+        }
+      };
+      fetchRecipe();
+    }
+  }, [searchParams, hasJumpedToStep3]);
 
   // Filtrer les suggestions d'ingrédients
   const filteredSuggestions = POPULAR_INGREDIENTS.filter(ingredient =>
@@ -527,6 +569,8 @@ export default function RecipeGenerator() {
     nextStep() // Passer à l'étape suivante au lieu de naviguer directement
   }
 
+  console.log('DEBUG render', { currentStep });
+
   return (
     <section id="recipe-generator" className="min-h-screen bg-gradient-to-br from-herb-green/5 to-sage/5">
       {/* Header */}
@@ -548,6 +592,19 @@ export default function RecipeGenerator() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Animation de chargement lors de la génération automatique */}
+        {isLoading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-4 p-8 bg-white/90 rounded-2xl shadow-2xl border border-herb-green/30">
+              <svg className="animate-spin h-10 w-10 text-herb-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              <span className="text-herb-green text-lg font-semibold">Génération de votre recette en cours...</span>
+            </div>
+          </div>
+        )}
+
         {/* Indicateur de progression */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="grid grid-cols-9 gap-1 mb-8">
