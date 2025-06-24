@@ -1,6 +1,6 @@
 import React from 'react'
 import { Clock, Users, ChefHat, Star, Heart, Sparkles } from 'lucide-react'
-import type { RecipeCardProps } from '@/types/api'
+import type { RecipeCardProps, StrapiRecipe } from '@/types/api'
 
 export const RecipeCard: React.FC<RecipeCardProps & { recipe: any }> = ({
   recipe,
