@@ -19,7 +19,7 @@ export default function MesRecettesPage() {
       setLoading(false)
       return
     }
-    fetch(`${API_URL}/api/recipies?filters[user][email][$eq]=${encodeURIComponent(email)}`)
+    fetch(`${API_URL}/api/recipies?filters[RecipieUser][email][$eq]=${encodeURIComponent(email)}`)
       .then(res => res.json())
       .then(data => {
         setRecipes(Array.isArray(data) ? data : data.data || [])
