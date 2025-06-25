@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Sparkles, Clock, Users, ChefHat, Settings, ArrowRight, Wand2, Utensils, Leaf, X, Plus, ArrowLeft, Check, ShoppingCart, Store, Save, RefreshCw } from 'lucide-react'
 import { useAppContext } from '../context/AppContext'
 import apiService from '../api'
+import type { StrapiCategory } from '@/types/api'
 
 interface Recipe {
   title: string
@@ -109,14 +110,15 @@ const DIETARY_OPTIONS = [
 
 const STEPS = [
   { id: 1, title: 'Ingrédients', icon: Leaf, desc: 'Que voulez-vous cuisiner ?' },
-  { id: 2, title: 'Type de repas', icon: Utensils, desc: 'Pour quel moment ?' },
-  { id: 3, title: 'Portions', icon: Users, desc: 'Pour combien de personnes ?' },
-  { id: 4, title: 'Préférences', icon: Settings, desc: 'Des restrictions ?' },
-  { id: 5, title: 'Mode cuisson', icon: ChefHat, desc: 'Choisissez votre appareil' },
-  { id: 6, title: 'Récapitulatif', icon: Check, desc: 'Prêt à cuisiner ?' },
-  { id: 7, title: 'Choix de recette', icon: Sparkles, desc: 'Sélectionnez votre recette' },
-  { id: 8, title: 'Action', icon: ChefHat, desc: 'Que souhaitez-vous faire ?' },
-  { id: 9, title: 'Commander', icon: ShoppingCart, desc: 'Sélectionnez votre distributeur' }
+  { id: 2, title: 'Catégorie', icon: Sparkles, desc: 'Choisissez une catégorie' },
+  { id: 3, title: 'Type de repas', icon: Utensils, desc: 'Pour quel moment ?' },
+  { id: 4, title: 'Portions', icon: Users, desc: 'Pour combien de personnes ?' },
+  { id: 5, title: 'Préférences', icon: Settings, desc: 'Des restrictions ?' },
+  { id: 6, title: 'Mode cuisson', icon: ChefHat, desc: 'Choisissez votre appareil' },
+  { id: 7, title: 'Récapitulatif', icon: Check, desc: 'Prêt à cuisiner ?' },
+  { id: 8, title: 'Choix de recette', icon: Sparkles, desc: 'Sélectionnez votre recette' },
+  { id: 9, title: 'Action', icon: ChefHat, desc: 'Que souhaitez-vous faire ?' },
+  { id: 10, title: 'Commander', icon: ShoppingCart, desc: 'Sélectionnez votre distributeur' }
 ]
 
 const DISTRIBUTORS = [
@@ -170,6 +172,8 @@ export default function RecipeGenerator() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [fromCard, setFromCard] = useState(false)
   const [hasJumpedToStep3, setHasJumpedToStep3] = useState(false)
+  const [categories, setCategories] = useState<StrapiCategory[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
   
   const { addToCart, isAuthenticated, setSelectedDistributor: setContextDistributor } = useAppContext()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -213,6 +217,14 @@ export default function RecipeGenerator() {
     }
   }, [searchParams, hasJumpedToStep3]);
 
+  useEffect(() => {
+    apiService.getCategories().then((res) => {
+      setCategories(res.data);
+    }).catch(() => {
+      setCategories([]);
+    });
+  }, []);
+
   // Filtrer les suggestions d'ingrédients
   const filteredSuggestions = POPULAR_INGREDIENTS.filter(ingredient =>
     ingredient.name.toLowerCase().includes(ingredientInput.toLowerCase()) &&
@@ -243,18 +255,18 @@ export default function RecipeGenerator() {
 
   // Navigation entre étapes
   const nextStep = () => {
-    if (currentStep < 9) {
+    if (currentStep < 10) {
       setCurrentStep(currentStep + 1)
     }
   }
 
   const prevStep = () => {
     if (currentStep > 1) {
-      // Gestion spéciale pour les étapes 8 et 9
-      if (currentStep === 8 && actionChoice === 'cook') {
-        setCurrentStep(7) // Retour à l'étape 7 (choix de recette)
-      } else if (currentStep === 9 && actionChoice === 'buy') {
-        setCurrentStep(8) // Retour à l'étape 8 (choix d'action)
+      // Gestion spéciale pour les étapes 9 et 10
+      if (currentStep === 9 && actionChoice === 'cook') {
+        setCurrentStep(8) // Retour à l'étape 8 (choix de recette)
+      } else if (currentStep === 10 && actionChoice === 'buy') {
+        setCurrentStep(9) // Retour à l'étape 9 (choix d'action)
       } else {
         setCurrentStep(currentStep - 1)
       }
@@ -266,20 +278,22 @@ export default function RecipeGenerator() {
       case 1:
         return selectedIngredients.length > 0
       case 2:
-        return mealType !== ''
+        return selectedCategory !== null
       case 3:
-        return servings !== ''
+        return mealType !== ''
       case 4:
-        return true // Toujours possible de passer
+        return servings !== ''
       case 5:
-        return selectedCookingMode !== 'manual' // Doit avoir sélectionné un mode
-      case 6:
         return true // Toujours possible de passer
+      case 6:
+        return selectedCookingMode !== 'manual' // Doit avoir sélectionné un mode
       case 7:
-        return selectedRecipe !== null
+        return true // Toujours possible de passer
       case 8:
-        return actionChoice !== null
+        return selectedRecipe !== null
       case 9:
+        return actionChoice !== null
+      case 10:
         return actionChoice === 'buy' && selectedDistributor !== ''
       default:
         return true
@@ -353,7 +367,7 @@ export default function RecipeGenerator() {
 
   // Effet pour détecter automatiquement le type de repas quand les ingrédients changent
   useEffect(() => {
-    if (selectedIngredients.length > 0 && currentStep === 2 && !mealType) {
+    if (selectedIngredients.length > 0 && currentStep === 3 && !mealType) {
       const detectedTypes = detectMealType(selectedIngredients)
       if (detectedTypes.length > 0) {
         setMealType(detectedTypes[0].type)
@@ -474,7 +488,7 @@ export default function RecipeGenerator() {
       // Naviguer directement vers la cuisson guidée
       startCookingMode()
     } else {
-      setCurrentStep(9) // Étape 9: Commander les ingrédients
+      setCurrentStep(10) // Étape 10: Commander les ingrédients
     }
   }
 
@@ -536,15 +550,18 @@ export default function RecipeGenerator() {
       let difficulty: 'Facile' | 'Intermédiaire' | 'Difficile' = 'Facile';
       // (Tu peux améliorer la logique ici si tu veux)
 
-      // Convertir la recette au format Strapi
+      if (selectedCategory === null) {
+        throw new Error('Aucune catégorie sélectionnée.');
+      }
       const strapiRecipeData = {
         title,
         description: recipe.description,
-        ingredients: recipe.ingredients, // JSON (tableau d'objets)
+        ingredients: recipe.ingredients,
         instructions: recipe.steps.map((step, index) => `${index + 1}. ${step.instruction}`).join('\n'),
         servings: Number(recipe.servings) || 1,
         difficulty,
         isRobotCompatible: selectedCookingMode !== 'manual',
+        recipieCategory: selectedCategory,
         // Les autres champs sont optionnels
       }
 
@@ -563,7 +580,7 @@ export default function RecipeGenerator() {
     }
   }
 
-  // Modifier la fonction pour l'étape 5
+  // Modifier la fonction pour l'étape 6
   const handleCookingModeSelection = (mode: string) => {
     setSelectedCookingMode(mode as any)
     nextStep() // Passer à l'étape suivante au lieu de naviguer directement
@@ -607,7 +624,7 @@ export default function RecipeGenerator() {
 
         {/* Indicateur de progression */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <div className="grid grid-cols-9 gap-1 mb-8">
+          <div className="grid grid-cols-10 gap-1 mb-8">
             {STEPS.map((step, index) => (
               <div key={step.id} className="flex flex-col items-center">
                 <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full transition-all duration-300 ${
@@ -741,8 +758,50 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 2: Type de repas */}
+              {/* Étape 2: Catégorie */}
               {currentStep === 2 && (
+                <div className="flex-1 space-y-6">
+                  <div className="text-center mb-6">
+                    <div className="h-16 w-16 bg-herb-green/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <Sparkles className="h-8 w-8 text-herb-green" />
+                    </div>
+                    <h4 className="text-xl font-semibold text-slate-800 mb-2">Choisissez une catégorie</h4>
+                    <p className="text-slate-600">Chaque recette doit appartenir à une catégorie.</p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {categories.length === 0 ? (
+                      <div className="col-span-3 text-center text-gray-400">Aucune catégorie disponible.</div>
+                    ) : (
+                      categories.map((cat) => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => setSelectedCategory(cat.id)}
+                          className={`p-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 relative text-left shadow-md ${
+                            selectedCategory === cat.id
+                              ? 'border-herb-green bg-herb-green/10 text-herb-green shadow-lg shadow-herb-green/20'
+                              : 'border-slate-200 hover:border-herb-green/50 text-slate-700 bg-white/60'
+                          }`}
+                        >
+                          <div className="font-semibold text-lg mb-1">{cat.attributes?.categoryName || `Catégorie #${cat.id}`}</div>
+                          {cat.attributes?.categoryDescription && (
+                            <div className="text-xs opacity-75 mb-2">{cat.attributes.categoryDescription}</div>
+                          )}
+                          {selectedCategory === cat.id && (
+                            <div className="absolute top-2 right-2 bg-herb-green text-white text-xs px-2 py-1 rounded-full">Sélectionnée</div>
+                          )}
+                        </button>
+                      ))
+                    )}
+                  </div>
+                  {selectedCategory === null && (
+                    <div className="text-center text-red-500 text-sm mt-2">Veuillez sélectionner une catégorie pour continuer.</div>
+                  )}
+                </div>
+              )}
+
+              {/* Étape 3: Type de repas */}
+              {currentStep === 3 && (
                 <div className="flex-1 space-y-6">
                   <div className="text-center mb-6">
                     <div className="h-16 w-16 bg-sage/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -818,8 +877,8 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 3: Portions */}
-              {currentStep === 3 && (
+              {/* Étape 4: Portions */}
+              {currentStep === 4 && (
                 <div className="flex-1 space-y-6">
                   <div className="text-center mb-6">
                     <div className="h-16 w-16 bg-warm-brown/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -849,8 +908,8 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 4: Préférences */}
-              {currentStep === 4 && (
+              {/* Étape 5: Préférences */}
+              {currentStep === 5 && (
                 <div className="flex-1 space-y-6">
                   <div className="text-center mb-6">
                     <div className="h-16 w-16 bg-sage/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -880,8 +939,8 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 5: Mode cuisson */}
-              {currentStep === 5 && (
+              {/* Étape 6: Mode cuisson */}
+              {currentStep === 6 && (
                 <div className="flex-1 space-y-6">
                   <div className="text-center mb-6">
                     <div className="h-16 w-16 bg-herb-green/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -918,8 +977,8 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 6: Récapitulatif */}
-              {currentStep === 6 && (
+              {/* Étape 7: Récapitulatif */}
+              {currentStep === 7 && (
                 <div className="flex-1 space-y-8">
                   <div className="text-center mb-6">
                     <div className="h-16 w-16 bg-herb-green/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -998,8 +1057,8 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 7: Choix de recette */}
-              {currentStep === 7 && (
+              {/* Étape 8: Choix de recette */}
+              {currentStep === 8 && (
                 <div className="flex-1 space-y-6">
                   <div className="text-center mb-6">
                     <div className="h-16 w-16 bg-herb-green/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -1085,8 +1144,8 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 8: Choix d'action */}
-              {currentStep === 8 && selectedRecipe && (
+              {/* Étape 9: Choix d'action */}
+              {currentStep === 9 && selectedRecipe && (
                 <div className="flex-1 space-y-8">
                   <div className="text-center mb-8">
                     <div className="h-16 w-16 bg-herb-green/20 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -1134,8 +1193,8 @@ export default function RecipeGenerator() {
                 </div>
               )}
 
-              {/* Étape 9: Commander les ingrédients */}
-              {currentStep === 9 && actionChoice === 'buy' && selectedRecipe && (
+              {/* Étape 10: Commander les ingrédients */}
+              {currentStep === 10 && actionChoice === 'buy' && selectedRecipe && (
                 <div className="flex-1 space-y-6">
                   <div className="text-center mb-6">
                     <div className="h-16 w-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -1206,7 +1265,7 @@ export default function RecipeGenerator() {
               )}
 
               {/* Affichage d'erreur si on arrive sur une étape inappropriée */}
-              {((currentStep === 8 && !selectedRecipe) || (currentStep === 9 && actionChoice !== 'buy')) && (
+              {((currentStep === 9 && !selectedRecipe) || (currentStep === 10 && actionChoice !== 'buy')) && (
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center">
                     <div className="h-16 w-16 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -1215,7 +1274,7 @@ export default function RecipeGenerator() {
                     <h4 className="text-xl font-semibold text-slate-800 mb-2">Erreur de navigation</h4>
                     <p className="text-slate-600">Cette étape n'est pas accessible. Retournez à l'étape précédente.</p>
                     <button
-                      onClick={() => setCurrentStep(7)}
+                      onClick={() => setCurrentStep(8)}
                       className="mt-4 px-6 py-3 bg-herb-green text-white rounded-xl hover:bg-herb-dark transition-colors"
                     >
                       Retour au choix de recette
@@ -1242,7 +1301,7 @@ export default function RecipeGenerator() {
                   </div>
                 </div>
 
-                {currentStep < 5 ? (
+                {currentStep < 6 ? (
                   <button
                     onClick={nextStep}
                     disabled={!canProceed()}

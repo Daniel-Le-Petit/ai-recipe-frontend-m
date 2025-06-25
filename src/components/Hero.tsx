@@ -36,18 +36,6 @@ export default function Hero() {
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-herb-green/40 to-sage/40 opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-sm"></div>
                 </button>
               </Link>
-              <Link href="/recettes">
-                <button 
-                  className="group relative overflow-hidden bg-gradient-to-r from-slate-50 via-white to-slate-100 hover:from-slate-100 hover:via-white hover:to-slate-50 text-slate-700 hover:text-slate-900 px-6 py-2 rounded-full font-poppins font-semibold border-2 border-slate-300 hover:border-herb-green/50 text-base w-full sm:w-64 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-herb-green/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-                  <div className="relative flex items-center justify-center space-x-2">
-                    <Utensils className="h-4 w-4" />
-                    <span>Voir nos recettes préparées</span>
-                  </div>
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-herb-green/20 to-sage/20 opacity-0 group-hover:opacity-50 transition-opacity duration-300 blur-sm"></div>
-                </button>
-              </Link>
             </div>
           </div>
           <div className="md:col-span-5 flex justify-center md:justify-end">

@@ -91,7 +91,7 @@ class ApiService {
   // Récupérer les catégories de recettes
   async getCategories(): Promise<CategoriesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie-categories`;
+      const url = `${this.baseURL}/api/recipie-categories?populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {

@@ -54,22 +54,20 @@ export default function Home() {
         ) : (
           categories.map((cat) => {
             const catRecipes = getRecipesForCategory(cat.id);
+            if (catRecipes.length === 0) return null; // Ne pas afficher la catégorie si aucune recette
             return (
               <section key={cat.id} className="mb-12">
                 <h2 className="text-2xl font-bold mb-2">{cat.categoryName}</h2>
                 {cat.categoryDescription && (
                   <p className="text-gray-400 mb-4">{cat.categoryDescription}</p>
                 )}
-                <div className="flex overflow-x-auto gap-6 pb-2">
-                  {catRecipes.length > 0 ? (
-                    catRecipes.map((recipe) => (
-                      <div key={recipe.id} className="min-w-[320px] max-w-[320px]">
-                        <RecipeCard recipe={recipe} showCategory={false} />
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-gray-400 italic">Aucune recette associée à cette catégorie.</div>
-                  )}
+                <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-thin scrollbar-thumb-gray-300"
+                  style={{ WebkitOverflowScrolling: 'touch' }}>
+                  {catRecipes.map((recipe) => (
+                    <div key={recipe.id} className="min-w-[120px] max-w-[160px] sm:min-w-[180px] sm:max-w-[200px] md:min-w-[220px] md:max-w-[240px] lg:min-w-[260px] lg:max-w-[280px] flex-shrink-0">
+                      <RecipeCard recipe={recipe} showCategory={false} />
+                    </div>
+                  ))}
                 </div>
               </section>
             );
