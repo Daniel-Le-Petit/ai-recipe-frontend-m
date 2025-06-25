@@ -28,7 +28,7 @@ export const RecipeCard: React.FC<RecipeCardProps & { recipe: any }> = ({
 
   // Fonction pour obtenir le nom de la catégorie
   const getCategoryName = (recipe: StrapiRecipe): string => {
-    return recipe.attributes.recipieCategory?.data?.attributes?.name || 'Non catégorisée'
+    return recipe.attributes.recipieCategory?.data?.categoryName || 'Non catégorisée'
   }
 
   // Fonction pour mapper la difficulté
