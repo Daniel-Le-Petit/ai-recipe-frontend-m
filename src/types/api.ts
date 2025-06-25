@@ -54,14 +54,13 @@ export interface StrapiImageFormat {
 
 export interface StrapiCategory {
   id: number
-  attributes: {
-    categoryName: string // correspond au schéma Strapi
-    categoryDescription?: string
-    categorySlug?: string
-    createdAt: string
-    updatedAt: string
-    publishedAt: string
-  }
+  categoryName: string
+  categoryDescription?: string
+  categorySlug?: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string | null
+  categoryImage?: any
 }
 
 export interface StrapiUser {

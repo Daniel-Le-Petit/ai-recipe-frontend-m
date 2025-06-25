@@ -225,6 +225,13 @@ export default function RecipeGenerator() {
     });
   }, []);
 
+  // Log temporaire pour debug : affiche les catégories reçues
+  useEffect(() => {
+    if (categories.length > 0) {
+      console.log('Catégories reçues pour sélection :', categories);
+    }
+  }, [categories]);
+
   // Filtrer les suggestions d'ingrédients
   const filteredSuggestions = POPULAR_INGREDIENTS.filter(ingredient =>
     ingredient.name.toLowerCase().includes(ingredientInput.toLowerCase()) &&
@@ -783,9 +790,9 @@ export default function RecipeGenerator() {
                               : 'border-slate-200 hover:border-herb-green/50 text-slate-700 bg-white/60'
                           }`}
                         >
-                          <div className="font-semibold text-lg mb-1">{cat.attributes?.categoryName || `Catégorie #${cat.id}`}</div>
-                          {cat.attributes?.categoryDescription && (
-                            <div className="text-xs opacity-75 mb-2">{cat.attributes.categoryDescription}</div>
+                          <div className="font-semibold text-lg mb-1">{cat.categoryName || `Catégorie #${cat.id}`}</div>
+                          {cat.categoryDescription && (
+                            <div className="text-xs opacity-75 mb-2">{cat.categoryDescription}</div>
                           )}
                           {selectedCategory === cat.id && (
                             <div className="absolute top-2 right-2 bg-herb-green text-white text-xs px-2 py-1 rounded-full">Sélectionnée</div>
