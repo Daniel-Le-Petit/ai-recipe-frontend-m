@@ -8,14 +8,6 @@ import RecipeCard from '@/components/RecipeCard'
 import { useRecipes, useCategories } from '@/hooks/useRecipes'
 import type { StrapiRecipe } from '@/types/api'
 
-const CATEGORIES = [
-  { id: 'all', name: 'Toutes' },
-  { id: 'breakfast', name: 'Petit-déjeuner' },
-  { id: 'lunch', name: 'Déjeuner' },
-  { id: 'dinner', name: 'Dîner' },
-  { id: 'dessert', name: 'Desserts' }
-]
-
 const SORT_OPTIONS = [
   { id: 'popular', name: 'Populaires', icon: Star },
   { id: 'time', name: 'Plus rapides', icon: Clock },
@@ -36,13 +28,16 @@ export default function RecipesPage() {
 
   // Appliquer les filtres et la recherche
   const filteredRecipes = recipes.filter(recipe => {
-    const matchesCategory = selectedCategory === 'all' || 
-      recipe.attributes.recipieCategory?.data?.attributes?.name?.toLowerCase().includes(selectedCategory.toLowerCase())
+    const recipeCat = recipe.attributes.recipieCategory?.data;
+    const matchesCategory = selectedCategory === 'all' ||
+      (recipeCat && (
+        recipeCat.categoryName?.toLowerCase() === selectedCategory.toLowerCase() ||
+        recipeCat.id?.toString() === selectedCategory
+      ));
     const matchesDifficulty = selectedDifficulty === 'all' || 
       recipe.attributes.difficulty === selectedDifficulty
     const matchesSearch = recipe.attributes.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       recipe.attributes.description?.toLowerCase().includes(searchQuery.toLowerCase())
-    
     return matchesCategory && matchesDifficulty && matchesSearch
   })
 
@@ -146,17 +141,28 @@ export default function RecipesPage() {
           <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
             {/* Catégories */}
             <div className="flex flex-wrap gap-2">
-              {CATEGORIES.map((category) => (
+              <button
+                key="all"
+                onClick={() => setSelectedCategory('all')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === 'all'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                }`}
+              >
+                Toutes
+              </button>
+              {categories.map((category) => (
                 <button
                   key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
+                  onClick={() => setSelectedCategory(category.id.toString())}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory === category.id
+                    selectedCategory === category.id.toString()
                       ? 'bg-green-600 text-white'
                       : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                   }`}
                 >
-                  {category.name}
+                  {category.categoryName}
                 </button>
               ))}
             </div>
