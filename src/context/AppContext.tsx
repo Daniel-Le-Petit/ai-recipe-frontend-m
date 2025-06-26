@@ -19,7 +19,7 @@ interface AppContextType {
   user: User | null
   cart: CartItem[]
   selectedDistributor: string
-  login: (email: string, password: string) => boolean
+  login: (email: string, password: string) => Promise<boolean>
   logout: () => void
   addToCart: (ingredients: { name: string; quantity: string }[], distributor?: string) => void
   removeFromCart: (ingredientId: string) => void
