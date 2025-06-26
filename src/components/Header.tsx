@@ -60,6 +60,7 @@ export default function Header() {
                 </Link>
               )
             })}
+            <Link href="/plan-semaine" className="text-herb-green hover:text-orange-500 font-semibold transition-colors px-3 py-2 rounded-lg">Plan de la semaine</Link>
           </div>
 
           {/* Actions desktop */}

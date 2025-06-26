@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import ApiService from '@/api';
 import type { StrapiCategory, StrapiRecipe } from '@/types/api';
 import RecipeCard from '@/components/RecipeCard';
+import Link from 'next/link';
 
 export default function Home() {
   const [categories, setCategories] = useState<any[]>([]); // plus de typage strict
@@ -31,6 +32,9 @@ export default function Home() {
     fetchData();
   }, []);
 
+  // Trie les catégories par ordre alphabétique
+  const sortedCategories = [...categories].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+
   // Fonction pour filtrer les recettes par catégorie
   const getRecipesForCategory = (categoryId: number) => {
     return recipes.filter((recipe) => {
@@ -47,12 +51,19 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Hero />
+      <div className="my-8 flex justify-center">
+        <Link href="/plan-semaine">
+          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-xl text-lg shadow-lg transition-colors">
+            Découvrir le plan de la semaine
+          </button>
+        </Link>
+      </div>
       {/* Section catégories/recettes */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {loading ? (
           <div className="text-center text-gray-500">Chargement...</div>
         ) : (
-          categories.map((cat) => {
+          sortedCategories.map((cat) => {
             const catRecipes = getRecipesForCategory(cat.id);
             if (catRecipes.length === 0) return null; // Ne pas afficher la catégorie si aucune recette
             return (

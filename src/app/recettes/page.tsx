@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import RecipeCard from '@/components/RecipeCard'
 import { useRecipes, useCategories } from '@/hooks/useRecipes'
 import type { StrapiRecipe } from '@/types/api'
+import Link from 'next/link'
 
 const SORT_OPTIONS = [
   { id: 'popular', name: 'Populaires', icon: Star },
@@ -261,6 +262,14 @@ export default function RecipesPage() {
       </div>
 
       <Footer />
+
+      <div className="my-8 flex justify-center">
+        <Link href="/plan-semaine">
+          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-xl text-lg shadow-lg transition-colors">
+            Découvrir le plan de la semaine
+          </button>
+        </Link>
+      </div>
     </div>
   )
 } 

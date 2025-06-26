@@ -154,13 +154,6 @@ export default function ConnexionPage() {
                     </div>
                   )}
 
-                  {/* Demo credentials */}
-                  <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl text-sm">
-                    <p className="font-medium mb-1">Identifiants de démonstration :</p>
-                    <p>Email : <code className="bg-blue-100 px-1 rounded">test@test.com</code></p>
-                    <p>Mot de passe : <code className="bg-blue-100 px-1 rounded">password</code></p>
-                  </div>
-
                   {/* Submit button */}
                   <div className="flex flex-col gap-2">
                     <button

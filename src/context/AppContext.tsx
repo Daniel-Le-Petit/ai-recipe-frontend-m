@@ -48,16 +48,7 @@ export function AppProvider({ children }: AppProviderProps) {
   const [selectedDistributor, setSelectedDistributor] = useState<string>('')
 
   const login = (email: string, password: string): boolean => {
-    if (email === 'test@test.com' && password === 'password') {
-      const mockUser: User = {
-        name: 'Marie Dupont',
-        email: 'test@test.com',
-        plan: 'Premium'
-      }
-      setUser(mockUser)
-      setIsAuthenticated(true)
-      return true
-    }
+    // TODO: Implémenter la vraie logique d'authentification
     return false
   }
 
