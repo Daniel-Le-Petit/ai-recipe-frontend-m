@@ -58,14 +58,14 @@ export const RecipeCard: React.FC<RecipeCardProps & { recipe: any }> = ({
 
   return (
     <div
-      className="bg-gray-900 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group"
+      className="rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group flex flex-col bg-transparent"
       onClick={() => {
         const id = recipe.id || recipe.attributes?.id;
         window.location.href = `/creer-recette?id=${id}&fromCard=1`;
       }}
     >
       {/* Image */}
-      <div className="relative h-48 bg-gray-800">
+      <div className="relative h-32 bg-gray-800">
         <img
           src={getImageUrl(recipe)}
           alt={recipe.title || recipe.attributes?.title}
@@ -74,73 +74,25 @@ export const RecipeCard: React.FC<RecipeCardProps & { recipe: any }> = ({
             e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
           }}
         />
-        {recipe.isRobotCompatible || recipe.attributes?.isRobotCompatible ? (
-          <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
-            🤖 Robot
-          </div>
-        ) : null}
-        {showCategory && (
-          <div className="absolute top-2 left-2 bg-green-700 text-white px-2 py-1 rounded-full text-xs font-medium">
-            {getCategoryName(recipe)}
-          </div>
-        )}
       </div>
-
-      {/* Contenu */}
-      <div className="p-0">
-        <div className="bg-gradient-to-r from-herb-green via-sage to-herb-dark px-4 py-3 rounded-b-xl">
-          <h3 className="font-semibold text-lg mb-1 text-white line-clamp-2">
-            {recipe.title || recipe.attributes?.title}
-          </h3>
-          {(recipe.description || recipe.attributes?.description) && (
-            <p className="text-white/90 text-sm line-clamp-2">
-              {recipe.description || recipe.attributes?.description}
-            </p>
-          )}
-          {/* Métadonnées en vert */}
-          <div className="flex items-center gap-4 text-sm text-white mt-2">
-            {(recipe.duration || recipe.attributes?.duration) && (
-              <div className="flex items-center gap-1">
-                <Clock className="w-4 h-4 text-white" />
-                {(recipe.duration || recipe.attributes?.duration)} min
-              </div>
+      {/* Bloc infos */}
+      <div className="flex-1 flex flex-col justify-end">
+        <div className="bg-herb-green px-4 py-2 rounded-b-xl min-h-[70px] max-h-[70px] flex flex-col justify-center">
+          <div className="flex items-center justify-between mb-1">
+            <h3 className="font-semibold text-base text-white line-clamp-1">
+              {recipe.title || recipe.attributes?.title}
+            </h3>
+            {(recipe.isRobotCompatible || recipe.attributes?.isRobotCompatible) && (
+              <span className="flex items-center gap-1 ml-2 text-xs text-white"><span>🤖</span>Robot</span>
             )}
-            {(recipe.servings || recipe.attributes?.servings) && (
-              <div className="flex items-center gap-1">
-                <Users className="w-4 h-4 text-white" />
-                {(recipe.servings || recipe.attributes?.servings)} pers.
-              </div>
-            )}
-            {(recipe.difficulty || recipe.attributes?.difficulty) && (
-              <div className="flex items-center gap-1">
-                <ChefHat className="w-4 h-4 text-white" />
-                {mapDifficulty(recipe.difficulty || recipe.attributes?.difficulty)}
-              </div>
-            )}
-            {showRating && (recipe.rating || recipe.attributes?.rating) && (
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-yellow-300 fill-current" />
-                <span className="text-white font-medium">
-                  {(recipe.rating || recipe.attributes?.rating)?.toFixed ? (recipe.rating || recipe.attributes?.rating).toFixed(1) : (recipe.rating || recipe.attributes?.rating)}
-                </span>
-              </div>
-            )}
+          </div>
+          <div className="flex items-center gap-3 text-xs text-white">
+            <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{recipe.duration || recipe.attributes?.duration || 0} min</span>
+            <span className="flex items-center gap-1"><Users className="w-4 h-4" />{recipe.servings || recipe.attributes?.servings || 1} pers.</span>
+            <span className="flex items-center gap-1"><ChefHat className="w-4 h-4" />{mapDifficulty(recipe.difficulty || recipe.attributes?.difficulty)}</span>
+            <span className="flex items-center gap-1"><Star className="w-4 h-4 text-yellow-300 fill-current" />{(recipe.rating || recipe.attributes?.rating || 0).toFixed ? (recipe.rating || recipe.attributes?.rating || 0).toFixed(1) : (recipe.rating || recipe.attributes?.rating || 0)}</span>
           </div>
         </div>
-
-        {/* Tags */}
-        {showTags && (recipe.tags || recipe.attributes?.tags) && (recipe.tags || recipe.attributes?.tags).length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-4">
-            {(recipe.tags || recipe.attributes?.tags).slice(0, 3).map((tag: string, index: number) => (
-              <span
-                key={index}
-                className="bg-gray-700 text-gray-200 px-2 py-1 rounded-full text-xs"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )

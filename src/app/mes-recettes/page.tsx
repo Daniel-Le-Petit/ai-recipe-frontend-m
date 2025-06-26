@@ -51,10 +51,9 @@ export default function MesRecettesPage() {
     return 0
   })
 
-  // Handler pour commander (à personnaliser selon ta logique)
+  // Handler pour commander (redirige vers la création de recette étape 3)
   const handleOrder = (recipe: any) => {
-    alert(`Commander la recette : ${recipe.title}`)
-    // Ici tu peux rediriger vers une page de commande ou ouvrir un modal
+    window.location.href = `/creer-recette?id=${recipe.id}&fromCard=1&step=3`;
   }
 
   // Helper pour obtenir l'URL de l'image

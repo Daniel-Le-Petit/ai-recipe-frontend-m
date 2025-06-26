@@ -51,13 +51,6 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Hero />
-      <div className="my-8 flex justify-center">
-        <Link href="/plan-semaine">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-xl text-lg shadow-lg transition-colors">
-            Découvrir le plan de la semaine
-          </button>
-        </Link>
-      </div>
       {/* Section catégories/recettes */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {loading ? (

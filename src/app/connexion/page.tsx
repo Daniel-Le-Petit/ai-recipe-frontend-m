@@ -30,50 +30,11 @@ export default function ConnexionPage() {
     setError('');
     setIsLoading(true);
     try {
-      // 1. Tenter la connexion
-      const loginRes = await fetch(`${API_URL}/api/auth/local`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier: email, password })
-      });
-      if (loginRes.ok) {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('user_email', email);
-        }
+      const success = await login(email, password);
+      if (success) {
         router.push('/mes-recettes');
       } else {
-        const loginData = await loginRes.json();
-        if (
-          loginData &&
-          loginData.error &&
-          loginData.error.message === 'Invalid identifier or password'
-        ) {
-          setError('Email ou mot de passe incorrect');
-        } else {
-          // User n'existe pas (ou autre erreur) : tenter la création
-          const registerRes = await fetch(`${API_URL}/api/auth/local/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email,
-              username: email,
-              password
-            })
-          });
-          if (registerRes.ok) {
-            if (typeof window !== 'undefined') {
-              localStorage.setItem('user_email', email);
-            }
-            router.push('/bienvenue');
-          } else {
-            const data = await registerRes.json();
-            if (data && data.error && data.error.message) {
-              setError(data.error.message);
-            } else {
-              setError('Erreur lors de la création du compte');
-            }
-          }
-        }
+        setError('Email ou mot de passe incorrect');
       }
     } catch (err) {
       setError('Erreur de connexion au serveur');

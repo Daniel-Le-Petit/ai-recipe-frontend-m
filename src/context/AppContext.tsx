@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 
 interface User {
   name: string
@@ -47,9 +47,38 @@ export function AppProvider({ children }: AppProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [selectedDistributor, setSelectedDistributor] = useState<string>('')
 
-  const login = (email: string, password: string): boolean => {
-    // TODO: Implémenter la vraie logique d'authentification
-    return false
+  // Reconnexion automatique si email présent dans localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('user_email');
+      if (email) {
+        setIsAuthenticated(true);
+        setUser({ name: email.split('@')[0], email, plan: 'Standard' });
+      }
+    }
+  }, []);
+
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/auth/local`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email, password })
+      });
+      const data = await res.json();
+      if (res.ok && data.jwt) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('jwt', data.jwt);
+          localStorage.setItem('user_email', email);
+        }
+        setIsAuthenticated(true);
+        setUser({ name: email.split('@')[0], email, plan: 'Standard' });
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 
   const logout = () => {

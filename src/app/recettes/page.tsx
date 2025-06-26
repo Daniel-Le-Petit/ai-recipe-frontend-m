@@ -66,9 +66,9 @@ export default function RecipesPage() {
   }
 
   if (loading) {
-    return (
+  return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
+      <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center">
@@ -78,7 +78,7 @@ export default function RecipesPage() {
           </div>
         </div>
         <Footer />
-      </div>
+              </div>
     )
   }
 
@@ -134,14 +134,14 @@ export default function RecipesPage() {
             </div>
           </div>
         </div>
-      </div>
+            </div>
 
       <div className="container mx-auto px-4 py-8">
         {/* Filtres et tri */}
         <div className="mb-8">
           <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
-            {/* Catégories */}
-            <div className="flex flex-wrap gap-2">
+              {/* Catégories */}
+              <div className="flex flex-wrap gap-2">
               <button
                 key="all"
                 onClick={() => setSelectedCategory('all')}
@@ -154,8 +154,8 @@ export default function RecipesPage() {
                 Toutes
               </button>
               {categories.map((category) => (
-                <button
-                  key={category.id}
+                  <button
+                    key={category.id}
                   onClick={() => setSelectedCategory(category.id.toString())}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                     selectedCategory === category.id.toString()
@@ -164,11 +164,11 @@ export default function RecipesPage() {
                   }`}
                 >
                   {category.categoryName}
-                </button>
-              ))}
-            </div>
+                  </button>
+                ))}
+              </div>
 
-            {/* Tri */}
+              {/* Tri */}
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600">Trier par:</span>
               <select
@@ -227,15 +227,15 @@ export default function RecipesPage() {
             >
               Difficile
             </button>
-          </div>
-        </div>
+                  </div>
+                </div>
 
         {/* Résultats */}
         <div className="mb-6">
           <p className="text-gray-600">
             {sortedRecipes.length} recette{sortedRecipes.length !== 1 ? 's' : ''} trouvée{sortedRecipes.length !== 1 ? 's' : ''}
           </p>
-        </div>
+                    </div>
 
         {/* Grille des recettes */}
         {sortedRecipes.length === 0 ? (
@@ -243,7 +243,7 @@ export default function RecipesPage() {
             <div className="text-gray-400 text-6xl mb-4">🍽️</div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">Aucune recette trouvée</h3>
             <p className="text-gray-600">Essayez de modifier vos filtres ou votre recherche</p>
-          </div>
+                        </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {sortedRecipes.map((recipe) => (
@@ -260,16 +260,16 @@ export default function RecipesPage() {
           </div>
         )}
       </div>
-
+      
       <Footer />
 
       <div className="my-8 flex justify-center">
         <Link href="/plan-semaine">
           <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-xl text-lg shadow-lg transition-colors">
             Découvrir le plan de la semaine
-          </button>
-        </Link>
-      </div>
+            </button>
+          </Link>
+        </div>
     </div>
   )
 } 
