@@ -9,7 +9,7 @@ import { useAppContext } from '../context/AppContext'
 
 const navigation = [
   { name: 'Accueil', href: '/' },
-  { name: 'Recettes', href: '/recettes' },
+  { name: 'Mes Recettes', href: '/mes-recettes' },
   { name: 'Contact', href: '/contact' },
 ]
 

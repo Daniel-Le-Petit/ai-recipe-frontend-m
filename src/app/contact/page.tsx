@@ -73,6 +73,18 @@ export default function Contact() {
   return (
     <div className="min-h-screen" style={{backgroundColor: '#FDFBF5'}}>
       <Header />
+      <div className="max-w-3xl mx-auto py-6">
+        <button
+          onClick={() => window.history.back()}
+          className="flex items-center gap-2 text-herb-green hover:text-herb-dark font-semibold text-lg mb-4"
+          aria-label="Retour"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Retour
+        </button>
+      </div>
       
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">

@@ -73,7 +73,20 @@ export default function MesRecettesPage() {
     <>
       <Header />
       <div className="max-w-5xl mx-auto py-8">
+        <div className="mb-4">
+          <button
+            onClick={() => window.history.back()}
+            className="flex items-center gap-2 text-herb-green hover:text-herb-dark font-semibold text-lg"
+            aria-label="Retour"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Retour
+          </button>
+        </div>
         <h1 className="text-2xl font-bold mb-4">Mes Recettes</h1>
+        <p className="text-center text-gray-500 italic text-md mb-6">Conservez l'historique de vos recettes et partagez vos découvertes gourmandes</p>
         <div className="mb-6 flex items-center gap-4">
           <label htmlFor="sort" className="font-medium">Trier par :</label>
           <select
