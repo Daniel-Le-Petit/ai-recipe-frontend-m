@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: ai-fines-herbes
+    name: aifh-frontend-prod
     env: node
     plan: free
     buildCommand: |
@@ -14,9 +14,9 @@ services:
       - key: NODE_ENV
         value: production
       - key: API_BASE_URL
-        value: https://your-backend-url.onrender.com
+        value: https://aifb-backend.onrender.com
       - key: NEXT_PUBLIC_API_URL
-        value: https://your-backend-url.onrender.com
+        value: https://aifb-backend.onrender.com
     healthCheckPath: /
     autoDeploy: true
     buildFilter:
