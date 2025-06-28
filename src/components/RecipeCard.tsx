@@ -1,6 +1,6 @@
 import React from 'react'
 import { Clock, Users, ChefHat, Star, Heart, Sparkles } from 'lucide-react'
-import type { RecipeCardProps, StrapiRecipe, FlexibleRecipe } from '@/types/api'
+import type { RecipeCardProps, StrapiRecipe, FlexibleRecipe, RecipeStatus } from '@/types/api'
 import { RecipeStatusBadge } from './RecipeStatusBadge'
 
 // Helper function to normalize recipe data structure
