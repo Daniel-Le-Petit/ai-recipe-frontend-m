@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { RecipeStatus } from '@/types/api'
-import { apiService } from '@/api'
+import apiService from '@/api'
 
 interface UseRecipeStatusOptions {
   onStatusChange?: (newStatus: RecipeStatus) => void

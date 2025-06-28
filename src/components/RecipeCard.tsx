@@ -7,6 +7,9 @@ import { RecipeStatusBadge } from './RecipeStatusBadge'
 const allowedDifficulties = ['Facile', 'Intermédiaire', 'Difficile'] as const;
 type AllowedDifficulty = typeof allowedDifficulties[number];
 
+const allowedRecipeStates = ['draft', 'saved', 'submitted', 'approved', 'ordered', 'completed', 'archived', 'rejected'] as const;
+type AllowedRecipeState = typeof allowedRecipeStates[number];
+
 const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe => {
   // If recipe already has the correct structure, return it
   if (recipe && recipe.attributes) {
@@ -21,6 +24,11 @@ const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe =>
     if (allowedDifficulties.includes(attributes.difficulty)) {
       difficulty = attributes.difficulty;
     }
+    // Type guard for recipeState
+    let recipeState: AllowedRecipeState = 'draft';
+    if (allowedRecipeStates.includes(attributes.recipeState)) {
+      recipeState = attributes.recipeState;
+    }
     return {
       id: id || (recipe as any).id,
       attributes: {
@@ -34,13 +42,13 @@ const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe =>
         rating: (attributes.rating as number) || 0,
         tags: (attributes.tags as string[]) || [],
         isRobotCompatible: (attributes.isRobotCompatible as boolean) || false,
-        recipeState: (attributes.recipeState as string) || 'draft',
+        recipeState: recipeState as RecipeStatus,
         createdAt: (attributes.createdAt as string) || new Date().toISOString(),
         updatedAt: (attributes.updatedAt as string) || new Date().toISOString(),
         publishedAt: (attributes.publishedAt as string) || new Date().toISOString(),
-        image: attributes.image || null,
-        recipieCategory: attributes.recipieCategory ? { data: attributes.recipieCategory } : null,
-        author: attributes.author ? { data: attributes.author } : null
+        image: undefined,
+        recipieCategory: attributes.recipieCategory ? { data: attributes.recipieCategory } : undefined,
+        author: attributes.author ? { data: attributes.author } : undefined
       }
     }
   }
@@ -63,9 +71,9 @@ const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe =>
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       publishedAt: new Date().toISOString(),
-      image: null,
-      recipieCategory: null,
-      author: null
+      image: undefined,
+      recipieCategory: undefined,
+      author: undefined
     }
   }
 }
@@ -104,12 +112,6 @@ const getRecipeImage = (recipe: any) => {
   }
   if (image?.data?.attributes?.url) {
     return image.data.attributes.url
-  }
-  if (image?.url) {
-    return image.url
-  }
-  if (image?.formats?.medium?.url) {
-    return image.formats.medium.url
   }
   return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
 }
