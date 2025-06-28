@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react'
 import { RecipeStatus, RECIPE_STATUSES, StrapiRecipe } from '@/types/api'
-import { apiService } from '@/api'
 import { RecipeCard } from '@/components/RecipeCard'
 import { RecipeStatusBadge } from '@/components/RecipeStatusBadge'
 import Header from '@/components/Header'
