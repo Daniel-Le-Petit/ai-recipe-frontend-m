@@ -4,6 +4,9 @@ import type { RecipeCardProps, StrapiRecipe, FlexibleRecipe } from '@/types/api'
 import { RecipeStatusBadge } from './RecipeStatusBadge'
 
 // Helper function to normalize recipe data structure
+const allowedDifficulties = ['Facile', 'Intermédiaire', 'Difficile'] as const;
+type AllowedDifficulty = typeof allowedDifficulties[number];
+
 const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe => {
   // If recipe already has the correct structure, return it
   if (recipe && recipe.attributes) {
@@ -12,24 +15,29 @@ const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe =>
   
   // If recipe is in flat format, wrap it in attributes
   if (recipe && typeof recipe === 'object') {
-    const { id, ...attributes } = recipe
+    const { id, ...attributes } = recipe as any
+    // Type guard for difficulty
+    let difficulty: AllowedDifficulty = 'Facile';
+    if (allowedDifficulties.includes(attributes.difficulty)) {
+      difficulty = attributes.difficulty;
+    }
     return {
-      id: id || recipe.id,
+      id: id || (recipe as any).id,
       attributes: {
-        title: attributes.title || '',
-        description: attributes.description || '',
+        title: (attributes.title as string) || '',
+        description: (attributes.description as string) || '',
         ingredients: attributes.ingredients || [],
-        instructions: attributes.instructions || '',
-        duration: attributes.duration || 0,
-        difficulty: attributes.difficulty || 'Facile',
-        servings: attributes.servings || 1,
-        rating: attributes.rating || 0,
-        tags: attributes.tags || [],
-        isRobotCompatible: attributes.isRobotCompatible || false,
-        recipeState: attributes.recipeState || 'draft',
-        createdAt: attributes.createdAt || new Date().toISOString(),
-        updatedAt: attributes.updatedAt || new Date().toISOString(),
-        publishedAt: attributes.publishedAt || new Date().toISOString(),
+        instructions: (attributes.instructions as string) || '',
+        duration: (attributes.duration as number) || 0,
+        difficulty,
+        servings: (attributes.servings as number) || 1,
+        rating: (attributes.rating as number) || 0,
+        tags: (attributes.tags as string[]) || [],
+        isRobotCompatible: (attributes.isRobotCompatible as boolean) || false,
+        recipeState: (attributes.recipeState as string) || 'draft',
+        createdAt: (attributes.createdAt as string) || new Date().toISOString(),
+        updatedAt: (attributes.updatedAt as string) || new Date().toISOString(),
+        publishedAt: (attributes.publishedAt as string) || new Date().toISOString(),
         image: attributes.image || null,
         recipieCategory: attributes.recipieCategory ? { data: attributes.recipieCategory } : null,
         author: attributes.author ? { data: attributes.author } : null
