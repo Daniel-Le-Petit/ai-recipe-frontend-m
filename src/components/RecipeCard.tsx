@@ -7,7 +7,7 @@ import { RecipeStatusBadge } from './RecipeStatusBadge'
 const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe => {
   // If recipe already has the correct structure, return it
   if (recipe && recipe.attributes) {
-    return recipe
+    return recipe as StrapiRecipe
   }
   
   // If recipe is in flat format, wrap it in attributes
