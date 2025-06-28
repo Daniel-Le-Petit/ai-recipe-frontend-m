@@ -173,6 +173,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   if (compact) {
     return (
       <div 
+        data-testid="recipe-card"
         className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105 ${
           compact ? 'h-48' : 'h-64'
         } flex flex-col`}
@@ -238,7 +239,10 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
 
   // Full version (existing code)
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div 
+      data-testid="recipe-card"
+      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+    >
       {/* Image */}
       <div className="relative h-48 bg-gray-200">
         <img
@@ -327,6 +331,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
         <div className="flex gap-2">
           {onStartCooking && (
             <button
+              data-testid="start-cooking-button"
               onClick={handleCardClick}
               className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
             >
@@ -335,6 +340,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
           )}
           {onFavorite && (
             <button
+              data-testid="favorite-button"
               onClick={handleFavorite}
               className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
             >

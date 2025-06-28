@@ -3,10 +3,27 @@ services:
     name: ai-fines-herbes
     env: node
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: |
+      npm install
+      npm run build
     startCommand: npm start
+    preDeployCommand: |
+      echo "Running regression tests before deployment..."
+      node scripts/regression-tests.js
     envVars:
       - key: NODE_ENV
         value: production
+      - key: API_BASE_URL
+        value: https://your-backend-url.onrender.com
+      - key: NEXT_PUBLIC_API_URL
+        value: https://your-backend-url.onrender.com
     healthCheckPath: /
-    autoDeploy: true 
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - src/**
+        - package.json
+        - package-lock.json
+        - tests/**
+        - scripts/**
+        - render.yaml 
