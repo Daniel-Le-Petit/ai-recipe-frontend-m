@@ -13,10 +13,6 @@ const nextConfig = {
     // Disable image optimization during build for faster builds
     unoptimized: true,
   },
-  // Reduce bundle size
-  experimental: {
-    optimizeCss: true,
-  },
   // Disable source maps in production for faster builds
   productionBrowserSourceMaps: false,
 }
