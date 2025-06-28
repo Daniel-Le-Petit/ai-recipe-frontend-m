@@ -3,7 +3,7 @@
 import { useAppContext } from '../../context/AppContext'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import { User, Mail, Crown, LogOut, ArrowLeft, ChefHat } from 'lucide-react'
+import { User, Mail, Crown, LogOut, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -104,60 +104,6 @@ export default function ComptePage() {
                   <div>
                     <p className="text-sm text-slate-500">Votre abonnement</p>
                     <p className="font-semibold text-slate-900">{user?.plan}</p>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-5 border-t border-slate-200">
-                  <div className="text-center p-4 bg-herb-green/10 rounded-xl">
-                    <div className="text-2xl font-bold text-herb-green">12</div>
-                    <div className="text-sm text-slate-600">Recettes créées</div>
-                  </div>
-                  <div className="text-center p-4 bg-sage/10 rounded-xl">
-                    <div className="text-2xl font-bold text-sage">8</div>
-                    <div className="text-sm text-slate-600">Commandes passées</div>
-                  </div>
-                  <div className="text-center p-4 bg-herb-dark/10 rounded-xl">
-                    <div className="text-2xl font-bold text-herb-dark">4.9</div>
-                    <div className="text-sm text-slate-600">Note moyenne</div>
-                  </div>
-                </div>
-
-                {/* Recettes sauvegardées */}
-                <div className="pt-5 border-t border-slate-200">
-                  <h3 className="font-semibold text-lg text-slate-900 mb-4 flex items-center gap-2">
-                    <ChefHat className="h-5 w-5 text-herb-green" />
-                    Mes recettes sauvegardées
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="p-4 bg-gradient-to-r from-herb-green/10 to-sage/10 rounded-xl border border-herb-green/20">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-semibold text-slate-900">Risotto aux champignons et parmesan</h4>
-                          <p className="text-sm text-slate-600">Sauvegardée le 15 janvier 2024</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-xs bg-herb-green text-white px-2 py-1 rounded-full">En attente</span>
-                          <button className="text-herb-green hover:text-herb-dark transition-colors">
-                            <ChefHat className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4 bg-gradient-to-r from-sage/10 to-herb-green/10 rounded-xl border border-sage/20">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-semibold text-slate-900">Salade de quinoa aux légumes grillés</h4>
-                          <p className="text-sm text-slate-600">Sauvegardée le 12 janvier 2024</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full">Prête</span>
-                          <button className="text-sage hover:text-sage-dark transition-colors">
-                            <ChefHat className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
 

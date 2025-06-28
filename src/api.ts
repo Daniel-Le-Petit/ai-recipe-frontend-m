@@ -4,7 +4,8 @@ import type {
   CategoriesResponse, 
   RecipeParams,
   CreateRecipeData,
-  UpdateRecipeData
+  UpdateRecipeData,
+  RecipeStatus
 } from './types/api'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338';
@@ -309,6 +310,104 @@ class ApiService {
       return data;
     } catch (error) {
       console.error('Error fetching recent recipes:', error);
+      throw error;
+    }
+  }
+
+  // Mettre à jour le statut d'une recette
+  async updateRecipeStatus(id: number, status: RecipeStatus): Promise<RecipeResponse> {
+    try {
+      const url = `${this.baseURL}/api/recipies/${id}`;
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: { recipeState: status }
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error updating recipe status:', error);
+      throw error;
+    }
+  }
+
+  // Récupérer les recettes par statut
+  async getRecipesByStatus(status: RecipeStatus): Promise<RecipesResponse> {
+    try {
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=${status}&populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching recipes by status:', error);
+      throw error;
+    }
+  }
+
+  // Récupérer les recettes en attente de validation (pour les admins)
+  async getPendingRecipes(): Promise<RecipesResponse> {
+    try {
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=submitted&populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching pending recipes:', error);
+      throw error;
+    }
+  }
+
+  // Récupérer les recettes rejetées
+  async getRejectedRecipes(): Promise<RecipesResponse> {
+    try {
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=rejected&populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching rejected recipes:', error);
+      throw error;
+    }
+  }
+
+  // Récupérer les recettes archivées
+  async getArchivedRecipes(): Promise<RecipesResponse> {
+    try {
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=archived&populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching archived recipes:', error);
       throw error;
     }
   }

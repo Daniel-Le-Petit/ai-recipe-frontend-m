@@ -6,7 +6,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import RecipeCard from '@/components/RecipeCard'
 import { useRecipes, useCategories } from '@/hooks/useRecipes'
-import type { StrapiRecipe } from '@/types/api'
+import type { StrapiRecipe, FlexibleRecipe } from '@/types/api'
 import Link from 'next/link'
 
 const SORT_OPTIONS = [
@@ -14,6 +14,31 @@ const SORT_OPTIONS = [
   { id: 'time', name: 'Plus rapides', icon: Clock },
   { id: 'name', name: 'Ordre A-Z', icon: ArrowDownAZ }
 ]
+
+// Helper functions to safely access recipe properties
+const getRecipeTitle = (recipe: StrapiRecipe | FlexibleRecipe): string => {
+  return recipe.attributes?.title || (recipe as any).title || 'Sans titre'
+}
+
+const getRecipeDescription = (recipe: StrapiRecipe | FlexibleRecipe): string => {
+  return recipe.attributes?.description || (recipe as any).description || ''
+}
+
+const getRecipeDifficulty = (recipe: StrapiRecipe | FlexibleRecipe): string => {
+  return recipe.attributes?.difficulty || (recipe as any).difficulty || 'Facile'
+}
+
+const getRecipeDuration = (recipe: StrapiRecipe | FlexibleRecipe): number => {
+  return recipe.attributes?.duration || (recipe as any).duration || 0
+}
+
+const getRecipeRating = (recipe: StrapiRecipe | FlexibleRecipe): number => {
+  return recipe.attributes?.rating || (recipe as any).rating || 0
+}
+
+const getRecipeCategory = (recipe: StrapiRecipe | FlexibleRecipe): any => {
+  return recipe.attributes?.recipieCategory?.data || (recipe as any).recipieCategory || null
+}
 
 export default function RecipesPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -29,16 +54,16 @@ export default function RecipesPage() {
 
   // Appliquer les filtres et la recherche
   const filteredRecipes = recipes.filter(recipe => {
-    const recipeCat = recipe.attributes.recipieCategory?.data;
+    const recipeCat = getRecipeCategory(recipe);
     const matchesCategory = selectedCategory === 'all' ||
       (recipeCat && (
         recipeCat.categoryName?.toLowerCase() === selectedCategory.toLowerCase() ||
         recipeCat.id?.toString() === selectedCategory
       ));
     const matchesDifficulty = selectedDifficulty === 'all' || 
-      recipe.attributes.difficulty === selectedDifficulty
-    const matchesSearch = recipe.attributes.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      recipe.attributes.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      getRecipeDifficulty(recipe) === selectedDifficulty
+    const matchesSearch = getRecipeTitle(recipe).toLowerCase().includes(searchQuery.toLowerCase()) ||
+      getRecipeDescription(recipe).toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesDifficulty && matchesSearch
   })
 
@@ -46,11 +71,11 @@ export default function RecipesPage() {
   const sortedRecipes = [...filteredRecipes].sort((a, b) => {
     switch (sortBy) {
       case 'popular':
-        return (b.attributes.rating || 0) - (a.attributes.rating || 0)
+        return getRecipeRating(b) - getRecipeRating(a)
       case 'time':
-        return (a.attributes.duration || 0) - (b.attributes.duration || 0)
+        return getRecipeDuration(a) - getRecipeDuration(b)
       case 'name':
-        return a.attributes.title.localeCompare(b.attributes.title)
+        return getRecipeTitle(a).localeCompare(getRecipeTitle(b))
       default:
         return 0
     }
@@ -62,7 +87,7 @@ export default function RecipesPage() {
 
   const handleFavorite = (recipe: StrapiRecipe) => {
     // TODO: Implémenter la logique des favoris
-    console.log('Ajouter aux favoris:', recipe.attributes.title)
+    console.log('Ajouter aux favoris:', getRecipeTitle(recipe))
   }
 
   if (loading) {
