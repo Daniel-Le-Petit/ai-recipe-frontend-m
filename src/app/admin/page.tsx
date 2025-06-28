@@ -84,7 +84,11 @@ export default function AdminPage() {
     }
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string | undefined) => {
+    if (!status) {
+      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">⚪ Non défini</span>;
+    }
+    
     switch (status) {
       case 'submitted':
         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">🟡 En attente</span>;
@@ -158,7 +162,7 @@ export default function AdminPage() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">En attente</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {recipes.filter(r => r.attributes.recipeState === 'submitted').length}
+                  {recipes?.filter(r => r.attributes?.recipeState === 'submitted').length || 0}
                 </p>
               </div>
             </div>
@@ -172,7 +176,7 @@ export default function AdminPage() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Validées</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {recipes.filter(r => r.attributes.recipeState === 'approved').length}
+                  {recipes?.filter(r => r.attributes?.recipeState === 'approved').length || 0}
                 </p>
               </div>
             </div>
@@ -186,7 +190,7 @@ export default function AdminPage() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Refusées</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {recipes.filter(r => r.attributes.recipeState === 'rejected').length}
+                  {recipes?.filter(r => r.attributes?.recipeState === 'rejected').length || 0}
                 </p>
               </div>
             </div>
@@ -196,48 +200,43 @@ export default function AdminPage() {
         {/* Liste des recettes */}
         <div className="bg-white rounded-lg shadow-sm">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Recettes en attente de validation
-            </h2>
+            <h3 className="text-lg font-medium text-gray-900">Recettes à valider</h3>
+            <p className="text-sm text-gray-600 mt-1">
+              {recipes?.filter(r => r.attributes?.recipeState === 'submitted').length || 0} recettes en attente de validation
+            </p>
           </div>
           
-          {error ? (
-            <div className="p-6 text-center">
-              <p className="text-red-600">{error}</p>
-            </div>
-          ) : recipes.length === 0 ? (
-            <div className="p-6 text-center">
-              <p className="text-gray-500">Aucune recette en attente de validation</p>
-            </div>
-          ) : (
-            <div className="divide-y divide-gray-200">
-              {recipes.map((recipe) => (
-                <div key={recipe.id} className="p-6 hover:bg-gray-50 transition-colors">
+          <div className="divide-y divide-gray-200">
+            {recipes
+              ?.filter(recipe => recipe.attributes?.recipeState === 'submitted' || !recipe.attributes?.recipeState)
+              .map((recipe) => (
+                <div key={recipe.id || `recipe-${Math.random()}`} className="p-6 hover:bg-gray-50 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
-                        <h3 className="text-lg font-medium text-gray-900">
-                          {recipe.attributes.title}
-                        </h3>
-                        {getStatusBadge(recipe.attributes.recipeState)}
+                        <h4 className="text-lg font-medium text-gray-900">
+                          {recipe.attributes?.title || 'Sans titre'}
+                        </h4>
+                        {getStatusBadge(recipe.attributes?.recipeState)}
                       </div>
                       
                       <div className="flex items-center space-x-4 text-sm text-gray-600">
                         <div className="flex items-center">
                           <User className="w-4 h-4 mr-1" />
-                          @{recipe.attributes.author?.data?.attributes?.username || 'Anonyme'}
+                          @{recipe.attributes?.author?.data?.attributes?.username || 'Anonyme'}
                         </div>
                         <div className="flex items-center">
                           <Calendar className="w-4 h-4 mr-1" />
-                          {formatDate(recipe.attributes.createdAt)}
+                          {recipe.attributes?.createdAt ? formatDate(recipe.attributes.createdAt) : 'Date inconnue'}
                         </div>
                       </div>
                     </div>
                     
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => router.push(`/admin/validation-recette/${recipe.id}`)}
-                        className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        onClick={() => recipe.id && router.push(`/admin/validation-recette/${recipe.id}`)}
+                        disabled={!recipe.id}
+                        className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Eye className="w-4 h-4 mr-1" />
                         Voir
@@ -246,8 +245,7 @@ export default function AdminPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

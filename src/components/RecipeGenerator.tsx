@@ -180,11 +180,17 @@ export default function RecipeGenerator() {
 
   useEffect(() => {
     const fromCardParam = searchParams.get('fromCard');
+    const stepParam = searchParams.get('step');
+    
     if (fromCardParam === '1' && !hasJumpedToStep3) {
       setCurrentStep(3);
       setHasJumpedToStep3(true);
     }
-  }, [searchParams, hasJumpedToStep3]);
+    
+    if (stepParam === '4' && currentStep === 1) {
+      setCurrentStep(4);
+    }
+  }, [searchParams, hasJumpedToStep3, currentStep]);
 
   useEffect(() => {
     const recipeId = searchParams.get('id');

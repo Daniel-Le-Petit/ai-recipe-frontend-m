@@ -50,11 +50,13 @@ export default function Hero() {
           </div>
           <div className="md:col-span-5 flex justify-center md:justify-end">
             <div className="relative w-full max-w-xs">
-              <img 
-                src="/main-image-cart.svg"
-                alt="Illustration culinaire"
-                className="w-full h-auto max-h-[220px] object-contain transition-all duration-500 hover:scale-105 transform"
-              />
+              <Link href="/creer-recette?step=4">
+                <img 
+                  src="/main-image-cart.svg"
+                  alt="Illustration culinaire"
+                  className="w-full h-auto max-h-[220px] object-contain transition-all duration-500 hover:scale-105 transform cursor-pointer"
+                />
+              </Link>
             </div>
           </div>
         </div>
