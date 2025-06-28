@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChefHat, Sparkles, ArrowRight, ShoppingCart, User } from 'lucide-react'
+import { Menu, X, ChefHat, Sparkles, ArrowRight, ShoppingCart, User, Settings } from 'lucide-react'
 import Logo from './Logo'
 import { useAppContext } from '../context/AppContext'
 
@@ -15,8 +15,44 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const pathname = usePathname()
   const { isAuthenticated, user, cart } = useAppContext()
+
+  useEffect(() => {
+    checkAdminStatus();
+  }, [isAuthenticated]);
+
+  const checkAdminStatus = async () => {
+    if (!isAuthenticated) {
+      setIsAdmin(false);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('jwt');
+      if (!token) {
+        setIsAdmin(false);
+        return;
+      }
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      if (response.ok) {
+        const user = await response.json();
+        setIsAdmin(user.role?.name === 'admin');
+      } else {
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification admin:', error);
+      setIsAdmin(false);
+    }
+  };
 
   const scrollToGenerator = () => {
     if (pathname === '/') {
@@ -65,6 +101,16 @@ export default function Header() {
 
           {/* Actions desktop */}
           <div className="hidden md:flex md:items-center md:space-x-6">
+            {/* Administration (pour les admins) */}
+            {isAdmin && (
+              <Link href="/admin" className="flex items-center space-x-2 text-base font-poppins font-semibold text-gray-800 hover:text-herb-green transition-all duration-300">
+                <div className="p-2 rounded-xl hover:bg-herb-green/10 transition-all duration-300">
+                  <Settings className="h-6 w-6 text-herb-dark" />
+                </div>
+                <span>Admin</span>
+              </Link>
+            )}
+
             {/* Panier */}
             <Link href="/panier" className="relative group flex items-center space-x-2 text-base font-poppins font-semibold text-gray-800 hover:text-herb-green transition-all duration-300">
               <div className="relative p-2 rounded-xl hover:bg-herb-green/10 transition-all duration-300">
@@ -163,6 +209,18 @@ export default function Header() {
                 )
               })}
               
+              {/* Administration mobile (pour les admins) */}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="block px-4 py-3 text-lg font-poppins font-semibold rounded-2xl transition-all duration-300 text-gray-800 hover:text-herb-green hover:bg-gray-50 flex items-center space-x-3"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Settings className="h-5 w-5 text-herb-dark" />
+                  <span>Administration</span>
+                </Link>
+              )}
+              
               {/* Séparateur */}
               <div className="border-t border-gray-200 my-4"></div>
               
@@ -204,23 +262,30 @@ export default function Header() {
                 </Link>
               )}
               
+              {/* Séparateur */}
+              <div className="border-t border-gray-200 my-4"></div>
+              
               {/* Bouton CTA mobile */}
-              <div className="pt-4 border-t border-gray-200">
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false)
-                    scrollToGenerator()
-                  }}
-                  className="w-full group relative overflow-hidden bg-gradient-to-r from-herb-green via-sage to-herb-dark hover:from-herb-dark hover:via-herb-green hover:to-sage text-white px-6 py-4 rounded-2xl font-poppins font-bold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-                  <div className="relative flex items-center justify-center space-x-3">
-                    <ChefHat className="h-6 w-6" />
-                    <span>Créer une recette</span>
-                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  scrollToGenerator();
+                }}
+                className="w-full group relative overflow-hidden bg-gradient-to-r from-herb-green via-sage to-herb-dark hover:from-herb-dark hover:via-herb-green hover:to-sage text-white px-6 py-4 rounded-2xl font-poppins font-bold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform"
+              >
+                {/* Effet de brillance */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                
+                {/* Contenu du bouton */}
+                <div className="relative flex items-center justify-center space-x-2">
+                  <ChefHat className="h-6 w-6" />
+                  <span>Créer une recette</span>
+                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </div>
+                
+                {/* Bordure animée */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-herb-green/40 to-sage/40 opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-sm"></div>
+              </button>
             </div>
           </div>
         </>
