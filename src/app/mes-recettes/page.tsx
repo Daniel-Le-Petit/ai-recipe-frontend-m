@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { RecipeStatusBadge } from '../../components/RecipeStatusBadge'
@@ -132,13 +133,22 @@ const formatDate = (dateString: string) => {
   })
 }
 
-export default function MesRecettesPage() {
+function MesRecettesContent() {
   const [recipes, setRecipes] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [sortBy, setSortBy] = useState('date')
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
   useEffect(() => {
+    // Vérifier si on doit rediriger vers creer-recette étape 4
+    const stepParam = searchParams.get('step')
+    if (stepParam === '4') {
+      router.push('/creer-recette?step=4')
+      return
+    }
+
     // Récupère l'email de l'utilisateur connecté (à adapter selon ta logique d'auth)
     const email = typeof window !== 'undefined' ? localStorage.getItem('user_email') : null
     if (!email) {
@@ -153,7 +163,7 @@ export default function MesRecettesPage() {
       })
       .catch(() => setError("Erreur lors du chargement des recettes."))
       .finally(() => setLoading(false))
-  }, [])
+  }, [searchParams, router])
 
   // Fonction de tri
   const sortedRecipes = [...recipes].sort((a, b) => {
@@ -192,114 +202,142 @@ export default function MesRecettesPage() {
             Retour
           </button>
         </div>
-        <h1 className="text-2xl font-bold mb-4">Mes recettes sauvegardées</h1>
-        <p className="text-center text-gray-500 italic text-md mb-6">Conservez l'historique de vos recettes et partagez vos découvertes gourmandes</p>
-        <div className="mb-6 flex items-center gap-4">
-          <label htmlFor="sort" className="font-medium">Trier par :</label>
-          <select
-            id="sort"
-            value={sortBy}
-            onChange={e => setSortBy(e.target.value)}
-            className="border rounded px-2 py-1"
-          >
-            {sortOptions.map(opt => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
+
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Mes Recettes</h1>
+          <p className="text-lg text-gray-600">Gérez et suivez vos recettes personnalisées</p>
         </div>
+
         {loading ? (
-          <div>Chargement...</div>
-        ) : error ? (
-          <div className="text-red-500">{error}</div>
-        ) : sortedRecipes.length === 0 ? (
-          <div>Aucune recette trouvée.</div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {sortedRecipes.map(recipe => {
-              const normalizedRecipe = normalizeRecipe(recipe)
-              const {
-                title,
-                duration,
-                difficulty,
-                servings,
-                rating,
-                isRobotCompatible,
-                recipeState,
-                updatedAt
-              } = normalizedRecipe.attributes
-
-              return (
-                <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 h-64 flex flex-col cursor-pointer transform hover:scale-105">
-                  {/* Image with badges on top right - 5/7 of card height */}
-                  <div className="relative h-[calc(5/7*16rem)] bg-gray-200 flex-shrink-0">
-                    <img
-                      src={getRecipeImage(recipe)}
-                      alt={title || 'Recette'}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                      }}
-                    />
-                    {/* Status and Robot badges on top right of image */}
-                    <div className="absolute top-2 right-2 flex items-center gap-1">
-                      <RecipeStatusBadge status={getRecipeStatus(recipe)} />
-                      {isRobotCompatible && (
-                        <span className="text-xs bg-white/20 text-white px-1 py-0.5 rounded">
-                          🤖 Robot
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Content with AI & Fines Herbes green background - 2/7 of card height */}
-                  <div className="h-[calc(2/7*16rem)] bg-[#20B251] p-3 flex flex-col justify-between">
-                    {/* Line 1: Title */}
-                    <div>
-                      <h3 className="text-sm font-bold text-white line-clamp-1">
-                        {title || 'Sans titre'}
-                      </h3>
-                    </div>
-
-                    {/* Line 2: Duration + Servings + Difficulty + Rating */}
-                    <div className="flex items-center justify-between text-xs text-white/90">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        <span>{formatDuration(duration || 0)}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        <span>{servings || 1} pers.</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <ChefHat className="w-3 h-3" />
-                        <span>{difficulty || 'Facile'}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-3 h-3 text-yellow-300" />
-                        <span>{(rating || 0).toFixed(1)}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Line 3: Commander button */}
-                  <div className="bg-white p-3 border-t">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleOrder(recipe)
-                      }}
-                      className="w-full bg-[#20B251] text-white px-3 py-2 rounded text-sm font-medium hover:bg-[#1a8f42] transition-colors"
-                    >
-                      Commander
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-herb-green mx-auto mb-4"></div>
+            <p className="text-gray-600">Chargement de vos recettes...</p>
           </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <div className="text-red-600 mb-4">
+              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        ) : (
+          <>
+            {/* Contrôles de tri */}
+            <div className="mb-6 flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <label className="text-sm font-medium text-gray-700">Trier par:</label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-herb-green"
+                >
+                  {sortOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="text-sm text-gray-600">
+                {sortedRecipes.length} recette{sortedRecipes.length !== 1 ? 's' : ''}
+              </div>
+            </div>
+
+            {/* Grille des recettes */}
+            {sortedRecipes.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune recette trouvée</h3>
+                <p className="text-gray-600 mb-6">Vous n&apos;avez pas encore créé de recettes personnalisées.</p>
+                <button
+                  onClick={() => router.push('/creer-recette')}
+                  className="bg-herb-green text-white px-6 py-3 rounded-lg hover:bg-herb-dark transition-colors"
+                >
+                  Créer ma première recette
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {sortedRecipes.map((recipe) => {
+                  const normalizedRecipe = normalizeRecipe(recipe)
+                  return (
+                    <div key={normalizedRecipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                      <div className="relative">
+                        <img
+                          src={getRecipeImage(normalizedRecipe)}
+                          alt={getRecipeTitle(normalizedRecipe)}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute top-2 right-2">
+                          <RecipeStatusBadge status={getRecipeStatus(normalizedRecipe)} />
+                        </div>
+                      </div>
+                      
+                      <div className="p-4">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          {getRecipeTitle(normalizedRecipe)}
+                        </h3>
+                        
+                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{formatDuration(getRecipeDuration(normalizedRecipe))}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4" />
+                            <span>{getRecipeServings(normalizedRecipe)} pers.</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <ChefHat className="h-4 w-4" />
+                            <span>{getRecipeDifficulty(normalizedRecipe)}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                            <span className="text-sm text-gray-600">{getRecipeRating(normalizedRecipe)}/5</span>
+                          </div>
+                          <button
+                            onClick={() => handleOrder(normalizedRecipe)}
+                            className="bg-herb-green text-white px-4 py-2 rounded-md text-sm hover:bg-herb-dark transition-colors"
+                          >
+                            Commander
+                          </button>
+                        </div>
+                        
+                        <div className="mt-3 text-xs text-gray-500">
+                          Créée le {formatDate(normalizedRecipe.attributes.createdAt)}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
       <Footer />
     </>
+  )
+}
+
+export default function MesRecettesPage() {
+  return (
+    <Suspense fallback={
+      <div className="text-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-herb-green mx-auto mb-4"></div>
+        <p className="text-gray-600">Chargement...</p>
+      </div>
+    }>
+      <MesRecettesContent />
+    </Suspense>
   )
 } 

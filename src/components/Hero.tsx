@@ -50,7 +50,7 @@ export default function Hero() {
           </div>
           <div className="md:col-span-5 flex justify-center md:justify-end">
             <div className="relative w-full max-w-xs">
-              <Link href="/creer-recette?step=4">
+              <Link href="/mes-recettes?step=4">
                 <img 
                   src="/main-image-cart.svg"
                   alt="Illustration culinaire"

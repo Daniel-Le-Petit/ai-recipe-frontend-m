@@ -1,6 +1,8 @@
-# AI et Fines Herbes 🍃
+# Frontend Next.js - AI et Fines Herbes
 
-Une application web moderne qui utilise l'intelligence artificielle pour générer des recettes personnalisées et guider les utilisateurs dans leur cuisine.
+## 🚀 Déploiement Automatisé Test - $(date)
+
+Application frontend pour la gestion de recettes avec IA.
 
 ## 🚀 Fonctionnalités
 
@@ -243,3 +245,27 @@ Pour toute question ou problème :
 - Ouvrir une issue sur GitHub
 - Contacter l'équipe via le formulaire de contact
 - Consulter la documentation technique 
+
+## Pages Admin Refactorisées
+
+- `/admin` - Tableau de bord avec statistiques
+- `/admin/recettes` - Gestion complète des recettes
+- `/admin/validation-recette` - Validation des recettes
+- `/admin/edit-recette/[id]` - Édition des recettes
+
+## Tests
+
+```bash
+# Test de l'API
+node test-admin-api.js
+
+# Tests unitaires
+npm test
+
+# Tests E2E
+npm run test:e2e
+```
+
+## Déploiement
+
+Le déploiement est automatisé via GitHub Actions vers Render. 
