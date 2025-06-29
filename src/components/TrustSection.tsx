@@ -21,7 +21,7 @@ export default function TrustSection() {
             <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent"> confiance ?</span>
           </h2>
           <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            Des milliers d'utilisateurs nous font déjà confiance pour leurs repas quotidiens
+            Des milliers d&apos;utilisateurs nous font déjà confiance pour leurs repas quotidiens
           </p>
         </div>
         
