@@ -4,6 +4,7 @@ import React from 'react'
 import { Users, Clock, Utensils, CheckCircle, ChefHat } from 'lucide-react'
 import Link from 'next/link'
 
+// Test workflow CI/CD - TrustSection component
 export default function TrustSection() {
   const stats = [
     { icon: Users, value: "50K+", label: "Recettes créées" },
