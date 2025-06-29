@@ -1,32 +1,27 @@
-#!/bin/bash
+# deploy.ps1
+$logFile = ".\git.log"
 
-LOG_FILE="./git.log"
+# Démarre un nouveau fichier de log
+"=== Git script lancé à $(Get-Date) ===`n" | Out-File $logFile
 
-echo "=== Git script lancé à $(date) ===" > "$LOG_FILE"
+try {
+    "== Remote(s) ==" | Out-File $logFile -Append
+    git remote -v | Out-File $logFile -Append
 
-{
-  echo "[INFO] Remote(s) configuré(s) :"
-  git remote -v
+    "`n== Statut du dépôt ==" | Out-File $logFile -Append
+    git status | Out-File $logFile -Append
 
-  echo -e "\n[INFO] État du dépôt :"
-  git status
+    "`n== Passage à la branche main ==" | Out-File $logFile -Append
+    git checkout main | Out-File $logFile -Append
 
-  echo -e "\n[INFO] Passage à la branche main :"
-  git checkout main
+    "`n== Pull des dernières modifications ==" | Out-File $logFile -Append
+    git pull origin main | Out-File $logFile -Append
 
-  echo -e "\n[INFO] Pull des dernières modifications :"
-  git pull origin main
+    "`n== Ajout des fichiers modifiés ==" | Out-File $logFile -Append
+    git add . | Out-File $logFile -Append
 
-  echo -e "\n[INFO] Ajout des fichiers modifiés :"
-  git add .
+    "`n== Commit avec message : feat: $args ==" | Out-File $logFile -Append
+    git commit -m "feat: $args" | Out-File $logFile -Append
 
-  echo -e "\n[INFO] Commit avec message : feat: $1"
-  git commit -m "feat: $1"
-
-  echo -e "\n[INFO] Push vers GitHub :"
-  git push origin main
-
-  echo -e "\n=== Script terminé avec succès ==="
-} >> "$LOG_FILE" 2>&1
-
-echo "✅ Script terminé. Voir le fichier de log : $LOG_FILE"
+    "`n== Push vers la branche main ==" | Out-File $logFile -Append
+    git push origin main | Out-File $logFi
