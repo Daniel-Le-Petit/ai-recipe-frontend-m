@@ -1,5 +1,5 @@
 #!/bin/bash
-
+git remote -v
 # Vérifiez l'état de votre dépôt (toujours une bonne idée) :
 git status
 

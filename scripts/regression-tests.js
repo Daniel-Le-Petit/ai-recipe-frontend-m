@@ -109,6 +109,26 @@ function runAPITests() {
   return runCommand('npm run test:api', 'API integration tests')
 }
 
+function runPerformanceTests() {
+  logSection('Performance Tests')
+  return runCommand('npm run test:performance', 'Performance tests')
+}
+
+function runSecurityTests() {
+  logSection('Security Tests')
+  return runCommand('npm run test:security', 'Security tests')
+}
+
+function runAccessibilityTests() {
+  logSection('Accessibility Tests')
+  return runCommand('npm run test:a11y', 'Accessibility tests')
+}
+
+function runCompatibilityTests() {
+  logSection('Browser Compatibility Tests')
+  return runCommand('npm run test:compatibility', 'Browser compatibility tests')
+}
+
 function runBuildTest() {
   logSection('Build Test')
   return runCommand('npm run build', 'Production build test')
@@ -180,6 +200,10 @@ function main() {
     'Unit Tests': runUnitTests(),
     'E2E Tests': runE2ETests(),
     'API Tests': runAPITests(),
+    'Performance Tests': runPerformanceTests(),
+    'Security Tests': runSecurityTests(),
+    'Accessibility Tests': runAccessibilityTests(),
+    'Compatibility Tests': runCompatibilityTests(),
     'Build Test': runBuildTest()
   }
   
@@ -202,12 +226,16 @@ if (args.includes('--help') || args.includes('-h')) {
   log(`${colors.bold}Regression Test Suite${colors.reset}`)
   log('Usage: node scripts/regression-tests.js [options]')
   log('\nOptions:')
-  log('  --help, -h     Show this help message')
-  log('  --unit-only    Run only unit tests')
-  log('  --e2e-only     Run only E2E tests')
-  log('  --api-only     Run only API tests')
+  log('  --help, -h           Show this help message')
+  log('  --unit-only          Run only unit tests')
+  log('  --e2e-only           Run only E2E tests')
+  log('  --api-only           Run only API tests')
+  log('  --performance-only   Run only performance tests')
+  log('  --security-only      Run only security tests')
+  log('  --a11y-only          Run only accessibility tests')
+  log('  --compatibility-only Run only compatibility tests')
   log('\nEnvironment variables:')
-  log('  API_BASE_URL   Backend API URL (default: http://localhost:1337)')
+  log('  API_BASE_URL         Backend API URL (default: http://localhost:1337)')
   process.exit(0)
 }
 
@@ -227,6 +255,30 @@ if (args.includes('--e2e-only')) {
 if (args.includes('--api-only')) {
   logSection('API Tests Only')
   const result = runAPITests()
+  process.exit(result.success ? 0 : 1)
+}
+
+if (args.includes('--performance-only')) {
+  logSection('Performance Tests Only')
+  const result = runPerformanceTests()
+  process.exit(result.success ? 0 : 1)
+}
+
+if (args.includes('--security-only')) {
+  logSection('Security Tests Only')
+  const result = runSecurityTests()
+  process.exit(result.success ? 0 : 1)
+}
+
+if (args.includes('--a11y-only')) {
+  logSection('Accessibility Tests Only')
+  const result = runAccessibilityTests()
+  process.exit(result.success ? 0 : 1)
+}
+
+if (args.includes('--compatibility-only')) {
+  logSection('Compatibility Tests Only')
+  const result = runCompatibilityTests()
   process.exit(result.success ? 0 : 1)
 }
 

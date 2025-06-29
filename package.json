@@ -13,7 +13,12 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:regression": "npm run test && npm run test:e2e",
-    "test:api": "node test-api.js"
+    "test:api": "node test-api.js",
+    "test:performance": "jest tests/performance/",
+    "test:security": "jest tests/security/",
+    "test:a11y": "jest tests/accessibility/",
+    "test:compatibility": "jest tests/compatibility/",
+    "test:all": "node scripts/regression-tests.js"
   },
   "dependencies": {
     "@types/node": "^20.19.1",
