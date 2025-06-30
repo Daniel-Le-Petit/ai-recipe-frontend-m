@@ -35,7 +35,7 @@ TRANSFER_TOKEN_SALT=your-transfer-token-salt
 #### **Variables d'Environnement :**
 ```
 NODE_ENV=production
-PORT=1337
+PORT=1338
 ```
 
 ### **Actions à effectuer :**

@@ -92,7 +92,7 @@ function runAPITests() {
   logSection('API Tests')
   
   // Check if backend is running
-  const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:1337'
+  const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:1338'
   log(`API Base URL: ${API_BASE_URL}`)
   
   // Try to ping the API
@@ -235,7 +235,7 @@ if (args.includes('--help') || args.includes('-h')) {
   log('  --a11y-only          Run only accessibility tests')
   log('  --compatibility-only Run only compatibility tests')
   log('\nEnvironment variables:')
-  log('  API_BASE_URL         Backend API URL (default: http://localhost:1337)')
+  log('  API_BASE_URL         Backend API URL (default: http://localhost:1338)')
   process.exit(0)
 }
 

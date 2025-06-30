@@ -122,7 +122,7 @@ export default function AdminDashboard() {
   const getConnectionInfo = () => {
     return {
       hostname: process.env.NEXT_PUBLIC_API_URL?.replace('http://', '').replace('https://', '').split(':')[0] || 'localhost',
-      port: process.env.NEXT_PUBLIC_API_URL?.includes(':') ? process.env.NEXT_PUBLIC_API_URL.split(':')[2]?.split('/')[0] : '1337',
+      port: process.env.NEXT_PUBLIC_API_URL?.includes(':') ? process.env.NEXT_PUBLIC_API_URL.split(':')[2]?.split('/')[0] : '1338',
       database: process.env.NEXT_PUBLIC_DATABASE_NAME || 'strapi',
       username: process.env.NEXT_PUBLIC_DATABASE_USER || 'postgres',
       password: process.env.NEXT_PUBLIC_DATABASE_PASSWORD || 'password',

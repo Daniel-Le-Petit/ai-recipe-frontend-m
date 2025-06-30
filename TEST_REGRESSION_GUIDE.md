@@ -120,7 +120,7 @@ node scripts/regression-tests.js --compatibility-only
 
 ### Variables d'environnement
 ```bash
-# URL de l'API backend (par défaut: http://localhost:1337)
+# URL de l'API backend (par défaut: http://localhost:1338)
 API_BASE_URL=https://aifb-backend.onrender.com
 
 # URL de l'API pour les tests (par défaut: http://localhost:1338)

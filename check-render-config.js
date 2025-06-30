@@ -3,171 +3,101 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('🔍 Vérification de la configuration Render...\n');
+console.log('🔍 Diagnostic de la configuration Render');
+console.log('=======================================');
 
-// Vérifier le fichier render.yaml
-function checkRenderYaml() {
-  console.log('1️⃣ Vérification du fichier render.yaml...');
+// URLs Render
+const RENDER_FRONTEND_URL = 'https://aifb-frontend-m.onrender.com';
+const RENDER_BACKEND_URL = 'https://aifb-backend.onrender.com';
+
+console.log('📋 URLs Render:');
+console.log(`   Frontend: ${RENDER_FRONTEND_URL}`);
+console.log(`   Backend: ${RENDER_BACKEND_URL}`);
+
+async function testBackendConnection() {
+  console.log('\n🔌 Test de connexion au backend Render...');
   
-  const renderYamlPath = path.join(process.cwd(), 'render.yaml');
-  
-  if (!fs.existsSync(renderYamlPath)) {
-    console.log('❌ Fichier render.yaml manquant');
-    return false;
-  }
-  
-  const renderYaml = fs.readFileSync(renderYamlPath, 'utf8');
-  
-  // Vérifier les variables d'environnement
-  const requiredEnvVars = [
-    'NODE_ENV',
-    'API_BASE_URL',
-    'NEXT_PUBLIC_API_URL'
-  ];
-  
-  let missingVars = [];
-  requiredEnvVars.forEach(varName => {
-    if (!renderYaml.includes(varName)) {
-      missingVars.push(varName);
+  try {
+    // Test 1: Vérifier que le backend répond
+    const response = await fetch(`${RENDER_BACKEND_URL}/api/recipie?populate=*`);
+    console.log(`   Status: ${response.status} ${response.statusText}`);
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`   ✅ Backend accessible - ${data.data?.length || 0} recettes`);
+      return true;
+    } else {
+      console.log(`   ❌ Backend retourne une erreur: ${response.status}`);
+      return false;
     }
-  });
-  
-  if (missingVars.length > 0) {
-    console.log(`❌ Variables manquantes dans render.yaml: ${missingVars.join(', ')}`);
+  } catch (error) {
+    console.error(`   ❌ Erreur de connexion au backend: ${error.message}`);
     return false;
   }
-  
-  // Vérifier l'URL de l'API
-  if (!renderYaml.includes('https://aifb-backend.onrender.com')) {
-    console.log('⚠️  URL de l\'API backend différente de celle attendue');
-  }
-  
-  console.log('✅ Fichier render.yaml configuré correctement');
-  return true;
 }
 
-// Vérifier le fichier env.example
-function checkEnvExample() {
-  console.log('\n2️⃣ Vérification du fichier env.example...');
+async function testFrontendConnection() {
+  console.log('\n🌐 Test de connexion au frontend Render...');
   
-  const envExamplePath = path.join(process.cwd(), 'env.example');
-  
-  if (!fs.existsSync(envExamplePath)) {
-    console.log('❌ Fichier env.example manquant');
-    return false;
-  }
-  
-  const envExample = fs.readFileSync(envExamplePath, 'utf8');
-  
-  if (!envExample.includes('NEXT_PUBLIC_API_URL')) {
-    console.log('❌ Variable NEXT_PUBLIC_API_URL manquante dans env.example');
-    return false;
-  }
-  
-  console.log('✅ Fichier env.example configuré correctement');
-  return true;
-}
-
-// Vérifier le package.json
-function checkPackageJson() {
-  console.log('\n3️⃣ Vérification du package.json...');
-  
-  const packageJsonPath = path.join(process.cwd(), 'package.json');
-  
-  if (!fs.existsSync(packageJsonPath)) {
-    console.log('❌ Fichier package.json manquant');
-    return false;
-  }
-  
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  
-  // Vérifier les scripts nécessaires
-  const requiredScripts = ['dev', 'build', 'start'];
-  let missingScripts = [];
-  
-  requiredScripts.forEach(script => {
-    if (!packageJson.scripts[script]) {
-      missingScripts.push(script);
+  try {
+    const response = await fetch(RENDER_FRONTEND_URL);
+    console.log(`   Status: ${response.status} ${response.statusText}`);
+    
+    if (response.ok) {
+      console.log('   ✅ Frontend accessible');
+      return true;
+    } else {
+      console.log(`   ❌ Frontend retourne une erreur: ${response.status}`);
+      return false;
     }
-  });
-  
-  if (missingScripts.length > 0) {
-    console.log(`❌ Scripts manquants: ${missingScripts.join(', ')}`);
+  } catch (error) {
+    console.error(`   ❌ Erreur de connexion au frontend: ${error.message}`);
     return false;
   }
-  
-  // Vérifier les dépendances Next.js
-  if (!packageJson.dependencies.next) {
-    console.log('❌ Next.js manquant dans les dépendances');
-    return false;
-  }
-  
-  console.log('✅ Package.json configuré correctement');
-  return true;
 }
 
-// Vérifier la structure des pages
-function checkPagesStructure() {
-  console.log('\n4️⃣ Vérification de la structure des pages...');
+async function checkEnvironmentVariables() {
+  console.log('\n⚙️  Vérification des variables d\'environnement:');
+  console.log('   (Ces valeurs sont celles utilisées en local)');
+  console.log(`   NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL || 'Non défini'}`);
+  console.log(`   NEXT_PUBLIC_ENVIRONMENT: ${process.env.NEXT_PUBLIC_ENVIRONMENT || 'Non défini'}`);
   
-  const pagesToCheck = [
-    'src/app/plan-semaine/page.tsx',
-    'src/app/plan-semaine/voir/page.tsx'
-  ];
-  
-  let missingPages = [];
-  
-  pagesToCheck.forEach(pagePath => {
-    const fullPath = path.join(process.cwd(), pagePath);
-    if (!fs.existsSync(fullPath)) {
-      missingPages.push(pagePath);
-    }
-  });
-  
-  if (missingPages.length > 0) {
-    console.log(`❌ Pages manquantes: ${missingPages.join(', ')}`);
-    return false;
-  }
-  
-  console.log('✅ Structure des pages correcte');
-  return true;
+  console.log('\n📋 Configuration recommandée pour Render:');
+  console.log('   NEXT_PUBLIC_API_URL=https://aifb-backend.onrender.com');
+  console.log('   NEXT_PUBLIC_ENVIRONMENT=production');
 }
 
-// Générer un rapport de configuration
-function generateConfigReport() {
-  console.log('\n📋 Rapport de configuration Render...\n');
+async function runDiagnostic() {
+  const backendOk = await testBackendConnection();
+  const frontendOk = await testFrontendConnection();
+  checkEnvironmentVariables();
   
-  const checks = [
-    { name: 'render.yaml', check: checkRenderYaml },
-    { name: 'env.example', check: checkEnvExample },
-    { name: 'package.json', check: checkPackageJson },
-    { name: 'Structure des pages', check: checkPagesStructure }
-  ];
+  console.log('\n📊 Résumé du diagnostic:');
+  console.log('========================');
+  console.log(`   Backend Render: ${backendOk ? '✅' : '❌'}`);
+  console.log(`   Frontend Render: ${frontendOk ? '✅' : '❌'}`);
   
-  let passed = 0;
-  let total = checks.length;
-  
-  checks.forEach(({ name, check }) => {
-    if (check()) {
-      passed++;
-    }
-  });
-  
-  console.log(`\n📊 Résultats: ${passed}/${total} vérifications réussies`);
-  
-  if (passed === total) {
-    console.log('🎉 Configuration Render prête pour le déploiement !');
-  } else {
-    console.log('⚠️  Certaines configurations nécessitent des corrections.');
+  if (!backendOk) {
+    console.log('\n🔧 Problème détecté: Backend inaccessible');
+    console.log('   Solutions:');
+    console.log('   1. Vérifiez que le service backend est "live" sur Render');
+    console.log('   2. Vérifiez les logs du backend sur Render');
+    console.log('   3. Vérifiez les variables d\'environnement du backend');
   }
   
-  // Recommandations
-  console.log('\n💡 Recommandations:');
-  console.log('1. Vérifiez les variables d\'environnement dans le dashboard Render');
-  console.log('2. Assurez-vous que le service backend est actif');
-  console.log('3. Testez les pages localement avant le déploiement');
-  console.log('4. Consultez les logs Render en cas de problème');
+  if (!frontendOk) {
+    console.log('\n🔧 Problème détecté: Frontend inaccessible');
+    console.log('   Solutions:');
+    console.log('   1. Vérifiez que le service frontend est "live" sur Render');
+    console.log('   2. Vérifiez les logs du frontend sur Render');
+    console.log('   3. Vérifiez les variables d\'environnement du frontend');
+  }
+  
+  if (backendOk && frontendOk) {
+    console.log('\n🎉 Diagnostic terminé !');
+    console.log('   Le problème vient probablement de la configuration des variables d\'environnement.');
+    console.log('   Vérifiez NEXT_PUBLIC_API_URL sur le service frontend Render.');
+  }
 }
 
-// Exécuter les vérifications
-generateConfigReport(); 
+runDiagnostic(); 

@@ -62,7 +62,7 @@ API_TOKEN_SALT=your-api-token-salt
 APP_KEYS=your-app-keys
 TRANSFER_TOKEN_SALT=your-transfer-token-salt
 NODE_ENV=production
-PORT=1337
+PORT=1338
 ```
 
 ### **4. Actions Correctives**
@@ -96,7 +96,7 @@ PORT=1337
    APP_KEYS=your-app-keys
    TRANSFER_TOKEN_SALT=your-transfer-token-salt
    NODE_ENV=production
-   PORT=1337
+   PORT=1338
    ```
 
 2. **Redéployer après modification :**
