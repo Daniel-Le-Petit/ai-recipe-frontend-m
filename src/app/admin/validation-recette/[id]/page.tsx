@@ -85,7 +85,11 @@ export default function ValidationRecettePage() {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338';
       console.log('URL API utilisée:', apiUrl);
       
-      const response = await fetch(`${apiUrl}/api/recipies/${recipeId}?populate=*`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${recipeId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      });
       
       console.log('Réponse API:', response.status, response.statusText);
       
@@ -152,7 +156,7 @@ Instructions : ${instructions}
   const updateRecipeStatus = async (status: string, comment?: string) => {
     try {
       const token = localStorage.getItem('jwt');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies/${recipeId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${recipeId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -48,10 +48,10 @@ export default function AdminRecipesPage() {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338'
       console.log(`Chargement des recettes avec le statut: ${status}`)
       
-      const response = await fetch(`${API_URL}/api/recipies?filters[recipeState][$eq]=${status}&populate=*&sort=createdAt:desc`)
+      const response = await fetch(`${API_URL}/api/recipie?filters[recipe_state][$eq]=${status}&populate=*&sort=createdAt:desc`)
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
       }
       
       const data = await response.json()
@@ -90,7 +90,7 @@ export default function AdminRecipesPage() {
       // Récupérer le nombre de recettes pour chaque statut
       for (const status of Object.keys(RECIPE_STATUSES) as RecipeStatus[]) {
         try {
-          const response = await fetch(`${API_URL}/api/recipies?filters[recipeState][$eq]=${status}&pagination[pageSize]=1`)
+          const response = await fetch(`${API_URL}/api/recipie?filters[recipe_state][$eq]=${status}&pagination[pageSize]=1`)
           if (response.ok) {
             const data = await response.json()
             const count = data.meta?.pagination?.total || 0
@@ -157,18 +157,18 @@ export default function AdminRecipesPage() {
   const handleStatusChange = async (recipeId: number, newStatus: RecipeStatus) => {
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338'
-      const response = await fetch(`${API_URL}/api/recipies/${recipeId}`, {
+      const response = await fetch(`${API_URL}/api/recipie/${recipeId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          data: { recipeState: newStatus }
+          data: { recipe_state: newStatus }
         })
       })
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
       }
       
       // Recharger les recettes après la mise à jour
@@ -293,6 +293,30 @@ export default function AdminRecipesPage() {
                   <span>Tableau de bord</span>
                 </button>
               </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Status Tabs */}
+        <div className="bg-white shadow rounded-lg mb-6">
+          <div className="px-4 py-5 sm:p-6">
+            <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+              Statuts des recettes
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(RECIPE_STATUSES).map(([status, config]) => (
+                <button
+                  key={status}
+                  onClick={() => setSelectedStatus(status as RecipeStatus)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    selectedStatus === status
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {config.displayName} ({statusCounts[status as RecipeStatus] || 0})
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -431,13 +455,16 @@ export default function AdminRecipesPage() {
                                   className="h-12 w-12 rounded-lg object-cover"
                                   src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.attributes.image.data.attributes.url}`}
                                   alt={recipe.attributes.title || 'Recette'}
+                                  onError={(e) => {
+                                    e.currentTarget.src = '/recipe-fallback.jpg';
+                                  }}
                                 />
                               ) : (
-                                <div className="h-12 w-12 rounded-lg bg-gray-200 flex items-center justify-center">
-                                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                  </svg>
-                                </div>
+                                <img
+                                  className="h-12 w-12 rounded-lg object-cover"
+                                  src="/recipe-fallback.jpg"
+                                  alt="Image par défaut"
+                                />
                               )}
                             </div>
                             <div className="ml-4">
@@ -456,7 +483,7 @@ export default function AdminRecipesPage() {
                           <select
                             value={recipe.attributes?.recipe_state || 'draft'}
                             onChange={(e) => handleStatusChange(recipe.id, e.target.value as RecipeStatus)}
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border-0 ${getStatusColor(recipe.attributes?.recipe_state || 'draft')}`}
+                            className="inline-flex px-2 py-1 text-xs font-semibold rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="draft">Brouillon</option>
                             <option value="pending">En attente</option>

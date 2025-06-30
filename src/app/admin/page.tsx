@@ -25,10 +25,26 @@ export default function AdminDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [recentRecipes, setRecentRecipes] = useState<Recipe[]>([]);
   const [showSensitiveInfo, setShowSensitiveInfo] = useState(false);
+  const [apiUrl, setApiUrl] = useState<string>(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338');
+  const [apiDiag, setApiDiag] = useState<{status: number|null, statusText: string, count: number|null, error?: string}|null>(null);
 
   useEffect(() => {
     fetchAdminData();
-  }, []);
+    // Diagnostic API fetch
+    fetch(`${apiUrl}/api/recipie?populate=*`)
+      .then(res => {
+        if (!res.ok) {
+          setApiDiag({status: res.status, statusText: res.statusText, count: null});
+          return res.json();
+        }
+        return res.json().then(data => {
+          setApiDiag({status: res.status, statusText: res.statusText, count: data.data?.length || 0});
+        });
+      })
+      .catch(e => {
+        setApiDiag({status: null, statusText: '', count: null, error: e.message});
+      });
+  }, [apiUrl]);
 
   const fetchAdminData = async () => {
     try {
@@ -36,14 +52,16 @@ export default function AdminDashboard() {
       setError(null);
 
       // Fetch all recipes to calculate stats
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies?populate=*`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie?populate=*`);
       
       if (!response.ok) {
-        throw new Error(`Erreur API: ${response.status}`);
+        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
       }
 
       const data = await response.json();
       const recipes = data.data || [];
+
+      console.log('Recipes loaded:', recipes.length, recipes);
 
       // Calculate statistics
       const statsData: AdminStats = {
@@ -54,6 +72,7 @@ export default function AdminDashboard() {
         draft: recipes.filter((r: any) => r.attributes?.recipe_state === 'draft').length
       };
 
+      console.log('Stats calculated:', statsData);
       setStats(statsData);
 
       // Get recent recipes (last 5)
@@ -180,6 +199,29 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* DIAGNOSTIC */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div className="font-semibold text-blue-900 mb-1">Diagnostic API</div>
+          <div className="text-sm text-blue-800">
+            <div><span className="font-medium">NEXT_PUBLIC_API_URL</span> : <code className="bg-blue-100 px-1 rounded">{apiUrl}</code></div>
+            <div className="mt-1">
+              <span className="font-medium">/api/recipie</span> : {
+                apiDiag === null ? (
+                  <span>Chargement…</span>
+                ) : apiDiag.error ? (
+                  <span className="text-red-600">Erreur : {apiDiag.error}</span>
+                ) : (
+                  <span>
+                    Status <b>{apiDiag.status}</b> {apiDiag.statusText} —
+                    {typeof apiDiag.count === 'number' ? ` ${apiDiag.count} recette(s)` : ' aucune donnée'}
+                  </span>
+                )
+              }
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Header */}
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -554,13 +596,16 @@ export default function AdminDashboard() {
                                   className="h-10 w-10 rounded-full object-cover"
                                   src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.attributes.image.data.attributes.url}`}
                                   alt={recipe.attributes.title || 'Recette'}
+                                  onError={(e) => {
+                                    e.currentTarget.src = '/recipe-fallback.jpg';
+                                  }}
                                 />
                               ) : (
-                                <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                  </svg>
-                                </div>
+                                <img
+                                  className="h-10 w-10 rounded-full object-cover"
+                                  src="/recipe-fallback.jpg"
+                                  alt="Image par défaut"
+                                />
                               )}
                             </div>
                             <div className="ml-4">

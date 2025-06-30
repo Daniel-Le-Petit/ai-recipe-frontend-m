@@ -15,6 +15,17 @@ const nextConfig = {
   },
   // Disable source maps in production for faster builds
   productionBrowserSourceMaps: false,
+  // Ensure admin routes work on Render
+  async rewrites() {
+    return [
+      {
+        source: '/admin/:path*',
+        destination: '/admin/:path*',
+      },
+    ];
+  },
+  // Ensure static generation works for admin pages
+  trailingSlash: false,
 }
 
 export default nextConfig 

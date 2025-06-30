@@ -44,10 +44,10 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies/${params.id}?populate=*`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${params.id}?populate=*`);
       
       if (!response.ok) {
-        throw new Error(`Erreur API: ${response.status}`);
+        throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -57,6 +57,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
         throw new Error('Recette non trouvée');
       }
 
+      console.log('Recipe data loaded:', recipeData);
       setRecipe(recipeData);
       setFormData({
         title: recipeData.attributes?.title || '',
@@ -92,7 +93,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
       setSaving(true);
       setError(null);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies/${params.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la sauvegarde');
+        throw new Error(`Erreur lors de la sauvegarde: ${response.status} - ${response.statusText}`);
       }
 
       // Redirect to admin recipes page
@@ -125,12 +126,12 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
       setSaving(true);
       setError(null);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies/${params.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${params.id}`, {
         method: 'DELETE'
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la suppression');
+        throw new Error(`Erreur lors de la suppression: ${response.status} - ${response.statusText}`);
       }
 
       // Redirect to admin recipes page
