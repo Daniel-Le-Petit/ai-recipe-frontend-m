@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Recipe } from '@/types/api';
+import { Database, Server, User, Lock, Eye, EyeOff } from 'lucide-react';
 
 interface AdminStats {
   total: number;
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [recentRecipes, setRecentRecipes] = useState<Recipe[]>([]);
+  const [showSensitiveInfo, setShowSensitiveInfo] = useState(false);
 
   useEffect(() => {
     fetchAdminData();
@@ -86,6 +88,39 @@ export default function AdminDashboard() {
       case 'draft': return 'Brouillon';
       default: return 'Inconnu';
     }
+  };
+
+  const maskPassword = (password: string) => {
+    if (!password || password.length < 8) return '****';
+    return `${password.substring(0, 4)}****${password.substring(password.length - 4)}`;
+  };
+
+  const maskExternalUrl = (url: string) => {
+    if (!url || url.length < 63) return '****';
+    return `${url.substring(0, 20)}****${url.substring(url.length - 43)}`;
+  };
+
+  const getConnectionInfo = () => {
+    return {
+      hostname: process.env.NEXT_PUBLIC_API_URL?.replace('http://', '').replace('https://', '').split(':')[0] || 'localhost',
+      port: process.env.NEXT_PUBLIC_API_URL?.includes(':') ? process.env.NEXT_PUBLIC_API_URL.split(':')[2]?.split('/')[0] : '1337',
+      database: process.env.NEXT_PUBLIC_DATABASE_NAME || 'strapi',
+      username: process.env.NEXT_PUBLIC_DATABASE_USER || 'postgres',
+      password: process.env.NEXT_PUBLIC_DATABASE_PASSWORD || 'password',
+      externalUrl: process.env.NEXT_PUBLIC_EXTERNAL_DATABASE_URL || 'postgresql://user:pass@host:5432/db'
+    };
+  };
+
+  const getUserInfo = () => {
+    // Simulation des informations utilisateur (à adapter selon votre système d'auth)
+    return {
+      id: '1',
+      username: 'admin',
+      email: 'admin@aietfinesherbes.com',
+      isAdmin: true,
+      role: 'admin',
+      confirmationToken: 'abc123def456ghi789'
+    };
   };
 
   if (loading) {
@@ -259,6 +294,114 @@ export default function AdminDashboard() {
                       {stats.rejected}
                     </dd>
                   </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Database Connection Info */}
+        <div className="bg-white shadow rounded-lg mb-8">
+          <div className="px-4 py-5 sm:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 flex items-center gap-2">
+                <Database className="h-5 w-5 text-blue-500" />
+                Informations de connexion
+              </h3>
+              <button
+                onClick={() => setShowSensitiveInfo(!showSensitiveInfo)}
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800"
+              >
+                {showSensitiveInfo ? (
+                  <>
+                    <EyeOff className="h-4 w-4" />
+                    Masquer
+                  </>
+                ) : (
+                  <>
+                    <Eye className="h-4 w-4" />
+                    Afficher
+                  </>
+                )}
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Database Info */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-700 flex items-center gap-2">
+                  <Server className="h-4 w-4" />
+                  Base de données
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Hostname:</span>
+                    <span className="text-sm font-mono text-gray-800">{getConnectionInfo().hostname}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Port:</span>
+                    <span className="text-sm font-mono text-gray-800">{getConnectionInfo().port}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Database:</span>
+                    <span className="text-sm font-mono text-gray-800">{getConnectionInfo().database}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Username:</span>
+                    <span className="text-sm font-mono text-gray-800">{getConnectionInfo().username}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Password:</span>
+                    <span className="text-sm font-mono text-gray-800">
+                      {showSensitiveInfo ? getConnectionInfo().password : maskPassword(getConnectionInfo().password)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">External URL:</span>
+                    <span className="text-sm font-mono text-gray-800 break-all">
+                      {showSensitiveInfo ? getConnectionInfo().externalUrl : maskExternalUrl(getConnectionInfo().externalUrl)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* User Info */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-700 flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Utilisateur actuel
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">ID:</span>
+                    <span className="text-sm font-mono text-gray-800">{getUserInfo().id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Username:</span>
+                    <span className="text-sm font-mono text-gray-800">{getUserInfo().username}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Email:</span>
+                    <span className="text-sm font-mono text-gray-800">{getUserInfo().email}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Is Admin:</span>
+                    <span className={`text-sm font-mono px-2 py-1 rounded ${
+                      getUserInfo().isAdmin ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      {getUserInfo().isAdmin ? 'Oui' : 'Non'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Role:</span>
+                    <span className="text-sm font-mono text-gray-800">{getUserInfo().role}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Confirmation Token:</span>
+                    <span className="text-sm font-mono text-gray-800">
+                      {showSensitiveInfo ? getUserInfo().confirmationToken : '****'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
