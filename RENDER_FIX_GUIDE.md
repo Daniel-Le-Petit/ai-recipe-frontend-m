@@ -65,7 +65,8 @@ NEXT_PUBLIC_ENVIRONMENT = production
 #### Test 1 : Backend Direct
 Ouvrez dans votre navigateur :
 ```
-https://aifb-backend.onrender.com/api/recipie?populate=*
+https://aifb-backend.onrender.com tester l'api donne l'url extacte
+/api/recipie?populate=*
 ```
 
 **Résultat attendu :** JSON avec les recettes

@@ -19,6 +19,7 @@ interface Recipe {
     duration: number | null
     appliance: { name: string; settings: string } | null
   }[]
+  image?: { id?: string; url?: string }
 }
 
 // Base de données d'ingrédients populaires pour l'auto-complétion avec icônes
@@ -148,6 +149,18 @@ const DISTRIBUTORS = [
   }
 ]
 
+// Fonction utilitaire pour extraire le public_id Cloudinary depuis une URL
+function getCloudinaryPublicIdFromUrl(url: string): string | null {
+  try {
+    const parts = url.split('/upload/');
+    if (parts.length < 2) return null;
+    const path = parts[1].split('.')[0]; // retire l'extension
+    return path;
+  } catch {
+    return null;
+  }
+}
+
 export default function RecipeGenerator() {
   const router = useRouter()
   const searchParams = useSearchParams();
@@ -175,7 +188,7 @@ export default function RecipeGenerator() {
   const [categories, setCategories] = useState<StrapiCategory[]>([])
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
   
-  const { addToCart, isAuthenticated, setSelectedDistributor: setContextDistributor } = useAppContext()
+  const { addToCart, isAuthenticated, setSelectedDistributor: setContextDistributor, user } = useAppContext()
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -194,6 +207,7 @@ export default function RecipeGenerator() {
 
   useEffect(() => {
     const recipeId = searchParams.get('id');
+    const stepParam = searchParams.get('step');
     if (recipeId) {
       const fetchRecipe = async () => {
         try {
@@ -205,14 +219,28 @@ export default function RecipeGenerator() {
                 ? recipe.attributes.ingredients.map((ing: any) => ing.name || ing)
                 : []
             );
-            setIngredientInput('');
-            setMealType('');
+            // Robust category extraction (nested or flat)
+            let catId = null;
+            const catRaw = recipe.attributes.recipieCategory;
+            console.log('DEBUG category:', catRaw);
+            if (catRaw) {
+              if (typeof catRaw === 'object' && 'data' in catRaw) {
+                catId = catRaw.data?.id || null;
+              } else if (typeof catRaw === 'number') {
+                catId = catRaw;
+              }
+            }
+            setSelectedCategory(catId);
+            console.log('DEBUG setSelectedCategory:', catId);
             setServings(recipe.attributes.servings ? String(recipe.attributes.servings) : '4');
-            setDietary('');
             if (recipe.attributes.isRobotCompatible) {
               setSelectedCookingMode('thermomix');
             } else {
               setSelectedCookingMode('manual');
+            }
+            // Jump to step 4 if requested
+            if (stepParam === '4') {
+              setCurrentStep(4);
             }
           }
         } catch (e) {
@@ -423,6 +451,7 @@ export default function RecipeGenerator() {
 
       const recipes = await Promise.all(recipePromises)
       setGeneratedRecipes(recipes)
+      console.log('RECIPES:', recipes);
       nextStep()
       
     } catch (error) {
@@ -575,8 +604,18 @@ export default function RecipeGenerator() {
         difficulty,
         isRobotCompatible: selectedCookingMode !== 'manual',
         recipieCategory: selectedCategory,
-        // Les autres champs sont optionnels
+        image: recipe.image?.id || undefined,
+        // RecipeUser: user?.id || undefined, // Désactivé car user n'a pas d'id dans le contexte actuel
       }
+
+      console.log('DEBUG saveRecipeToStrapi selectedCategory:', selectedCategory);
+
+      console.log('DEBUG POST payload:', {
+        data: {
+          ...strapiRecipeData,
+          publishedAt: new Date().toISOString()
+        }
+      });
 
       const response = await apiService.createRecipe(strapiRecipeData)
       console.log('Recette sauvegardée dans Strapi:', response)

@@ -8,7 +8,7 @@ import type {
   RecipeStatus
 } from './types/api'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://172.22.143.84:1338';
 
 class ApiService {
   private baseURL: string;
@@ -18,51 +18,13 @@ class ApiService {
   }
 
   // Récupérer toutes les recettes
-  async getRecipes(params: RecipeParams = {}): Promise<RecipesResponse> {
+  async getRecipes(): Promise<RecipesResponse> {
     try {
-      const queryParams = new URLSearchParams();
-      
-      if (params.populate) {
-        if (typeof params.populate === 'string') {
-          queryParams.append('populate', params.populate);
-        } else if (Array.isArray(params.populate)) {
-          params.populate.forEach(item => queryParams.append('populate', item));
-        } else {
-          queryParams.append('populate', JSON.stringify(params.populate));
-        }
-      }
-      
-      if (params.filters) {
-        queryParams.append('filters', JSON.stringify(params.filters));
-      }
-      
-      if (params.sort) {
-        if (typeof params.sort === 'string') {
-          queryParams.append('sort', params.sort);
-        } else {
-          queryParams.append('sort', JSON.stringify(params.sort));
-        }
-      }
-      
-      if (params.pagination) {
-        queryParams.append('pagination', JSON.stringify(params.pagination));
-      }
-
-      if (params.fields) {
-        params.fields.forEach(field => queryParams.append('fields', field));
-      }
-
-      if (params.publicationState) {
-        queryParams.append('publicationState', params.publicationState);
-      }
-
-      const url = `${this.baseURL}/api/recipie?${queryParams.toString()}`;
+      const url = `${this.baseURL}/api/recipies?populate=*`;
       const response = await fetch(url);
-      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
       const data = await response.json();
       return data;
     } catch (error) {
@@ -74,7 +36,7 @@ class ApiService {
   // Récupérer une recette par ID
   async getRecipeById(id: number): Promise<RecipeResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie/${id}?populate=*`;
+      const url = `${this.baseURL}/api/recipies/${id}?populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -110,7 +72,7 @@ class ApiService {
   // Rechercher des recettes par catégorie
   async getRecipesByCategory(categoryId: number): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[recipieCategory][id][$eq]=${categoryId}&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[recipieCategory][id][$eq]=${categoryId}&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -128,7 +90,7 @@ class ApiService {
   // Rechercher des recettes par difficulté
   async getRecipesByDifficulty(difficulty: string): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[difficulty][$eq]=${difficulty}&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[difficulty][$eq]=${difficulty}&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -146,7 +108,7 @@ class ApiService {
   // Rechercher des recettes compatibles robot
   async getRobotCompatibleRecipes(): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[isRobotCompatible][$eq]=true&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[isRobotCompatible][$eq]=true&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -164,7 +126,7 @@ class ApiService {
   // Noter une recette
   async rateRecipe(id: number, rating: number): Promise<RecipeResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie/${id}`;
+      const url = `${this.baseURL}/api/recipies/${id}`;
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -190,7 +152,7 @@ class ApiService {
   // Créer une nouvelle recette
   async createRecipe(recipeData: CreateRecipeData): Promise<RecipeResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie`;
+      const url = `${this.baseURL}/api/recipies`;
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -220,7 +182,7 @@ class ApiService {
   // Mettre à jour une recette
   async updateRecipe(id: number, recipeData: UpdateRecipeData): Promise<RecipeResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie/${id}`;
+      const url = `${this.baseURL}/api/recipies/${id}`;
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -246,7 +208,7 @@ class ApiService {
   // Supprimer une recette
   async deleteRecipe(id: number): Promise<void> {
     try {
-      const url = `${this.baseURL}/api/recipie/${id}`;
+      const url = `${this.baseURL}/api/recipies/${id}`;
       const response = await fetch(url, {
         method: 'DELETE',
       });
@@ -263,7 +225,7 @@ class ApiService {
   // Rechercher des recettes par texte
   async searchRecipes(query: string): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[title][$contains]=${encodeURIComponent(query)}&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[title][$contains]=${encodeURIComponent(query)}&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -281,7 +243,7 @@ class ApiService {
   // Récupérer les recettes populaires (par note)
   async getPopularRecipes(limit: number = 10): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?sort[rating]=desc&pagination[pageSize]=${limit}&populate=*`;
+      const url = `${this.baseURL}/api/recipies?sort[rating]=desc&pagination[pageSize]=${limit}&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -299,7 +261,7 @@ class ApiService {
   // Récupérer les recettes récentes
   async getRecentRecipes(limit: number = 10): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?sort[createdAt]=desc&pagination[pageSize]=${limit}&populate=*`;
+      const url = `${this.baseURL}/api/recipies?sort[createdAt]=desc&pagination[pageSize]=${limit}&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -315,9 +277,9 @@ class ApiService {
   }
 
   // Mettre à jour le statut d'une recette
-  async updateRecipeStatus(id: number, status: RecipeStatus): Promise<RecipeResponse> {
+  async updateRecipeStatus(id: number, status: string): Promise<RecipeResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie/${id}`;
+      const url = `${this.baseURL}/api/recipies/${id}`;
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -327,11 +289,9 @@ class ApiService {
           data: { recipeState: status }
         })
       });
-      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
       const data = await response.json();
       return data;
     } catch (error) {
@@ -343,7 +303,7 @@ class ApiService {
   // Récupérer les recettes par statut
   async getRecipesByStatus(status: RecipeStatus): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[recipeState][$eq]=${status}&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=${status}&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -361,7 +321,7 @@ class ApiService {
   // Récupérer les recettes en attente de validation (pour les admins)
   async getPendingRecipes(): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[recipeState][$eq]=submitted&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=submitted&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -379,7 +339,7 @@ class ApiService {
   // Récupérer les recettes rejetées
   async getRejectedRecipes(): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[recipeState][$eq]=rejected&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=rejected&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {
@@ -397,7 +357,7 @@ class ApiService {
   // Récupérer les recettes archivées
   async getArchivedRecipes(): Promise<RecipesResponse> {
     try {
-      const url = `${this.baseURL}/api/recipie?filters[recipeState][$eq]=archived&populate=*`;
+      const url = `${this.baseURL}/api/recipies?filters[recipeState][$eq]=archived&populate=*`;
       const response = await fetch(url);
       
       if (!response.ok) {

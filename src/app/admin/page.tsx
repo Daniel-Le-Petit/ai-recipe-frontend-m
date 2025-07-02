@@ -31,7 +31,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchAdminData();
     // Diagnostic API fetch
-    fetch(`${apiUrl}/api/recipie?populate=*`)
+    fetch(`${apiUrl}/api/recipies?populate=*`)
       .then(res => {
         if (!res.ok) {
           setApiDiag({status: res.status, statusText: res.statusText, count: null});
@@ -52,7 +52,7 @@ export default function AdminDashboard() {
       setError(null);
 
       // Fetch all recipes to calculate stats
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie?populate=*`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies?populate=*`);
       
       if (!response.ok) {
         throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
@@ -206,7 +206,7 @@ export default function AdminDashboard() {
           <div className="text-sm text-blue-800">
             <div><span className="font-medium">NEXT_PUBLIC_API_URL</span> : <code className="bg-blue-100 px-1 rounded">{apiUrl}</code></div>
             <div className="mt-1">
-              <span className="font-medium">/api/recipie</span> : {
+              <span className="font-medium">/api/recipies</span> : {
                 apiDiag === null ? (
                   <span>Chargement…</span>
                 ) : apiDiag.error ? (

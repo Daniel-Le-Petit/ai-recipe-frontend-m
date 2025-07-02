@@ -2,6 +2,7 @@ import React from 'react'
 import { Clock, Users, ChefHat, Star, Heart, Sparkles } from 'lucide-react'
 import type { RecipeCardProps, StrapiRecipe, FlexibleRecipe, RecipeStatus } from '@/types/api'
 import { RecipeStatusBadge } from './RecipeStatusBadge'
+import { CldImage } from 'next-cloudinary'
 
 // Helper function to normalize recipe data structure
 const allowedDifficulties = ['Facile', 'Intermédiaire', 'Difficile'] as const;
@@ -103,18 +104,34 @@ const getRecipeStatus = (recipe: any) => {
   return recipe.recipeState || recipe.attributes?.recipeState || 'draft'
 }
 
-const getRecipeImage = (recipe: any) => {
-  const normalizedRecipe = normalizeRecipe(recipe)
-  const image = normalizedRecipe.attributes.image
-  
-  if (image?.data?.attributes?.formats?.medium?.url) {
-    return image.data.attributes.formats.medium.url
-  }
-  if (image?.data?.attributes?.url) {
-    return image.data.attributes.url
-  }
-  return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+// Fonction utilitaire pour extraire le public_id Cloudinary
+function getCloudinaryPublicId(url?: string | null): string | null {
+  if (!url) return null;
+  // Prend tout après /upload/ et enlève l'extension
+  const match = url.match(/upload\/([^\.]+)\.[a-zA-Z0-9]+$/);
+  return match ? match[1] : null;
 }
+
+// Prend le format medium si dispo, sinon l'original
+const getRecipeImageUrl = (recipe: any): string | null => {
+  // Flat format (API /api/recipies?populate=*)
+  if (recipe?.image?.formats?.medium?.url) {
+    return recipe.image.formats.medium.url;
+  }
+  if (recipe?.image?.url) {
+    return recipe.image.url;
+  }
+  // Strapi v4 format (API /api/recipies/:id)
+  if (recipe?.attributes?.image?.data?.attributes?.formats?.medium?.url) {
+    return recipe.attributes.image.data.attributes.formats.medium.url;
+  }
+  if (recipe?.attributes?.image?.data?.attributes?.url) {
+    return recipe.attributes.image.data.attributes.url;
+  }
+  return null;
+};
+
+const FALLBACK_IMAGE = '/Images/fallback-recipe.jpg';
 
 const formatDuration = (minutes: number) => {
   if (minutes < 60) {
@@ -181,35 +198,28 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
 
   // Compact version for home page
   if (compact) {
+    const imageUrl = getRecipeImageUrl(recipe) || FALLBACK_IMAGE;
     return (
       <div 
-        data-testid="recipe-card"
-        className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105 ${
-          compact ? 'h-48' : 'h-64'
-        } flex flex-col`}
+        className="bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-lg transition-shadow duration-200 flex flex-col"
         onClick={handleCardClick}
       >
-        {/* Image with badges on top right - 5/7 of card height */}
-        <div className={`relative ${compact ? 'h-[calc(5/7*12rem)]' : 'h-[calc(5/7*16rem)]'} bg-gray-200 flex-shrink-0`}>
-          <img
-            src={getRecipeImage(recipe)}
-            alt={title || 'Recette'}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-            }}
-          />
-          {/* Status and Robot badges on top right of image */}
-          <div className="absolute top-2 right-2 flex items-center gap-1">
-            {showStatus && (
-              <RecipeStatusBadge status={getRecipeStatus(recipe)} />
-            )}
-            {isRobotCompatible && (
-              <span className="text-xs bg-white/20 text-white px-1 py-0.5 rounded">
-                🤖 Robot
-              </span>
-            )}
-          </div>
+        <img
+          src={imageUrl}
+          alt={title}
+          className="w-full h-48 object-cover rounded-xl shadow mb-6"
+          onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+        />
+        {/* Status and Robot badges on top right of image */}
+        <div className="absolute top-2 right-2 flex items-center gap-1">
+          {showStatus && (
+            <RecipeStatusBadge status={getRecipeStatus(recipe)} />
+          )}
+          {isRobotCompatible && (
+            <span className="text-xs bg-white/20 text-white px-1 py-0.5 rounded">
+              🤖 Robot
+            </span>
+          )}
         </div>
 
         {/* Content with AI & Fines Herbes green background - 2/7 of card height */}
@@ -255,14 +265,30 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
     >
       {/* Image */}
       <div className="relative h-48 bg-gray-200">
-        <img
-          src={getRecipeImage(recipe)}
-          alt={title || 'Recette'}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-          }}
-        />
+        {(() => {
+          const imageUrl = getRecipeImageUrl(recipe);
+          const cloudinaryId = getCloudinaryPublicId(imageUrl);
+          console.log('Recipe imageUrl:', imageUrl, 'cloudinaryId:', cloudinaryId);
+          if (cloudinaryId) {
+            return (
+              <CldImage
+                src={cloudinaryId}
+                width={600}
+                height={400}
+                alt={title || 'Recette'}
+                className="w-full h-full object-cover rounded-xl shadow mb-6"
+              />
+            );
+          } else {
+            return (
+              <img
+                src={imageUrl || FALLBACK_IMAGE}
+                alt="Image non disponible"
+                className="w-full h-full object-cover rounded-xl shadow mb-6"
+              />
+            );
+          }
+        })()}
         {showStatus && (
           <div className="absolute top-2 right-2">
             <RecipeStatusBadge status={getRecipeStatus(recipe)} />

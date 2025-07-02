@@ -223,7 +223,6 @@ export interface RecipeParams {
     withCount?: boolean
   }
   fields?: string[]
-  publicationState?: 'live' | 'preview'
   locale?: string | string[]
 }
 
@@ -329,4 +328,7 @@ export interface RecipeFiltersState {
   robotCompatible?: boolean
   maxDuration?: number
   minRating?: number
-} 
+}
+
+// console.log('Fetched recipes:', data.data);
+// console.log('Filtered recipes:', filteredRecipes); 

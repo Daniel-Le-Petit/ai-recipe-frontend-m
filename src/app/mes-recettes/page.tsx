@@ -156,7 +156,7 @@ function MesRecettesContent() {
       setLoading(false)
       return
     }
-    fetch(`${API_URL}/api/recipie?filters[RecipieUser][email][$eq]=${encodeURIComponent(email)}&populate=image,recipieCategory`)
+    fetch(`${API_URL}/api/recipies?populate=*`)
       .then(res => res.json())
       .then(data => {
         setRecipes(Array.isArray(data) ? data : data.data || [])

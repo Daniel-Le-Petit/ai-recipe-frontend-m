@@ -48,7 +48,7 @@ export default function AdminRecipesPage() {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338'
       console.log(`Chargement des recettes avec le statut: ${status}`)
       
-      const response = await fetch(`${API_URL}/api/recipie?filters[recipe_state][$eq]=${status}&populate=*&sort=createdAt:desc`)
+      const response = await fetch(`${API_URL}/api/recipies?filters[recipeState][$eq]=${status}&populate=*&sort=createdAt:desc`)
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
@@ -90,7 +90,7 @@ export default function AdminRecipesPage() {
       // Récupérer le nombre de recettes pour chaque statut
       for (const status of Object.keys(RECIPE_STATUSES) as RecipeStatus[]) {
         try {
-          const response = await fetch(`${API_URL}/api/recipie?filters[recipe_state][$eq]=${status}&pagination[pageSize]=1`)
+          const response = await fetch(`${API_URL}/api/recipies?filters[recipeState][$eq]=${status}&pagination[pageSize]=1`)
           if (response.ok) {
             const data = await response.json()
             const count = data.meta?.pagination?.total || 0
@@ -134,7 +134,7 @@ export default function AdminRecipesPage() {
 
     // Filter by status
     if (filters.status !== 'all') {
-      filtered = filtered.filter(recipe => recipe.attributes?.recipe_state === filters.status)
+      filtered = filtered.filter(recipe => recipe.attributes?.recipeState === filters.status)
     }
 
     // Filter by search
@@ -157,13 +157,13 @@ export default function AdminRecipesPage() {
   const handleStatusChange = async (recipeId: number, newStatus: RecipeStatus) => {
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338'
-      const response = await fetch(`${API_URL}/api/recipie/${recipeId}`, {
+      const response = await fetch(`${API_URL}/api/recipies/${recipeId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          data: { recipe_state: newStatus }
+          data: { recipeState: newStatus }
         })
       })
       
@@ -481,7 +481,7 @@ export default function AdminRecipesPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <select
-                            value={recipe.attributes?.recipe_state || 'draft'}
+                            value={recipe.attributes?.recipeState || 'draft'}
                             onChange={(e) => handleStatusChange(recipe.id, e.target.value as RecipeStatus)}
                             className="inline-flex px-2 py-1 text-xs font-semibold rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
@@ -508,10 +508,10 @@ export default function AdminRecipesPage() {
                               Modifier
                             </Link>
                             <Link
-                              href={`/recettes/${recipe.id}`}
+                              href={`/creer-recette?id=${recipe.id}&step=4`}
                               className="text-green-600 hover:text-green-900"
                             >
-                              Voir
+                              Continuer
                             </Link>
                           </div>
                         </td>

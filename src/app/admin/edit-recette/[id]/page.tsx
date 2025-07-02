@@ -44,7 +44,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${params.id}?populate=*`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies/${params.id}?populate=*`);
       
       if (!response.ok) {
         throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
@@ -93,7 +93,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
       setSaving(true);
       setError(null);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${params.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
       setSaving(true);
       setError(null);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipie/${params.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipies/${params.id}`, {
         method: 'DELETE'
       });
 

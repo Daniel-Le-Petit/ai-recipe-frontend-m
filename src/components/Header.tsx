@@ -41,7 +41,12 @@ export default function Header() {
           'Authorization': `Bearer ${token}`,
         },
       });
-      
+
+      if (response.status === 401) {
+        setIsAdmin(false);
+        return;
+      }
+
       if (response.ok) {
         const user = await response.json();
         setIsAdmin(user.role?.name === 'admin');
@@ -49,7 +54,6 @@ export default function Header() {
         setIsAdmin(false);
       }
     } catch (error) {
-      console.error('Erreur lors de la vérification admin:', error);
       setIsAdmin(false);
     }
   };
