@@ -139,7 +139,7 @@ export default function VoirPlanSemainePage() {
       difficulty: config.difficulties[randomIndex],
       servings: preferences.servings,
       rating: (4.5 + Math.random() * 0.5).toFixed(1),
-      image: "/recipe-fallback.jpg",
+      image: "/Images/fallback-recipe.jpg",
       ingredients: config.ingredients.slice(0, 4),
       tags: config.tags.slice(0, 3)
     };

@@ -597,13 +597,15 @@ export default function AdminDashboard() {
                                   src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.attributes.image.data.attributes.url}`}
                                   alt={recipe.attributes.title || 'Recette'}
                                   onError={(e) => {
-                                    e.currentTarget.src = '/recipe-fallback.jpg';
+                                    if (!e.currentTarget.src.endsWith('/Images/fallback-recipe.jpg')) {
+                                      e.currentTarget.src = '/Images/fallback-recipe.jpg';
+                                    }
                                   }}
                                 />
                               ) : (
                                 <img
                                   className="h-10 w-10 rounded-full object-cover"
-                                  src="/recipe-fallback.jpg"
+                                  src="/Images/fallback-recipe.jpg"
                                   alt="Image par défaut"
                                 />
                               )}

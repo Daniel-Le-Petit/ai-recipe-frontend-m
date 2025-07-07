@@ -153,7 +153,7 @@ export default function AdminValidationPage() {
               onClick={() => handleBulkStatusChange('rejected')}
             >⛔ Rejeter sélection</button>
           </div>
-                    </div>
+        </div>
 
         {/* Table of recipes */}
         <div className="overflow-x-auto bg-white rounded shadow">
@@ -166,29 +166,42 @@ export default function AdminValidationPage() {
                 <th className="p-2">Auteur</th>
                 <th className="p-2">Catégorie</th>
                 <th className="p-2">Statut</th>
-                <th className="p-2">Détails</th>
               </tr>
             </thead>
             <tbody>
               {filteredRecipes.map(recipe => (
-                <tr key={recipe.id} className={selectedIds.includes(recipe.id) ? 'bg-blue-50' : ''}>
+                <tr
+                  key={recipe.id}
+                  className={
+                    (selectedIds.includes(recipe.id) ? 'bg-blue-50 ' : '') +
+                    'cursor-pointer hover:bg-blue-100 transition-colors'
+                  }
+                  onClick={e => {
+                    // Prevent row click if clicking the checkbox
+                    if ((e.target as HTMLElement).tagName === 'INPUT') return;
+                    setQuickViewRecipe(recipe);
+                  }}
+                >
                   <td className="p-2 text-center">
                     <input
                       type="checkbox"
                       checked={selectedIds.includes(recipe.id)}
-                      onChange={() => setSelectedIds(ids =>
-                        ids.includes(recipe.id) ? ids.filter(id => id !== recipe.id) : [...ids, recipe.id]
-                      )}
+                      onChange={ev => {
+                        ev.stopPropagation();
+                        setSelectedIds(ids =>
+                          ids.includes(recipe.id) ? ids.filter(id => id !== recipe.id) : [...ids, recipe.id]
+                        );
+                      }}
                     />
                   </td>
                   <td className="p-2">
                     <img
-                      src={recipe.image?.url || '/recipe-fallback.jpg'}
+                      src={recipe.image && recipe.image.url ? recipe.image.url : '/Images/fallback-recipe.jpg'}
                       alt={recipe.title || 'Recette'}
                       className="h-12 w-12 object-cover rounded"
                       onError={e => {
-                        if (!e.currentTarget.src.endsWith('/recipe-fallback.jpg')) {
-                          e.currentTarget.src = '/recipe-fallback.jpg';
+                        if (!e.currentTarget.src.endsWith('/Images/fallback-recipe.jpg')) {
+                          e.currentTarget.src = '/Images/fallback-recipe.jpg';
                         }
                       }}
                     />
@@ -197,12 +210,11 @@ export default function AdminValidationPage() {
                   <td className="p-2">{recipe.RecipeUser?.username || '—'}</td>
                   <td className="p-2">{recipe.recipieCategory?.categoryName || '—'}</td>
                   <td className="p-2"><StatusBadge status={recipe.recipeState || 'draft'} /></td>
-                  <td className="p-2"><button onClick={() => setQuickViewRecipe(recipe)} className="text-blue-600">▶️</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
-                      </div>
+        </div>
 
         {/* Quick view modal */}
         {quickViewRecipe && (
@@ -211,12 +223,12 @@ export default function AdminValidationPage() {
               <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onClick={() => setQuickViewRecipe(null)}>✖️</button>
               <div className="overflow-y-auto p-6 flex-1">
                 <img
-                  src={quickViewRecipe.image?.url || '/Images/recipe-fallback.jpg'}
+                  src={quickViewRecipe.image?.url || '/Images/fallback-recipe.jpg'}
                   alt={quickViewRecipe.title || 'Recette'}
                   className="w-full h-48 object-cover rounded mb-4"
                   onError={e => {
-                    if (!e.currentTarget.src.endsWith('/Images/recipe-fallback.jpg')) {
-                      e.currentTarget.src = '/Images/recipe-fallback.jpg';
+                    if (!e.currentTarget.src.endsWith('/Images/fallback-recipe.jpg')) {
+                      e.currentTarget.src = '/Images/fallback-recipe.jpg';
                     }
                   }}
                 />
@@ -227,17 +239,17 @@ export default function AdminValidationPage() {
                   <span>🕒 {quickViewRecipe.duration} min</span>
                   <span>🍽️ {quickViewRecipe.servings}</span>
                   <span>💪 {quickViewRecipe.difficulty}</span>
-                          </div>
+                </div>
                 <div className="my-2">
                   <strong>Description:</strong>
                   <p>{Array.isArray(quickViewRecipe.description) ? quickViewRecipe.description.map((d, i) => d.children?.map((c, j) => <span key={j}>{c.text}</span>)) : quickViewRecipe.description}</p>
-                        </div>
+                </div>
                 {quickViewRecipe.ingredients && (
                   <div className="my-2">
                     <strong>Ingrédients:</strong>
                     <div className="text-sm text-gray-700 whitespace-pre-line">{Array.isArray(quickViewRecipe.ingredients) ? quickViewRecipe.ingredients.map((ing, i) => <div key={i}>- {ing.name} {ing.quantity}</div>) : quickViewRecipe.ingredients}</div>
-                        </div>
-                      )}
+                  </div>
+                )}
                 {quickViewRecipe.instructions && (
                   <div className="my-2">
                     <strong>Instructions:</strong>
@@ -246,11 +258,11 @@ export default function AdminValidationPage() {
                 )}
                 {/* Extra info: robot, tags, state */}
                 <div className="my-2 flex flex-wrap gap-4 items-center">
-                  <span>🤖 Compatible robot : {quickViewRecipe.isRobotCompatible ? '✅' : '❌'}</span>
-                  <span>🏷️ Tags : {Array.isArray(quickViewRecipe.tags) ? quickViewRecipe.tags.map((t, i) => typeof t === 'string' ? t : t.name).join(', ') : (quickViewRecipe.tags || '—')}</span>
-                  <span>📄 État actuel : {quickViewRecipe.recipeState || '—'}</span>
+                  <span className="flex items-center">🤖 <span className="ml-1">Compatible robot :</span> <span className="ml-1 font-semibold">{quickViewRecipe.isRobotCompatible ? '✅' : '❌'}</span></span>
+                  <span className="flex items-center">🏷️ <span className="ml-1">Tags :</span> <span className="ml-1 font-semibold">{Array.isArray(quickViewRecipe.tags) && quickViewRecipe.tags.length > 0 ? quickViewRecipe.tags.map((t, i) => typeof t === 'string' ? t : t.name).join(', ') : '—'}</span></span>
+                  <span className="flex items-center">📄 <span className="ml-1">État actuel :</span> <span className="ml-1 font-semibold">{quickViewRecipe.recipeState || '—'}</span></span>
                 </div>
-                </div>
+              </div>
               <div className="flex gap-4 p-4 border-t bg-white sticky bottom-0 z-10">
                 <button className="bg-green-500 text-white px-4 py-2 rounded flex-1" onClick={() => handleStatusChange(quickViewRecipe.id, 'approved')}>✅ Approuver</button>
                 <button className="bg-red-500 text-white px-4 py-2 rounded flex-1" onClick={() => handleStatusChange(quickViewRecipe.id, 'rejected')}>⛔ Rejeter</button>
