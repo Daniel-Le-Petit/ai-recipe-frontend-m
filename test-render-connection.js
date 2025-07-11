@@ -3,7 +3,7 @@ const https = require('https');
 console.log('🔍 Test de connexion au backend Render');
 console.log('=====================================');
 
-const backendUrl = 'https://aifb-backend.onrender.com';
+const backendUrl = 'https://aifh-backend.onrender.com';
 const apiUrl = `${backendUrl}/api/recipie?populate=*`;
 
 console.log(`URL testée: ${apiUrl}`);

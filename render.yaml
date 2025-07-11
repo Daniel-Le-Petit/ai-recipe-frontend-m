@@ -14,9 +14,9 @@ services:
       - key: NODE_ENV
         value: production
       - key: API_BASE_URL
-        value: https://aifb-backend.onrender.com
+        value: https://aifh-backend.onrender.com
       - key: NEXT_PUBLIC_API_URL
-        value: https://aifb-backend.onrender.com
+        value: https://aifh-backend.onrender.com
     healthCheckPath: /
     autoDeploy: true
     buildFilter:

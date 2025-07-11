@@ -8,7 +8,7 @@ console.log('=======================================');
 
 // URLs Render
 const RENDER_FRONTEND_URL = 'https://aifb-frontend-m.onrender.com';
-const RENDER_BACKEND_URL = 'https://aifb-backend.onrender.com';
+const RENDER_BACKEND_URL = 'https://aifh-backend.onrender.com';
 
 console.log('📋 URLs Render:');
 console.log(`   Frontend: ${RENDER_FRONTEND_URL}`);
@@ -63,7 +63,7 @@ async function checkEnvironmentVariables() {
   console.log(`   NEXT_PUBLIC_ENVIRONMENT: ${process.env.NEXT_PUBLIC_ENVIRONMENT || 'Non défini'}`);
   
   console.log('\n📋 Configuration recommandée pour Render:');
-  console.log('   NEXT_PUBLIC_API_URL=https://aifb-backend.onrender.com');
+  console.log('   NEXT_PUBLIC_API_URL=https://aifh-backend.onrender.com');
   console.log('   NEXT_PUBLIC_ENVIRONMENT=production');
 }
 

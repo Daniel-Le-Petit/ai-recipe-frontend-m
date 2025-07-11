@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const API_URL = 'https://aifb-backend.onrender.com';
+const API_URL = 'https://aifh-backend.onrender.com';
 
 async function checkRenderDatabase() {
   console.log('🔍 Diagnostic de la base de données Render...\n');

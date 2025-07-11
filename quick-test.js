@@ -91,7 +91,7 @@ async function quickTest() {
   // Vérifier la configuration Render
   try {
     const renderYaml = fs.readFileSync('render.yaml', 'utf8');
-    const hasApiUrl = renderYaml.includes('https://aifb-backend.onrender.com');
+    const hasApiUrl = renderYaml.includes('https://aifh-backend.onrender.com');
     log(`${hasApiUrl ? '✅' : '❌'} URL API backend configurée`, hasApiUrl ? 'green' : 'red');
     
     const hasEnvVars = renderYaml.includes('NEXT_PUBLIC_API_URL') && 
@@ -105,7 +105,7 @@ async function quickTest() {
   
   // Test simple de connectivité (sans fetch pour éviter les problèmes de module)
   log('🌐 Test de connectivité vers le backend...', 'yellow');
-  log('   URL: https://aifb-backend.onrender.com', 'blue');
+  log('   URL: https://aifh-backend.onrender.com', 'blue');
   log('   Note: Utilisez curl ou votre navigateur pour tester manuellement', 'yellow');
   
   logSection('Résumé et recommandations');

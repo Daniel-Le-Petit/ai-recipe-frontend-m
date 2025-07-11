@@ -3,7 +3,7 @@ const https = require('https');
 console.log('🔍 Test des endpoints du backend Render');
 console.log('=======================================');
 
-const backendUrl = 'https://aifb-backend.onrender.com';
+const backendUrl = 'https://aifh-backend.onrender.com';
 
 // Liste des endpoints à tester
 const endpoints = [
