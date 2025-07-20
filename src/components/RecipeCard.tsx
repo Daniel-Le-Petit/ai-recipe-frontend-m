@@ -203,6 +203,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
       <div 
         className="bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-lg transition-shadow duration-200 flex flex-col"
         onClick={handleCardClick}
+        data-testid="recipe-card"
       >
         <img
           src={imageUrl}

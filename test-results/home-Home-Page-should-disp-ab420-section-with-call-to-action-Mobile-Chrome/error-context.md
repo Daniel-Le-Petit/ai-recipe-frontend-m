@@ -1,0 +1,170 @@
+# Page snapshot
+
+```yaml
+- main:
+  - navigation:
+    - link "AI et Fines Herbes":
+      - /url: /
+      - img "AI et Fines Herbes"
+    - button "Ouvrir le menu":
+      - text: Ouvrir le menu
+      - img
+  - heading "Générez des recettes savoureuses avec l'IA" [level=1]
+  - paragraph: Créez des recettes personnalisées et faites vos courses en toute simplicité grâce à l'intelligence artificielle.
+  - link "Créer une recette":
+    - /url: /creer-recette
+    - button "Créer une recette":
+      - img
+      - text: Créer une recette
+  - link "Découvrir le plan de la semaine":
+    - /url: /plan-semaine
+    - button "Découvrir le plan de la semaine":
+      - img
+      - text: Découvrir le plan de la semaine
+  - link "Illustration culinaire":
+    - /url: /mes-recettes?step=4
+    - img "Illustration culinaire"
+  - heading "Desserts" [level=2]
+  - img "Recette de test"
+  - text: 📤 Soumise 🤖 Robot
+  - heading "Recette de test" [level=3]
+  - img
+  - text: 10 min
+  - img
+  - text: 3 pers.
+  - img
+  - text: Facile
+  - img
+  - text: "0.0"
+  - img "Risotto Fusion aux Champignons et Épices - Version 2"
+  - text: 📝 En cours 🤖 Robot
+  - heading "Risotto Fusion aux Champignons et Épices - Version 2" [level=3]
+  - img
+  - text: 0 min
+  - img
+  - text: 4 pers.
+  - img
+  - text: Facile
+  - img
+  - text: "0.0"
+  - heading "Entrée" [level=2]
+  - img "Test nouvelle recette"
+  - text: 📝 En cours
+  - heading "Test nouvelle recette" [level=3]
+  - img
+  - text: 2 min
+  - img
+  - text: 2 pers.
+  - img
+  - text: Facile
+  - img
+  - text: "0.0"
+  - heading "Plat Principal" [level=2]
+  - 'img "test #2"'
+  - text: 📝 En cours 🤖 Robot
+  - 'heading "test #2" [level=3]'
+  - img
+  - text: 1 min
+  - img
+  - text: 5 pers.
+  - img
+  - text: Facile
+  - img
+  - text: "0.0"
+  - img "Risotto Fusion aux Champignons et Épices - Version 2"
+  - text: 📤 Soumise
+  - heading "Risotto Fusion aux Champignons et Épices - Version 2" [level=3]
+  - img
+  - text: 0 min
+  - img
+  - text: 4 pers.
+  - img
+  - text: Facile
+  - img
+  - text: "0.0"
+  - img "Risotto Fusion aux Champignons et Épices - Version 2"
+  - text: 📝 En cours 🤖 Robot
+  - heading "Risotto Fusion aux Champignons et Épices - Version 2" [level=3]
+  - img
+  - text: 0 min
+  - img
+  - text: 4 pers.
+  - img
+  - text: Facile
+  - img
+  - text: "0.0"
+  - link "AI et Fines Herbes":
+    - /url: /
+    - img "AI et Fines Herbes"
+  - paragraph: Révolutionnez votre cuisine avec des recettes personnalisées créées par l'intelligence artificielle. Chaque plat est une nouvelle aventure culinaire adaptée à vos goûts et contraintes.
+  - link "Instagram":
+    - /url: "#"
+    - img
+  - link "Twitter":
+    - /url: "#"
+    - img
+  - link "Email":
+    - /url: mailto:hello@aietfinesherbes.com
+    - img
+  - heading "Navigation" [level=3]
+  - list:
+    - listitem:
+      - link "Accueil":
+        - /url: /
+        - img
+        - text: Accueil
+    - listitem:
+      - link "Recettes":
+        - /url: /recettes
+        - img
+        - text: Recettes
+    - listitem:
+      - link "Comment ça marche":
+        - /url: /comment-ca-marche
+        - img
+        - text: Comment ça marche
+    - listitem:
+      - link "À propos":
+        - /url: /a-propos
+        - img
+        - text: À propos
+    - listitem:
+      - link "Contact":
+        - /url: /contact
+        - img
+        - text: Contact
+  - heading "Support" [level=3]
+  - list:
+    - listitem:
+      - link "Centre d'aide":
+        - /url: /aide
+        - img
+        - text: Centre d'aide
+    - listitem:
+      - link "Nous contacter":
+        - /url: /contact
+        - img
+        - text: Nous contacter
+    - listitem:
+      - link "Politique de confidentialité":
+        - /url: /confidentialite
+        - img
+        - text: Politique de confidentialité
+    - listitem:
+      - link "Conditions d'utilisation":
+        - /url: /conditions
+        - img
+        - text: Conditions d'utilisation
+  - heading "Restez informé" [level=3]
+  - paragraph: Recevez nos dernières recettes et mises à jour directement dans votre boîte mail.
+  - textbox "Votre adresse email"
+  - button "S'abonner"
+  - paragraph: © 2024 AI et Fines Herbes. Tous droits réservés.
+  - link "Confidentialité":
+    - /url: /confidentialite
+  - link "Conditions":
+    - /url: /conditions
+  - img
+  - text: Fait avec amour à Lyon
+- alert
+```

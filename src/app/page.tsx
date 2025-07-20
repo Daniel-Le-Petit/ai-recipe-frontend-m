@@ -1,70 +1,26 @@
 "use client";
-import Header from '@/components/Header'
-import Hero from '@/components/Hero'
-import HowItWorks from '@/components/HowItWorks'
-import TrustSection from '@/components/TrustSection'
-import Footer from '@/components/Footer'
-import { useEffect, useState } from 'react';
-import ApiService from '@/api';
-import type { StrapiCategory, StrapiRecipe, FlexibleRecipe } from '@/types/api';
-import { RecipeCard } from '@/components/RecipeCard';
-import Link from 'next/link';
-
-// Helper functions to safely access recipe properties
-const getRecipeCategoryId = (recipe: any): number | null => {
-  if (recipe.recipieCategory && typeof recipe.recipieCategory.id === 'number') {
-    return recipe.recipieCategory.id;
-  }
-  return null;
-};
-
-function getDbInfo() {
-  return {
-    client: process.env.NEXT_PUBLIC_DATABASE_CLIENT || '',
-    host: process.env.NEXT_PUBLIC_DATABASE_HOST || '',
-    port: process.env.NEXT_PUBLIC_DATABASE_PORT || '',
-    name: process.env.NEXT_PUBLIC_DATABASE_NAME || '',
-    username: process.env.NEXT_PUBLIC_DATABASE_USERNAME || '',
-    password: process.env.NEXT_PUBLIC_DATABASE_PASSWORD || '',
-    ssl: process.env.NEXT_PUBLIC_DATABASE_SSL || '',
-    sslRejectUnauthorized: process.env.NEXT_PUBLIC_DATABASE_SSL_REJECT_UNAUTHORIZED || '',
-  };
-}
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { RecipeCard } from "@/components/RecipeCard";
+import RecipeCardCarousel from "@/components/RecipeCardCarousel";
+import Image from "next/image";
 
 export default function Home() {
-  const [categories, setCategories] = useState<any[]>([]); // plus de typage strict
+  const [categories, setCategories] = useState<any[]>([]);
   const [recipes, setRecipes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const db = getDbInfo();
-  const maskPassword = (pwd: string) => {
-    if (!pwd || pwd.length < 2) return '****';
-    return pwd[0] + '****' + pwd[pwd.length-1];
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Log l'URL de l'API utilisée
-        console.log('API URL:', process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338');
-        
-        const catRes = await ApiService.getCategories();
-        setCategories(catRes.data);
-        const recRes = await ApiService.getRecipes();
-        setRecipes(recRes.data);
-
-        // Ajoute ces logs :
-        console.log('Categories from API:', catRes.data);
-        console.log('Recipes from API:', recRes.data);
-        console.log('Categories count:', catRes.data?.length || 0);
-        console.log('Recipes count:', recRes.data?.length || 0);
-        
-        // Log détaillé des recettes
-        if (recRes.data && recRes.data.length > 0) {
-          console.log('Première recette:', recRes.data[0]);
-          console.log('Catégorie de la première recette:', (recRes.data[0] as any).recipieCategory);
-        }
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338';
+        const catRes = await (await fetch(`${apiUrl}/api/recipie-categories`)).json();
+        setCategories(catRes.data || []);
+        const recRes = await (await fetch(`${apiUrl}/api/recipies`)).json();
+        setRecipes(recRes.data || []);
       } catch (e) {
         // TODO: gestion d'erreur
       } finally {
@@ -74,75 +30,127 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Trie les catégories par ordre alphabétique
-  const sortedCategories = [...categories].sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+  // Trie les catégories par nom
+  const sortedCategories = [...categories].sort((a, b) =>
+    a.categoryName.localeCompare(b.categoryName)
+  );
 
-  // Fonction pour filtrer les recettes par catégorie
-  const getRecipesForCategory = (categoryId: number) => {
-    return recipes.filter((recipe) => recipe.recipieCategory && Number(recipe.recipieCategory.id) === Number(categoryId));
-  };
-
-  const handleRecipeClick = (recipe: any) => {
-    // Navigation vers la page de création/édition de la recette
-    window.location.href = `/creer-recette?id=${recipe.id}&step=4`;
-  };
-
-  // Ajout du log pour debug
-  console.log('CATEGORIES:', sortedCategories);
-  console.log('RECIPES:', recipes);
-  if (recipes.length > 0) {
-    console.log('EXEMPLE RECETTE COMPLETE:', JSON.stringify(recipes[0], null, 2));
-  }
-  sortedCategories.forEach(cat => {
-    const catRecipes = getRecipesForCategory(cat.id);
-    console.log(`Catégorie ${cat.categoryName} (id=${cat.id}) → recettes:`, catRecipes.map(r => r.id));
-  });
-
-  // Debug : log les ids de catégorie des recettes et des catégories
-  recipes.forEach(r => {
-    console.log('Recipe', r.id, 'catId:', getRecipeCategoryId(r), 'type:', typeof getRecipeCategoryId(r));
-  });
-  sortedCategories.forEach(cat => {
-    console.log('Category', cat.id, 'type:', typeof cat.id);
-  });
+  // Récupère les recettes d'une catégorie
+  const getRecipesForCategory = (categoryId: number) =>
+    recipes.filter(
+      (r) =>
+        r.recipieCategory &&
+        Number(r.recipieCategory.id) === Number(categoryId)
+    );
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-beige-main">
       <Header />
-      <Hero />
-      {/* Section catégories/recettes */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+      {/* Bloc Héro */}
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-beige-main">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8">
+          <div className="flex-1 text-center md:text-left space-y-4">
+            <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark">
+              Générez des recettes savoureuses avec l&apos;IA
+            </h1>
+            <p className="text-base md:text-lg text-text-medium">
+              Créez des recettes personnalisées et faites vos courses en toute simplicité grâce à l&apos;intelligence artificielle.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-6">
+              <Link href="/creer-recette">
+                <button className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-200">
+                  <span className="mr-2 flex items-center" style={{ lineHeight: 0 }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 3h6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                      <path d="M10 3v5.5a4 4 0 0 1-.8 2.4l-4.1 5.7A4 4 0 0 0 8.4 21h7.2a4 4 0 0 0 3.3-4.4l-4.1-5.7A4 4 0 0 1 14 8.5V3" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M8 15h8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  </span>
+                  Créer une recette
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="flex-1 flex justify-center md:justify-end">
+            <img
+              src="/main-image-cart.svg"
+              alt="Caddie"
+              className="w-64 h-auto max-h-64 object-contain"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Bloc Plan de la semaine */}
+      <section className="py-6 bg-beige-warm">
+        <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-6 bg-white rounded-2xl shadow-md px-6 py-6">
+          {/* Bloc gauche : texte et icône */}
+          <div className="flex-1 flex flex-col items-start justify-center gap-2">
+            <Link href="/plan-semaine" className="flex items-center gap-2 mb-1">
+              {/* Icône calendrier orange */}
+              <span style={{ lineHeight: 0 }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="5" width="18" height="16" rx="2" fill="#fff"/>
+                  <rect x="3" y="5" width="18" height="16" rx="2" stroke="#fb8500" strokeWidth="2"/>
+                  <rect x="7" y="2" width="2" height="6" rx="1" fill="#fb8500"/>
+                  <rect x="15" y="2" width="2" height="6" rx="1" fill="#fb8500"/>
+                  <rect x="7" y="10" width="10" height="2" rx="1" fill="#fb8500"/>
+                </svg>
+              </span>
+              <span className="text-xl md:text-2xl font-bold font-poppins text-orange-500">Découvrir le plan de la semaine</span>
+            </Link>
+            <p className="text-gray-600 text-base md:text-lg mb-2">Découvrez un menu hebdomadaire équilibré généré par l&apos;IA.</p>
+          </div>
+          {/* Bloc droit : livre ouvert */}
+          <div className="flex-1 flex justify-center w-full">
+            <div className="relative w-64 h-48 md:w-80 md:h-56 flex items-center justify-center">
+              <div className="absolute inset-0 flex shadow-lg rounded-2xl overflow-hidden bg-white border-2 border-green-200" style={{ boxShadow: '0 8px 32px 0 rgba(34, 197, 94, 0.10), 0 1.5px 0 #e5e7eb' }}>
+                <div className="flex-1 flex flex-col items-center justify-start shadow-inner py-6 px-4">
+                  <div className="flex flex-1 items-center justify-center w-full h-full">
+                    <Image src="/Images/calendar-recipe.png" alt="Calendrier recette" width={120} height={120} className="object-contain" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bloc Commander nos recettes */}
+      <div className="w-full mt-6 flex justify-start">
+        <div className="rounded-2xl px-6 py-6 flex flex-col items-start text-left shadow-lg max-w-xl">
+          <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark mb-2">Commander nos recettes inspirantes</h1>
+          <p className="text-base md:text-lg text-text-medium">Ajouter vos recettes au panier et passez commande facilement</p>
+        </div>
+      </div>
+
+      {/* Bloc Recettes par catégorie (NOUVELLE VERSION) */}
+      <section className="max-w-7xl mx-auto px-4 py-10">
         {loading ? (
           <div className="text-center text-gray-500">Chargement...</div>
         ) : (
-          <div>
-            {sortedCategories.map((category) => {
-              const recettesPourCategorie = recipes.filter(recipe =>
-                recipe.recipieCategory && Number(recipe.recipieCategory.id) === Number(category.id)
-              );
-              return (
-                <div key={category.id} className="mb-12">
-                  <h2 className="text-2xl font-bold mb-4 text-herb-green">{category.categoryName}</h2>
-                  {recettesPourCategorie.length === 0 ? (
-                    <div className="text-gray-400 italic mb-8">Aucune recette dans cette catégorie.</div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                      {recettesPourCategorie.map((recipe) => (
-                        <RecipeCard
-                          key={recipe.id}
-                          recipe={recipe}
-                          onStartCooking={handleRecipeClick}
-                          compact={true}
-                        />
-                      ))}
-                    </div>
-                  )}
+          sortedCategories.map((cat) => {
+            const recettes = cat.recipies || [];
+            if (recettes.length === 0) return null;
+            return (
+              <div key={cat.id} className="mb-12">
+                <h2 className="text-2xl font-bold mb-4 text-herb-green">{cat.categoryName}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {recettes.map((recipe) => (
+                    <RecipeCardCarousel
+                      key={recipe.id}
+                      recipe={recipe}
+                      categoryId={cat.id}
+                    />
+                  ))}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })
         )}
-      </div>
+      </section>
+
       <Footer />
     </main>
   );

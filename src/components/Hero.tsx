@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import RecipeGenerator from './RecipeGenerator'
 import Link from 'next/link'
-import { ChefHat, Utensils } from 'lucide-react'
+import { ChefHat, Utensils, TestTube } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Hero() {
   const [showGenerator, setShowGenerator] = useState(false)
@@ -26,14 +27,16 @@ export default function Hero() {
             <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
               <Link href="/creer-recette">
                 <button 
-                  className="group relative overflow-hidden bg-gradient-to-r from-herb-green via-sage to-herb-dark hover:from-herb-dark hover:via-herb-green hover:to-sage text-white px-6 py-2 rounded-full font-poppins font-semibold text-base w-full sm:w-56 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform"
+                  className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-poppins font-semibold text-base w-full sm:w-56 transition-all duration-200"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-                  <div className="relative flex items-center justify-center space-x-2">
-                    <ChefHat className="h-4 w-4" />
-                    <span>Créer une recette</span>
-                  </div>
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-herb-green/40 to-sage/40 opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-sm"></div>
+                  <span className="mr-2 flex items-center" style={{ lineHeight: 0 }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 3h6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                      <path d="M10 3v5.5a4 4 0 0 1-.8 2.4l-4.1 5.7A4 4 0 0 0 8.4 21h7.2a4 4 0 0 0 3.3-4.4l-4.1-5.7A4 4 0 0 1 14 8.5V3" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M8 15h8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  </span>
+                  <span>Créer une recette</span>
                 </button>
               </Link>
               <Link href="/plan-semaine">

@@ -1,0 +1,722 @@
+<testsuites id="" name="" tests="30" failures="15" skipped="0" errors="0" time="68.938253">
+<testsuite name="home.spec.ts" timestamp="2025-07-11T10:35:28.721Z" hostname="chromium" tests="6" failures="3" skipped="0" time="33.705" errors="0">
+<testcase name="Home Page › should load the home page successfully" classname="home.spec.ts" time="2.64">
+</testcase>
+<testcase name="Home Page › should display recipe cards on home page" classname="home.spec.ts" time="4.297">
+</testcase>
+<testcase name="Home Page › should navigate to recipe creation page" classname="home.spec.ts" time="9.048">
+<failure message="home.spec.ts:27:7 should navigate to recipe creation page" type="FAILURE">
+<![CDATA[  [chromium] › home.spec.ts:27:7 › Home Page › should navigate to recipe creation page ─────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Créer une recette/i
+    Received string:  "Créez votre recette"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        8 × locator resolved to <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900">Créez votre recette</h1>
+          - unexpected value "Créez votre recette"
+
+
+      33 |     // Check that we're on the recipe creation page
+      34 |     await expect(page).toHaveURL(/.*creer-recette/)
+    > 35 |     await expect(page.locator('h1')).toContainText(/Créer une recette/i)
+         |                                      ^
+      36 |   })
+      37 |
+      38 |   test('should navigate to recipes page', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:35:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-chromium\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should navigate to recipes page" classname="home.spec.ts" time="8.674">
+<failure message="home.spec.ts:38:7 should navigate to recipes page" type="FAILURE">
+<![CDATA[  [chromium] › home.spec.ts:38:7 › Home Page › should navigate to recipes page ─────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Recettes/i
+    Received string:  "Unhandled Runtime Error"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        4 × locator resolved to <h1 id="nextjs__container_errors_label">Unhandled Runtime Error</h1>
+          - unexpected value "Unhandled Runtime Error"
+
+
+      44 |     // Check that we're on the recipes page
+      45 |     await expect(page).toHaveURL(/.*recettes/)
+    > 46 |     await expect(page.locator('h1')).toContainText(/Recettes/i)
+         |                                      ^
+      47 |   })
+      48 |
+      49 |   test('should display hero section with call-to-action', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:46:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-chromium\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should display hero section with call-to-action" classname="home.spec.ts" time="7.115">
+<failure message="home.spec.ts:49:7 should display hero section with call-to-action" type="FAILURE">
+<![CDATA[  [chromium] › home.spec.ts:49:7 › Home Page › should display hero section with call-to-action ─────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('section').filter({ hasText: /Découvrez/i })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('section').filter({ hasText: /Découvrez/i })
+
+
+      51 |     
+      52 |     // Check for hero section
+    > 53 |     await expect(page.locator('section').filter({ hasText: /Découvrez/i })).toBeVisible()
+         |                                                                             ^
+      54 |     
+      55 |     // Check for CTA button
+      56 |     await expect(page.locator('button').filter({ hasText: /Commencer/i })).toBeVisible()
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:53:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-chromium\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-chromium\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-chromium\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should be responsive on mobile" classname="home.spec.ts" time="1.931">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-11T10:35:28.721Z" hostname="firefox" tests="6" failures="3" skipped="0" time="52.725" errors="0">
+<testcase name="Home Page › should load the home page successfully" classname="home.spec.ts" time="3.716">
+</testcase>
+<testcase name="Home Page › should display recipe cards on home page" classname="home.spec.ts" time="9.638">
+</testcase>
+<testcase name="Home Page › should navigate to recipe creation page" classname="home.spec.ts" time="13.562">
+<failure message="home.spec.ts:27:7 should navigate to recipe creation page" type="FAILURE">
+<![CDATA[  [firefox] › home.spec.ts:27:7 › Home Page › should navigate to recipe creation page ──────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Créer une recette/i
+    Received string:  "Créez votre recette"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        8 × locator resolved to <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900">Créez votre recette</h1>
+          - unexpected value "Créez votre recette"
+
+
+      33 |     // Check that we're on the recipe creation page
+      34 |     await expect(page).toHaveURL(/.*creer-recette/)
+    > 35 |     await expect(page.locator('h1')).toContainText(/Créer une recette/i)
+         |                                      ^
+      36 |   })
+      37 |
+      38 |   test('should navigate to recipes page', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:35:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-firefox\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-firefox\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-firefox\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-firefox\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should navigate to recipes page" classname="home.spec.ts" time="14.069">
+<failure message="home.spec.ts:38:7 should navigate to recipes page" type="FAILURE">
+<![CDATA[  [firefox] › home.spec.ts:38:7 › Home Page › should navigate to recipes page ──────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Recettes/i
+    Received string:  "Unhandled Runtime Error"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        3 × locator resolved to <h1 id="nextjs__container_errors_label">Unhandled Runtime Error</h1>
+          - unexpected value "Unhandled Runtime Error"
+
+
+      44 |     // Check that we're on the recipes page
+      45 |     await expect(page).toHaveURL(/.*recettes/)
+    > 46 |     await expect(page.locator('h1')).toContainText(/Recettes/i)
+         |                                      ^
+      47 |   })
+      48 |
+      49 |   test('should display hero section with call-to-action', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:46:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-firefox\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-firefox\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-firefox\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-firefox\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should display hero section with call-to-action" classname="home.spec.ts" time="8.414">
+<failure message="home.spec.ts:49:7 should display hero section with call-to-action" type="FAILURE">
+<![CDATA[  [firefox] › home.spec.ts:49:7 › Home Page › should display hero section with call-to-action ──────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('section').filter({ hasText: /Découvrez/i })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('section').filter({ hasText: /Découvrez/i })
+
+
+      51 |     
+      52 |     // Check for hero section
+    > 53 |     await expect(page.locator('section').filter({ hasText: /Découvrez/i })).toBeVisible()
+         |                                                                             ^
+      54 |     
+      55 |     // Check for CTA button
+      56 |     await expect(page.locator('button').filter({ hasText: /Commencer/i })).toBeVisible()
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:53:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-firefox\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-firefox\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-firefox\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-firefox\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should be responsive on mobile" classname="home.spec.ts" time="3.326">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-11T10:35:28.721Z" hostname="webkit" tests="6" failures="3" skipped="0" time="50.945" errors="0">
+<testcase name="Home Page › should load the home page successfully" classname="home.spec.ts" time="6.533">
+</testcase>
+<testcase name="Home Page › should display recipe cards on home page" classname="home.spec.ts" time="8.695">
+</testcase>
+<testcase name="Home Page › should navigate to recipe creation page" classname="home.spec.ts" time="14.243">
+<failure message="home.spec.ts:27:7 should navigate to recipe creation page" type="FAILURE">
+<![CDATA[  [webkit] › home.spec.ts:27:7 › Home Page › should navigate to recipe creation page ───────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Créer une recette/i
+    Received string:  "Créez votre recette"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900">Créez votre recette</h1>
+          - unexpected value "Créez votre recette"
+
+
+      33 |     // Check that we're on the recipe creation page
+      34 |     await expect(page).toHaveURL(/.*creer-recette/)
+    > 35 |     await expect(page.locator('h1')).toContainText(/Créer une recette/i)
+         |                                      ^
+      36 |   })
+      37 |
+      38 |   test('should navigate to recipes page', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:35:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-webkit\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should navigate to recipes page" classname="home.spec.ts" time="11.742">
+<failure message="home.spec.ts:38:7 should navigate to recipes page" type="FAILURE">
+<![CDATA[  [webkit] › home.spec.ts:38:7 › Home Page › should navigate to recipes page ───────────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Recettes/i
+    Received string:  "Unhandled Runtime Error"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        6 × locator resolved to <h1 id="nextjs__container_errors_label">Unhandled Runtime Error</h1>
+          - unexpected value "Unhandled Runtime Error"
+
+
+      44 |     // Check that we're on the recipes page
+      45 |     await expect(page).toHaveURL(/.*recettes/)
+    > 46 |     await expect(page.locator('h1')).toContainText(/Recettes/i)
+         |                                      ^
+      47 |   })
+      48 |
+      49 |   test('should display hero section with call-to-action', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:46:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-webkit\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should display hero section with call-to-action" classname="home.spec.ts" time="8.01">
+<failure message="home.spec.ts:49:7 should display hero section with call-to-action" type="FAILURE">
+<![CDATA[  [webkit] › home.spec.ts:49:7 › Home Page › should display hero section with call-to-action ───────
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('section').filter({ hasText: /Découvrez/i })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('section').filter({ hasText: /Découvrez/i })
+
+
+      51 |     
+      52 |     // Check for hero section
+    > 53 |     await expect(page.locator('section').filter({ hasText: /Découvrez/i })).toBeVisible()
+         |                                                                             ^
+      54 |     
+      55 |     // Check for CTA button
+      56 |     await expect(page.locator('button').filter({ hasText: /Commencer/i })).toBeVisible()
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:53:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-webkit\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-webkit\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-webkit\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should be responsive on mobile" classname="home.spec.ts" time="1.722">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-11T10:35:28.721Z" hostname="Mobile Chrome" tests="6" failures="3" skipped="0" time="31.42" errors="0">
+<testcase name="Home Page › should load the home page successfully" classname="home.spec.ts" time="1.957">
+</testcase>
+<testcase name="Home Page › should display recipe cards on home page" classname="home.spec.ts" time="3.081">
+</testcase>
+<testcase name="Home Page › should navigate to recipe creation page" classname="home.spec.ts" time="8.931">
+<failure message="home.spec.ts:27:7 should navigate to recipe creation page" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › home.spec.ts:27:7 › Home Page › should navigate to recipe creation page ────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Créer une recette/i
+    Received string:  "Créez votre recette"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900">Créez votre recette</h1>
+          - unexpected value "Créez votre recette"
+
+
+      33 |     // Check that we're on the recipe creation page
+      34 |     await expect(page).toHaveURL(/.*creer-recette/)
+    > 35 |     await expect(page.locator('h1')).toContainText(/Créer une recette/i)
+         |                                      ^
+      36 |   })
+      37 |
+      38 |   test('should navigate to recipes page', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:35:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should navigate to recipes page" classname="home.spec.ts" time="8.85">
+<failure message="home.spec.ts:38:7 should navigate to recipes page" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › home.spec.ts:38:7 › Home Page › should navigate to recipes page ────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Recettes/i
+    Received string:  "Unhandled Runtime Error"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        5 × locator resolved to <h1 id="nextjs__container_errors_label">Unhandled Runtime Error</h1>
+          - unexpected value "Unhandled Runtime Error"
+
+
+      44 |     // Check that we're on the recipes page
+      45 |     await expect(page).toHaveURL(/.*recettes/)
+    > 46 |     await expect(page.locator('h1')).toContainText(/Recettes/i)
+         |                                      ^
+      47 |   })
+      48 |
+      49 |   test('should display hero section with call-to-action', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:46:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should display hero section with call-to-action" classname="home.spec.ts" time="6.973">
+<failure message="home.spec.ts:49:7 should display hero section with call-to-action" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › home.spec.ts:49:7 › Home Page › should display hero section with call-to-action 
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('section').filter({ hasText: /Découvrez/i })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('section').filter({ hasText: /Découvrez/i })
+
+
+      51 |     
+      52 |     // Check for hero section
+    > 53 |     await expect(page.locator('section').filter({ hasText: /Découvrez/i })).toBeVisible()
+         |                                                                             ^
+      54 |     
+      55 |     // Check for CTA button
+      56 |     await expect(page.locator('button').filter({ hasText: /Commencer/i })).toBeVisible()
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:53:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Chrome\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Chrome\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Chrome\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should be responsive on mobile" classname="home.spec.ts" time="1.628">
+</testcase>
+</testsuite>
+<testsuite name="home.spec.ts" timestamp="2025-07-11T10:35:28.721Z" hostname="Mobile Safari" tests="6" failures="3" skipped="0" time="33.742" errors="0">
+<testcase name="Home Page › should load the home page successfully" classname="home.spec.ts" time="1.16">
+</testcase>
+<testcase name="Home Page › should display recipe cards on home page" classname="home.spec.ts" time="1.925">
+</testcase>
+<testcase name="Home Page › should navigate to recipe creation page" classname="home.spec.ts" time="9.434">
+<failure message="home.spec.ts:27:7 should navigate to recipe creation page" type="FAILURE">
+<![CDATA[  [Mobile Safari] › home.spec.ts:27:7 › Home Page › should navigate to recipe creation page ────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Créer une recette/i
+    Received string:  "Créez votre recette"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900">Créez votre recette</h1>
+          - unexpected value "Créez votre recette"
+
+
+      33 |     // Check that we're on the recipe creation page
+      34 |     await expect(page).toHaveURL(/.*creer-recette/)
+    > 35 |     await expect(page.locator('h1')).toContainText(/Créer une recette/i)
+         |                                      ^
+      36 |   })
+      37 |
+      38 |   test('should navigate to recipes page', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:35:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipe-creation-page-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should navigate to recipes page" classname="home.spec.ts" time="9.945">
+<failure message="home.spec.ts:38:7 should navigate to recipes page" type="FAILURE">
+<![CDATA[  [Mobile Safari] › home.spec.ts:38:7 › Home Page › should navigate to recipes page ────────────────
+
+    Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+    Locator: locator('h1')
+    Expected pattern: /Recettes/i
+    Received string:  "Unhandled Runtime Error"
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 id="nextjs__container_errors_label">Unhandled Runtime Error</h1>
+          - unexpected value "Unhandled Runtime Error"
+
+
+      44 |     // Check that we're on the recipes page
+      45 |     await expect(page).toHaveURL(/.*recettes/)
+    > 46 |     await expect(page.locator('h1')).toContainText(/Recettes/i)
+         |                                      ^
+      47 |   })
+      48 |
+      49 |   test('should display hero section with call-to-action', async ({ page }) => {
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:46:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-navigate-to-recipes-page-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-navigate-to-recipes-page-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should display hero section with call-to-action" classname="home.spec.ts" time="8.052">
+<failure message="home.spec.ts:49:7 should display hero section with call-to-action" type="FAILURE">
+<![CDATA[  [Mobile Safari] › home.spec.ts:49:7 › Home Page › should display hero section with call-to-action 
+
+    Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('section').filter({ hasText: /Découvrez/i })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('section').filter({ hasText: /Découvrez/i })
+
+
+      51 |     
+      52 |     // Check for hero section
+    > 53 |     await expect(page.locator('section').filter({ hasText: /Découvrez/i })).toBeVisible()
+         |                                                                             ^
+      54 |     
+      55 |     // Check for CTA button
+      56 |     await expect(page.locator('button').filter({ hasText: /Commencer/i })).toBeVisible()
+        at C:\Users\AIFinesHerbes\AIFB\frontend-m\tests\e2e\home.spec.ts:53:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Safari\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Safari\video.webm]]
+
+[[ATTACHMENT|home-Home-Page-should-disp-ab420-section-with-call-to-action-Mobile-Safari\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Home Page › should be responsive on mobile" classname="home.spec.ts" time="3.226">
+</testcase>
+</testsuite>
+</testsuites>

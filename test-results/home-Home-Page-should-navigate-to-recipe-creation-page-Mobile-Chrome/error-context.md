@@ -1,0 +1,118 @@
+# Page snapshot
+
+```yaml
+- alert
+- main:
+  - navigation:
+    - link "AI et Fines Herbes":
+      - /url: /
+      - img "AI et Fines Herbes"
+    - button "Ouvrir le menu":
+      - text: Ouvrir le menu
+      - img
+  - button "Retour":
+    - img
+    - text: Retour
+  - img
+  - text: IA Culinaire Avancée
+  - heading "Créez votre recette" [level=1]
+  - paragraph: Notre intelligence artificielle analyse vos préférences pour créer des recettes uniques, adaptées à vos goûts et contraintes
+  - img
+  - img
+  - img
+  - img
+  - img
+  - img
+  - img
+  - img
+  - img
+  - img
+  - heading "Ingrédients" [level=3]
+  - paragraph: Que voulez-vous cuisiner ?
+  - img
+  - heading "Sélectionnez vos ingrédients" [level=4]
+  - paragraph: Tapez ou glissez-déposez vos ingrédients préférés
+  - img
+  - paragraph: Glissez vos ingrédients ici ou utilisez la recherche
+  - textbox "Tapez un ingrédient..."
+  - heading "Ingrédients populaires :" [level=5]
+  - text: 🍅 tomates 🧅 oignons 🧄 ail 🌿 basilic 🌱 persil 🌿 thym 🌿 romarin 🌿 laurier 🥔 pommes de terre 🥕 carottes 🥒 courgettes 🍆 aubergines
+  - button [disabled]:
+    - img
+  - text: Étape 1 / 10
+  - button [disabled]:
+    - img
+  - link "AI et Fines Herbes":
+    - /url: /
+    - img "AI et Fines Herbes"
+  - paragraph: Révolutionnez votre cuisine avec des recettes personnalisées créées par l'intelligence artificielle. Chaque plat est une nouvelle aventure culinaire adaptée à vos goûts et contraintes.
+  - link "Instagram":
+    - /url: "#"
+    - img
+  - link "Twitter":
+    - /url: "#"
+    - img
+  - link "Email":
+    - /url: mailto:hello@aietfinesherbes.com
+    - img
+  - heading "Navigation" [level=3]
+  - list:
+    - listitem:
+      - link "Accueil":
+        - /url: /
+        - img
+        - text: Accueil
+    - listitem:
+      - link "Recettes":
+        - /url: /recettes
+        - img
+        - text: Recettes
+    - listitem:
+      - link "Comment ça marche":
+        - /url: /comment-ca-marche
+        - img
+        - text: Comment ça marche
+    - listitem:
+      - link "À propos":
+        - /url: /a-propos
+        - img
+        - text: À propos
+    - listitem:
+      - link "Contact":
+        - /url: /contact
+        - img
+        - text: Contact
+  - heading "Support" [level=3]
+  - list:
+    - listitem:
+      - link "Centre d'aide":
+        - /url: /aide
+        - img
+        - text: Centre d'aide
+    - listitem:
+      - link "Nous contacter":
+        - /url: /contact
+        - img
+        - text: Nous contacter
+    - listitem:
+      - link "Politique de confidentialité":
+        - /url: /confidentialite
+        - img
+        - text: Politique de confidentialité
+    - listitem:
+      - link "Conditions d'utilisation":
+        - /url: /conditions
+        - img
+        - text: Conditions d'utilisation
+  - heading "Restez informé" [level=3]
+  - paragraph: Recevez nos dernières recettes et mises à jour directement dans votre boîte mail.
+  - textbox "Votre adresse email"
+  - button "S'abonner"
+  - paragraph: © 2024 AI et Fines Herbes. Tous droits réservés.
+  - link "Confidentialité":
+    - /url: /confidentialite
+  - link "Conditions":
+    - /url: /conditions
+  - img
+  - text: Fait avec amour à Lyon
+```
