@@ -118,11 +118,9 @@ export default function Home() {
       </section>
 
       {/* Bloc Commander nos recettes */}
-      <div className="w-full mt-6 flex justify-start">
-        <div className="rounded-2xl px-6 py-6 flex flex-col items-start text-left shadow-lg max-w-xl">
-          <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark mb-2">Commander nos recettes inspirantes</h1>
-          <p className="text-base md:text-lg text-text-medium">Ajouter vos recettes au panier et passez commande facilement</p>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
+        <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark mb-2">Commander nos recettes inspirantes</h1>
+        <p className="text-base md:text-lg text-text-medium">Ajouter vos recettes au panier et passez commande facilement</p>
       </div>
 
       {/* Bloc Recettes par catégorie (NOUVELLE VERSION) */}
