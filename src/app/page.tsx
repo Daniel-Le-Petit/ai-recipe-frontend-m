@@ -53,27 +53,16 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-[1fr_7rem] items-center gap-4">
             {/* Colonne texte */}
             <div className="space-y-4 text-left flex-auto">
-              <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark leading-tight flex items-center gap-3">
-                <img src="/assets/flask.svg" alt="Flacon" className="h-10 w-10 inline-block align-middle" style={{ color: '#22c55e' }} />
-                Générez des recettes savoureuses avec l&apos;IA
-              </h1>
+              <Link href="/creer-recette">
+                <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark leading-tight flex items-center gap-3 transition-colors duration-200 hover:text-green-600">
+                  <img src="/assets/flask.svg" alt="Flacon" className="h-10 w-10 inline-block align-middle" style={{ color: '#22c55e' }} />
+                  Générez des recettes savoureuses avec l&apos;IA
+                </h1>
+              </Link>
               <p className="text-base md:text-lg text-text-medium leading-snug">
                 Créez des recettes personnalisées et faites vos courses en toute simplicité grâce à l&apos;intelligence artificielle.
               </p>
-              <div className="mt-6">
-                <Link href="/creer-recette">
-                  <button className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-semibold text-lg transition-all duration-200">
-                    <span className="mr-2 flex items-center" style={{ lineHeight: 0 }}>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 3h6" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
-                        <path d="M10 3v5.5a4 4 0 0 1-.8 2.4l-4.1 5.7A4 4 0 0 0 8.4 21h7.2a4 4 0 0 0 3.3-4.4l-4.1-5.7A4 4 0 0 1 14 8.5V3" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M8 15h8" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                    </span>
-                    Créer une recette
-                  </button>
-                </Link>
-              </div>
+              {/* Bouton supprimé, le titre est maintenant un lien */}
             </div>
             {/* Colonne icône */}
             <div className="flex justify-center md:justify-end items-center h-full w-28">
@@ -103,7 +92,7 @@ export default function Home() {
                     <rect x="7" y="10" width="10" height="2" rx="1" fill="#fb8500"/>
                   </svg>
                 </span>
-                <span className="font-playfair text-3xl md:text-4xl font-bold text-orange-500 leading-tight">Organisez vos repas de la semaine</span>
+                <span className="font-playfair text-3xl md:text-4xl font-bold text-orange-500 leading-tight transition-colors duration-200 hover:text-green-600">Organisez vos repas de la semaine</span>
               </Link>
               <p className="text-gray-600 text-base md:text-lg mb-2">Découvrez un menu hebdomadaire équilibré généré par l&apos;IA.</p>
             </div>
@@ -115,10 +104,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Troisième bloc : commander + recettes par catégorie */}
+      {/* Bloc Recettes par catégorie (NOUVELLE VERSION) */}
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-md px-6 py-6 mt-6">
         <div className="text-left mb-8">
-          <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark mb-2">Commander nos recettes inspirantes</h1>
+          <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark mb-2 transition-colors duration-200 hover:text-green-600">Commander nos recettes inspirantes</h1>
           <p className="text-base md:text-lg text-text-medium">Ajouter vos recettes au panier et passez commande facilement</p>
         </div>
         {/* Bloc Recettes par catégorie (NOUVELLE VERSION) */}
