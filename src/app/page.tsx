@@ -50,13 +50,13 @@ export default function Home() {
       {/* Bloc Héro */}
       <section className="py-10 px-4 sm:px-6 lg:px-8 bg-beige-main">
         <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-md px-6 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_7rem] items-center gap-4">
             {/* Colonne texte */}
-            <div className="space-y-4 text-left">
-              <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark">
+            <div className="space-y-4 text-left flex-auto">
+              <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark leading-tight">
                 Générez des recettes savoureuses avec l&apos;IA
               </h1>
-              <p className="text-base md:text-lg text-text-medium">
+              <p className="text-base md:text-lg text-text-medium leading-snug">
                 Créez des recettes personnalisées et faites vos courses en toute simplicité grâce à l&apos;intelligence artificielle.
               </p>
               <div className="mt-6">
@@ -75,11 +75,11 @@ export default function Home() {
               </div>
             </div>
             {/* Colonne icône */}
-            <div className="flex justify-center md:justify-end items-center h-full">
+            <div className="flex justify-center md:justify-end items-center h-full w-28">
               <img
                 src="/main-image-cart.svg"
                 alt="Caddie"
-                className="w-40 h-auto max-h-40 object-contain"
+                className="w-28 h-auto max-h-28 object-contain"
               />
             </div>
           </div>
@@ -89,9 +89,9 @@ export default function Home() {
       {/* Bloc Plan de la semaine */}
       <section className="py-6 bg-beige-warm">
         <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-md px-6 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_7rem] items-center gap-4">
             {/* Colonne texte */}
-            <div className="text-left">
+            <div className="text-left flex-auto">
               <Link href="/plan-semaine" className="flex items-center gap-2 mb-1">
                 <span style={{ lineHeight: 0 }}>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,8 +107,8 @@ export default function Home() {
               <p className="text-gray-600 text-base md:text-lg mb-2">Découvrez un menu hebdomadaire équilibré généré par l&apos;IA.</p>
             </div>
             {/* Colonne icône */}
-            <div className="flex justify-center md:justify-end items-center h-full">
-              <Image src="/Images/calendar-recipe.png" alt="Calendrier recette" width={120} height={120} className="object-contain" />
+            <div className="flex justify-center md:justify-end items-center h-full w-28">
+              <Image src="/Images/calendar-recipe.png" alt="Calendrier recette" width={80} height={80} className="object-contain" />
             </div>
           </div>
         </div>
