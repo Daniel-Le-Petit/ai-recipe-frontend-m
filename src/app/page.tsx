@@ -53,7 +53,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-[1fr_7rem] items-center gap-4">
             {/* Colonne texte */}
             <div className="space-y-4 text-left flex-auto">
-              <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark leading-tight">
+              <h1 className="font-playfair text-3xl md:text-4xl font-bold text-text-dark leading-tight flex items-center gap-3">
+                <img src="/assets/flask.svg" alt="Flacon" className="h-10 w-10 inline-block align-middle" style={{ color: '#22c55e' }} />
                 Générez des recettes savoureuses avec l&apos;IA
               </h1>
               <p className="text-base md:text-lg text-text-medium leading-snug">
@@ -102,7 +103,7 @@ export default function Home() {
                     <rect x="7" y="10" width="10" height="2" rx="1" fill="#fb8500"/>
                   </svg>
                 </span>
-                <span className="text-xl md:text-2xl font-bold font-poppins text-orange-500">Organisez vos repas de la semaine</span>
+                <span className="font-playfair text-3xl md:text-4xl font-bold text-orange-500 leading-tight">Organisez vos repas de la semaine</span>
               </Link>
               <p className="text-gray-600 text-base md:text-lg mb-2">Découvrez un menu hebdomadaire équilibré généré par l&apos;IA.</p>
             </div>
