@@ -135,17 +135,7 @@ export default function WeeklyMealPlanner() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="space-y-4 max-h-96 overflow-y-auto pr-2"
-          onWheel={e => {
-            const el = e.currentTarget;
-            if (e.deltaY > 0 && el.scrollTop + el.clientHeight >= el.scrollHeight - 2) {
-              // Scroll down at bottom
-              if (selectedDay < 6) setSelectedDay(selectedDay + 1);
-            } else if (e.deltaY < 0 && el.scrollTop <= 2) {
-              // Scroll up at top
-              if (selectedDay > 0) setSelectedDay(selectedDay - 1);
-            }
-          }}
+          className="space-y-4 max-h-[600px] overflow-y-auto pr-2"
         >
           {weekMeals[selectedDay].meals.map((meal, idx) => (
             <motion.div
