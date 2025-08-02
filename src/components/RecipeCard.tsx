@@ -1,127 +1,55 @@
 import React from 'react'
-import { Clock, Users, ChefHat, Star, Heart, Sparkles } from 'lucide-react'
-import type { RecipeCardProps, StrapiRecipe, FlexibleRecipe, RecipeStatus } from '@/types/api'
-import { RecipeStatusBadge } from './RecipeStatusBadge'
-import { CldImage } from 'next-cloudinary'
 
-// Helper function to normalize recipe data structure
-const allowedDifficulties = ['Facile', 'Intermédiaire', 'Difficile'] as const;
-type AllowedDifficulty = typeof allowedDifficulties[number];
-
-const allowedRecipeStates = ['draft', 'saved', 'submitted', 'approved', 'ordered', 'completed', 'archived', 'rejected'] as const;
-type AllowedRecipeState = typeof allowedRecipeStates[number];
-
-const normalizeRecipe = (recipe: FlexibleRecipe | StrapiRecipe): StrapiRecipe => {
-  // If recipe already has the correct structure, return it
-  if (recipe && recipe.attributes) {
-    return recipe as StrapiRecipe
-  }
-  
-  // If recipe is in flat format, wrap it in attributes
-  if (recipe && typeof recipe === 'object') {
-    const { id, ...attributes } = recipe as any
-    // Type guard for difficulty
-    let difficulty: AllowedDifficulty = 'Facile';
-    if (allowedDifficulties.includes(attributes.difficulty)) {
-      difficulty = attributes.difficulty;
-    }
-    // Type guard for recipeState
-    let recipeState: AllowedRecipeState = 'draft';
-    if (allowedRecipeStates.includes(attributes.recipeState)) {
-      recipeState = attributes.recipeState;
-    }
-    return {
-      id: id || (recipe as any).id,
-      attributes: {
-        title: (attributes.title as string) || '',
-        description: (attributes.description as string) || '',
-        ingredients: attributes.ingredients || [],
-        instructions: (attributes.instructions as string) || '',
-        duration: (attributes.duration as number) || 0,
-        difficulty,
-        servings: (attributes.servings as number) || 1,
-        rating: (attributes.rating as number) || 0,
-        tags: (attributes.tags as string[]) || [],
-        isRobotCompatible: (attributes.isRobotCompatible as boolean) || false,
-        recipeState: recipeState as RecipeStatus,
-        createdAt: (attributes.createdAt as string) || new Date().toISOString(),
-        updatedAt: (attributes.updatedAt as string) || new Date().toISOString(),
-        publishedAt: (attributes.publishedAt as string) || new Date().toISOString(),
-        image: undefined,
-        recipieCategory: attributes.recipieCategory ? { data: attributes.recipieCategory } : undefined,
-        author: attributes.author ? { data: attributes.author } : undefined
-      }
-    }
-  }
-  
-  // Fallback for invalid data
-  return {
-    id: 0,
-    attributes: {
-      title: 'Recette invalide',
-      description: '',
-      ingredients: [],
-      instructions: '',
-      duration: 0,
-      difficulty: 'Facile',
-      servings: 1,
-      rating: 0,
-      tags: [],
-      isRobotCompatible: false,
-      recipeState: 'draft',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      publishedAt: new Date().toISOString(),
-      image: undefined,
-      recipieCategory: undefined,
-      author: undefined
-    }
+// Types simplifiés
+interface RecipeCardProps {
+  recipe: any
+  onStartCooking?: (recipe: any) => void
+  onFavorite?: (recipe: any) => void
+  showCategory?: boolean
+  showRating?: boolean
+  showTags?: boolean
+  showStatus?: boolean
+  compact?: boolean
+  customColors?: {
+    duration?: { bg: string; text: string }
+    servings?: { bg: string; text: string }
+    difficulty?: { bg: string; text: string }
+    rating?: { bg: string; text: string }
   }
 }
 
-// Helper functions to safely access recipe properties
+// Helper functions
 const getRecipeTitle = (recipe: any): string => {
-  return recipe.attributes?.title || (recipe as any).title || 'Sans titre'
+  return recipe.attributes?.title || recipe.title || 'Sans titre'
 }
 
 const getRecipeDuration = (recipe: any): number => {
-  return recipe.attributes?.duration || (recipe as any).duration || 0
+  return recipe.attributes?.duration || recipe.duration || 0
 }
 
 const getRecipeServings = (recipe: any): number => {
-  return recipe.attributes?.servings || (recipe as any).servings || 1
+  return recipe.attributes?.servings || recipe.servings || 1
 }
 
 const getRecipeDifficulty = (recipe: any): string => {
-  return recipe.attributes?.difficulty || (recipe as any).difficulty || 'Facile'
+  return recipe.attributes?.difficulty || recipe.difficulty || 'Facile'
 }
 
 const getRecipeRating = (recipe: any): number => {
-  return recipe.attributes?.rating || (recipe as any).rating || 0
+  return recipe.attributes?.rating || recipe.rating || 0
 }
 
 const getRecipeStatus = (recipe: any) => {
   return recipe.recipeState || recipe.attributes?.recipeState || 'draft'
 }
 
-// Fonction utilitaire pour extraire le public_id Cloudinary
-function getCloudinaryPublicId(url?: string | null): string | null {
-  if (!url) return null;
-  // Prend tout après /upload/ et enlève l'extension
-  const match = url.match(/upload\/([^\.]+)\.[a-zA-Z0-9]+$/);
-  return match ? match[1] : null;
-}
-
-// Prend le format medium si dispo, sinon l'original
 const getRecipeImageUrl = (recipe: any): string | null => {
-  // Flat format (API /api/recipies?populate=*)
   if (recipe?.image?.formats?.medium?.url) {
     return recipe.image.formats.medium.url;
   }
   if (recipe?.image?.url) {
     return recipe.image.url;
   }
-  // Strapi v4 format (API /api/recipies/:id)
   if (recipe?.attributes?.image?.data?.attributes?.formats?.medium?.url) {
     return recipe.attributes.image.data.attributes.formats.medium.url;
   }
@@ -145,13 +73,36 @@ const formatDuration = (minutes: number) => {
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty) {
     case 'Facile':
-      return 'text-green-600 bg-green-100'
+      return { text: '#059669', bg: '#d1fae5' }
     case 'Intermédiaire':
-      return 'text-yellow-600 bg-yellow-100'
+      return { text: '#d97706', bg: '#fef3c7' }
     case 'Difficile':
-      return 'text-red-600 bg-red-100'
+      return { text: '#dc2626', bg: '#fee2e2' }
     default:
-      return 'text-gray-600 bg-gray-100'
+      return { text: '#6b7280', bg: '#f3f4f6' }
+  }
+}
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case 'draft':
+      return { text: '#6b7280', bg: '#f3f4f6' }
+    case 'saved':
+      return { text: '#059669', bg: '#d1fae5' }
+    case 'submitted':
+      return { text: '#d97706', bg: '#fef3c7' }
+    case 'approved':
+      return { text: '#059669', bg: '#d1fae5' }
+    case 'ordered':
+      return { text: '#7c3aed', bg: '#ede9fe' }
+    case 'completed':
+      return { text: '#059669', bg: '#d1fae5' }
+    case 'archived':
+      return { text: '#6b7280', bg: '#f3f4f6' }
+    case 'rejected':
+      return { text: '#dc2626', bg: '#fee2e2' }
+    default:
+      return { text: '#6b7280', bg: '#f3f4f6' }
   }
 }
 
@@ -163,93 +114,224 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
   showRating = true,
   showTags = true,
   showStatus = true,
-  compact = false
+  compact = false,
+  customColors
 }) => {
-  const normalizedRecipe = normalizeRecipe(recipe)
-  const {
-    title,
-    description,
-    duration,
-    difficulty,
-    servings,
-    rating,
-    tags,
-    image,
-    recipieCategory,
-    recipeState,
-    isRobotCompatible
-  } = normalizedRecipe.attributes
+  const title = getRecipeTitle(recipe)
+  const duration = getRecipeDuration(recipe)
+  const servings = getRecipeServings(recipe)
+  const difficulty = getRecipeDifficulty(recipe)
+  const rating = getRecipeRating(recipe)
+  const status = getRecipeStatus(recipe)
+  const imageUrl = getRecipeImageUrl(recipe) || FALLBACK_IMAGE
+  const isRobotCompatible = recipe.attributes?.isRobotCompatible || recipe.isRobotCompatible || false
 
   const handleCardClick = () => {
     if (onStartCooking) {
-      onStartCooking(normalizedRecipe)
+      onStartCooking(recipe)
     } else {
-      // Navigation par défaut
-      window.location.href = `/cuisson-guidee?id=${normalizedRecipe.id}`
+      window.location.href = `/cuisson-guidee?id=${recipe.id || recipe.attributes?.id}`
     }
   }
 
   const handleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation() // Empêcher le clic sur la carte
+    e.stopPropagation()
     if (onFavorite) {
-      onFavorite(normalizedRecipe)
+      onFavorite(recipe)
     }
   }
 
   // Compact version for home page
   if (compact) {
-    const imageUrl = getRecipeImageUrl(recipe) || FALLBACK_IMAGE;
     return (
       <div 
-        className="bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-lg transition-shadow duration-200 flex flex-col"
+        style={{
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          padding: '16px',
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          maxWidth: '267px'
+        }}
         onClick={handleCardClick}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-4px)'
+          e.currentTarget.style.boxShadow = '0 10px 25px -3px rgba(0, 0, 0, 0.1)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)'
+          e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+        }}
         data-testid="recipe-card"
       >
-        <img
-          src={imageUrl}
-          alt={title}
-          className="w-full h-48 object-cover rounded-xl shadow mb-6"
-          onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
-        />
-        {/* Status and Robot badges on top right of image */}
-        <div className="absolute top-2 right-2 flex items-center gap-1">
-          {showStatus && (
-            <RecipeStatusBadge status={getRecipeStatus(recipe)} />
-          )}
-          {isRobotCompatible && (
-            <span className="text-xs bg-white/20 text-white px-1 py-0.5 rounded">
-              🤖 Robot
-            </span>
-          )}
+        <div style={{ position: 'relative' }}>
+          <img
+            src={imageUrl}
+            alt={title}
+            style={{
+              width: '100%',
+              height: '192px',
+              objectFit: 'cover',
+              borderRadius: '12px 12px 0 0',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              marginBottom: '0'
+            }}
+          />
+          
+          {/* Status and Robot badges */}
+          <div style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}>
+            {showStatus && (
+              <span style={{
+                fontSize: '12px',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                backgroundColor: getStatusColor(status).bg,
+                color: getStatusColor(status).text,
+                fontWeight: 'bold'
+              }}>
+                {status}
+              </span>
+            )}
+            {isRobotCompatible && (
+              <span style={{
+                fontSize: '12px',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                color: 'white',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                backdropFilter: 'blur(4px)'
+              }}>
+                🤖 Robot
+              </span>
+            )}
+          </div>
+
+          {/* Favorite button */}
+          <div style={{
+            position: 'absolute',
+            top: '8px',
+            left: '8px'
+          }}>
+            <button
+              onClick={handleFavorite}
+              style={{
+                width: '32px',
+                height: '32px',
+                backgroundColor: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.1)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)'
+              }}
+            >
+              ❤️
+            </button>
+          </div>
         </div>
 
-        {/* Content with AI & Fines Herbes green background - 2/7 of card height */}
-        <div className={`${compact ? 'h-[calc(2/7*12rem)]' : 'h-[calc(2/7*16rem)]'} bg-[#20B251] p-3 flex flex-col justify-between`}>
+        {/* Content with light gray background */}
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '12px',
+          borderRadius: '0 0 8px 8px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: 'calc(2/7 * 12rem)'
+        }}>
           {/* Line 1: Title */}
           <div>
-            <h3 className={`font-bold text-white line-clamp-1 ${compact ? 'text-xs' : 'text-sm'}`}>
-              {title || 'Sans titre'}
+            <h3 style={{
+              fontWeight: 'bold',
+              color: '#333',
+              fontSize: '16px',
+              margin: '0 0 8px 0',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}>
+              {title}
             </h3>
           </div>
 
           {/* Line 2: Duration + Servings + Difficulty + Rating */}
-          <div className="flex items-center justify-between text-white/90">
-            <div className="flex items-center gap-1">
-              <Clock className={`${compact ? 'w-2 h-2' : 'w-3 h-3'}`} />
-              <span className={compact ? 'text-xs' : 'text-xs'}>{formatDuration(duration || 0)}</span>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            color: '#666',
+            fontSize: '12px'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '4px',
+              backgroundColor: customColors?.duration?.bg || 'transparent',
+              color: customColors?.duration?.text || '#666',
+              padding: customColors?.duration ? '2px 4px' : '0',
+              borderRadius: customColors?.duration ? '4px' : '0'
+            }}>
+              <span style={{ fontSize: '12px' }}>⏱️</span>
+              <span style={{ fontSize: '12px' }}>{formatDuration(duration)}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Users className={`${compact ? 'w-2 h-2' : 'w-3 h-3'}`} />
-              <span className={compact ? 'text-xs' : 'text-xs'}>{servings || 1} pers.</span>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '4px',
+              backgroundColor: customColors?.servings?.bg || 'transparent',
+              color: customColors?.servings?.text || '#666',
+              padding: customColors?.servings ? '2px 4px' : '0',
+              borderRadius: customColors?.servings ? '4px' : '0'
+            }}>
+              <span style={{ fontSize: '12px' }}>👥</span>
+              <span style={{ fontSize: '12px' }}>{servings} pers.</span>
             </div>
-            <div className="flex items-center gap-1">
-              <ChefHat className={`${compact ? 'w-2 h-2' : 'w-3 h-3'}`} />
-              <span className={compact ? 'text-xs' : 'text-xs'}>{difficulty || 'Facile'}</span>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '4px',
+              backgroundColor: customColors?.difficulty?.bg || 'transparent',
+              color: customColors?.difficulty?.text || '#666',
+              padding: customColors?.difficulty ? '2px 4px' : '0',
+              borderRadius: customColors?.difficulty ? '4px' : '0'
+            }}>
+              <span style={{ fontSize: '12px' }}>👨‍🍳</span>
+              <span style={{ fontSize: '12px' }}>{difficulty}</span>
             </div>
             {showRating && (
-              <div className="flex items-center gap-1">
-                <Star className={`${compact ? 'w-2 h-2' : 'w-3 h-3'} text-yellow-300`} />
-                <span className={compact ? 'text-xs' : 'text-xs'}>{(rating || 0).toFixed(1)}</span>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '4px',
+                backgroundColor: customColors?.rating?.bg || 'transparent',
+                color: customColors?.rating?.text || '#666',
+                padding: customColors?.rating ? '2px 4px' : '0',
+                borderRadius: customColors?.rating ? '4px' : '0'
+              }}>
+                <span style={{ fontSize: '12px', color: '#f59e0b' }}>⭐</span>
+                <span style={{ fontSize: '12px' }}>{rating.toFixed(1)}</span>
               </div>
             )}
           </div>
@@ -258,133 +340,201 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
     )
   }
 
-  // Full version (existing code)
+  // Full version
   return (
     <div 
       data-testid="recipe-card"
-      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+      style={{
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        overflow: 'hidden',
+        transition: 'all 0.3s ease',
+        width: '100%',
+        maxWidth: '320px'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-4px)'
+        e.currentTarget.style.boxShadow = '0 10px 25px -3px rgba(0, 0, 0, 0.1)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)'
+        e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+      }}
     >
       {/* Image */}
-      <div className="relative h-48 bg-gray-200">
-        {(() => {
-          const imageUrl = getRecipeImageUrl(recipe);
-          const cloudinaryId = getCloudinaryPublicId(imageUrl);
-          console.log('Recipe imageUrl:', imageUrl, 'cloudinaryId:', cloudinaryId);
-          if (cloudinaryId) {
-            return (
-              <CldImage
-                src={cloudinaryId}
-                width={600}
-                height={400}
-                alt={title || 'Recette'}
-                className="w-full h-full object-cover rounded-xl shadow mb-6"
-              />
-            );
-          } else {
-            return (
-              <img
-                src={imageUrl || FALLBACK_IMAGE}
-                alt="Image non disponible"
-                className="w-full h-full object-cover rounded-xl shadow mb-6"
-              />
-            );
-          }
-        })()}
+      <div style={{ position: 'relative', height: '192px', backgroundColor: '#f3f4f6' }}>
+        <img
+          src={imageUrl}
+          alt={title}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
+          }}
+        />
+        
         {showStatus && (
-          <div className="absolute top-2 right-2">
-            <RecipeStatusBadge status={getRecipeStatus(recipe)} />
+          <div style={{ position: 'absolute', top: '8px', right: '8px' }}>
+            <span style={{
+              fontSize: '12px',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              backgroundColor: getStatusColor(status).bg,
+              color: getStatusColor(status).text,
+              fontWeight: 'bold'
+            }}>
+              {status}
+            </span>
           </div>
         )}
+
+        {/* Favorite button */}
+        <div style={{ position: 'absolute', top: '8px', left: '8px' }}>
+          <button
+            onClick={handleFavorite}
+            style={{
+              width: '32px',
+              height: '32px',
+              backgroundColor: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.1)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)'
+            }}
+          >
+            ❤️
+          </button>
+        </div>
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div style={{ padding: '16px' }}>
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-          {title || 'Sans titre'}
+        <h3 style={{
+          fontSize: '18px',
+          fontWeight: '600',
+          color: '#111827',
+          margin: '0 0 8px 0',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical'
+        }}>
+          {title}
         </h3>
 
-        {/* Description */}
-        {description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-            {description}
-          </p>
-        )}
-
         {/* Meta information */}
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
           {duration && (
-            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+            <span style={{
+              fontSize: '12px',
+              backgroundColor: '#dbeafe',
+              color: '#1e40af',
+              padding: '4px 8px',
+              borderRadius: '4px'
+            }}>
               ⏱️ {formatDuration(duration)}
             </span>
           )}
           {difficulty && (
-            <span className={`text-xs px-2 py-1 rounded ${getDifficultyColor(difficulty)}`}>
+            <span style={{
+              fontSize: '12px',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              backgroundColor: getDifficultyColor(difficulty).bg,
+              color: getDifficultyColor(difficulty).text
+            }}>
               {difficulty}
             </span>
           )}
           {servings && (
-            <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+            <span style={{
+              fontSize: '12px',
+              backgroundColor: '#f3e8ff',
+              color: '#7c3aed',
+              padding: '4px 8px',
+              borderRadius: '4px'
+            }}>
               👥 {servings} pers.
             </span>
           )}
         </div>
 
-        {/* Category */}
-        {showCategory && recipieCategory?.data && (
-          <div className="mb-3">
-            <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
-              {recipieCategory.data.categoryName}
-            </span>
-          </div>
-        )}
-
         {/* Rating */}
         {showRating && rating && (
-          <div className="flex items-center mb-3">
-            <span className="text-yellow-500">⭐</span>
-            <span className="text-sm text-gray-600 ml-1">{rating.toFixed(1)}</span>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+            <span style={{ color: '#fbbf24' }}>⭐</span>
+            <span style={{ fontSize: '14px', color: '#6b7280', marginLeft: '4px' }}>{rating.toFixed(1)}</span>
           </div>
         )}
 
-        {/* Tags */}
-        {showTags && tags && tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            {tags.slice(0, 3).map((tag, index) => (
-              <span
-                key={index}
-                className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded"
+        {/* Actions - Only show for full version */}
+        {!compact && (
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {onStartCooking && (
+              <button
+                data-testid="start-cooking-button"
+                onClick={handleCardClick}
+                style={{
+                  flex: 1,
+                  backgroundColor: '#2563eb',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#1d4ed8'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#2563eb'
+                }}
               >
-                #{tag}
-              </span>
-            ))}
-            {tags.length > 3 && (
-              <span className="text-xs text-gray-500">+{tags.length - 3}</span>
+                Commencer
+              </button>
+            )}
+            {onFavorite && (
+              <button
+                data-testid="favorite-button"
+                onClick={handleFavorite}
+                style={{
+                  padding: '8px 16px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  backgroundColor: 'white',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f9fafb'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'white'
+                }}
+              >
+                ❤️
+              </button>
             )}
           </div>
         )}
-
-        {/* Actions */}
-        <div className="flex gap-2">
-          {onStartCooking && (
-            <button
-              data-testid="start-cooking-button"
-              onClick={handleCardClick}
-              className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-            >
-              Commencer
-            </button>
-          )}
-          {onFavorite && (
-            <button
-              data-testid="favorite-button"
-              onClick={handleFavorite}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
-            >
-              ❤️
-            </button>
-          )}
-        </div>
       </div>
     </div>
   )
@@ -397,33 +547,70 @@ export const RecipeCardHorizontal: React.FC<{
   onStartCooking?: (recipe: any) => void
   onFavorite?: (recipe: any) => void
   showStatus?: boolean
+  showRating?: boolean
   compact?: boolean
-}> = ({ recipes, title, onStartCooking, onFavorite, showStatus = false, compact = false }) => {
+  customColors?: {
+    duration?: { bg: string; text: string }
+    servings?: { bg: string; text: string }
+    difficulty?: { bg: string; text: string }
+    rating?: { bg: string; text: string }
+  }
+}> = ({ recipes, title, onStartCooking, onFavorite, showStatus = false, showRating = false, compact = false, customColors }) => {
   return (
-    <div className="mb-6">
+    <div style={{ marginBottom: '24px' }}>
       {title && (
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 px-4">{title}</h3>
+        <h3 style={{
+          fontSize: '18px',
+          fontWeight: '600',
+          color: '#111827',
+          marginBottom: '16px',
+          padding: '0 16px'
+        }}>
+          {title}
+        </h3>
       )}
-      <div className="relative">
-        <div className="flex overflow-x-auto gap-4 px-4 pb-4 scrollbar-hide">
+      <div style={{ position: 'relative' }}>
+        <div style={{
+          display: 'flex',
+          overflowX: 'auto',
+          gap: compact ? '50px' : '24px',
+          padding: '0 16px 16px 16px',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          justifyContent: 'center'
+        }}>
           {recipes.map((recipe) => (
-            <div key={recipe.id} className="flex-shrink-0" style={{ width: compact ? '200px' : '280px' }}>
+            <div key={recipe.id} style={{ 
+              flexShrink: 0,
+                        width: compact ? '267px' : '280px',
+          display: 'flex',
+          justifyContent: 'center'
+            }}>
               <RecipeCard
                 recipe={recipe}
                 onStartCooking={onStartCooking}
                 onFavorite={onFavorite}
                 showStatus={showStatus}
+                showRating={showRating}
                 compact={compact}
+                customColors={customColors}
               />
             </div>
           ))}
         </div>
         {/* Indicateur de défilement */}
         {recipes.length > 3 && (
-          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-1 shadow-md">
-            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+          <div style={{
+            position: 'absolute',
+            right: '8px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            borderRadius: '50%',
+            padding: '4px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+          }}>
+            <span style={{ fontSize: '16px', color: '#6b7280' }}>→</span>
           </div>
         )}
       </div>

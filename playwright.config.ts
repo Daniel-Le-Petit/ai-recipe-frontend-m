@@ -26,10 +26,10 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    
+
     /* Take screenshot on failure */
     screenshot: 'only-on-failure',
-    
+
     /* Record video on failure */
     video: 'retain-on-failure',
   },
@@ -73,10 +73,32 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: process.env.NODE_ENV === 'test' ? {
+  webServer: {
     command: 'npm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
-  } : undefined,
+  },
+
+  /* Global setup and teardown */
+  globalSetup: require.resolve('./tests/e2e/global-setup.ts'),
+  globalTeardown: require.resolve('./tests/e2e/global-teardown.ts'),
+
+  /* Test timeout */
+  timeout: 30000,
+  expect: {
+    timeout: 10000,
+  },
+
+  /* Output directory for test artifacts */
+  outputDir: 'test-results/',
+
+  /* Preserve test artifacts */
+  preserveOutput: 'failures-only',
+
+  /* Report slow tests */
+  reportSlowTests: {
+    max: 5,
+    threshold: 15000,
+  },
 }) 

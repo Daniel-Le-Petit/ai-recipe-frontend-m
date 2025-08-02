@@ -1,0 +1,101 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Définitions des dégradés -->
+  <defs>
+    <linearGradient id="caddieGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="handleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#16a34a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#15803d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Logo stylisé - forme organique comme une pomme/cœur -->
+  <g transform="translate(50, 40)">
+    <!-- Corps principal du logo (forme organique) -->
+    <path d="M 50 30 Q 80 10 100 30 Q 120 10 150 30 Q 160 50 160 90 Q 160 130 150 150 Q 120 170 100 170 Q 80 170 50 150 Q 40 130 40 90 Q 40 50 50 30 Z" 
+          fill="url(#caddieGradient)" 
+          stroke="#15803d" 
+          stroke-width="2"/>
+    
+    <!-- Poignée fine et élégante -->
+    <path d="M 30 40 Q 60 20 100 20 Q 140 20 170 40" 
+          fill="none" 
+          stroke="url(#handleGradient)" 
+          stroke-width="3" 
+          stroke-linecap="round"/>
+    
+    <!-- Roues discrètes -->
+    <circle cx="60" cy="160" r="8" fill="url(#wheelGradient)" stroke="#15803d" stroke-width="1"/>
+    <circle cx="140" cy="160" r="8" fill="url(#wheelGradient)" stroke="#15803d" stroke-width="1"/>
+    
+    <!-- Rayons des roues -->
+    <line x1="60" y1="152" x2="60" y2="168" stroke="#15803d" stroke-width="0.8"/>
+    <line x1="52" y1="160" x2="68" y2="160" stroke="#15803d" stroke-width="0.8"/>
+    <line x1="140" y1="152" x2="140" y2="168" stroke="#15803d" stroke-width="0.8"/>
+    <line x1="132" y1="160" x2="148" y2="160" stroke="#15803d" stroke-width="0.8"/>
+  </g>
+
+  <!-- Cuillère blanche -->
+  <g transform="translate(85, 70)">
+    <!-- Manche de la cuillère -->
+    <rect x="0" y="0" width="2" height="25" fill="white" stroke="#e5e7eb" stroke-width="0.5"/>
+    <!-- Partie creuse de la cuillère -->
+    <ellipse cx="1" cy="12" rx="7" ry="5" fill="white" stroke="#e5e7eb" stroke-width="0.5"/>
+    <!-- Bord intérieur de la cuillère -->
+    <ellipse cx="1" cy="12" rx="5" ry="3.5" fill="#f3f4f6"/>
+  </g>
+
+  <!-- Fourchette blanche -->
+  <g transform="translate(105, 70)">
+    <!-- Manche de la fourchette -->
+    <rect x="0" y="0" width="2" height="25" fill="white" stroke="#e5e7eb" stroke-width="0.5"/>
+    <!-- Dents de la fourchette -->
+    <rect x="-2" y="-8" width="1.2" height="8" fill="white" stroke="#e5e7eb" stroke-width="0.3"/>
+    <rect x="0" y="-8" width="1.2" height="8" fill="white" stroke="#e5e7eb" stroke-width="0.3"/>
+    <rect x="2" y="-8" width="1.2" height="8" fill="white" stroke="#e5e7eb" stroke-width="0.3"/>
+    <rect x="4" y="-8" width="1.2" height="8" fill="white" stroke="#e5e7eb" stroke-width="0.3"/>
+  </g>
+
+  <!-- Feuilles qui sortent du haut -->
+  <g transform="translate(100, 25)">
+    <!-- Feuille centrale -->
+    <path d="M 0 0 Q 8 -12 12 0 Q 8 12 0 0" fill="url(#leafGradient)" stroke="#16a34a" stroke-width="0.8"/>
+    <path d="M 0 0 Q -8 -6 -12 0 Q -8 6 0 0" fill="url(#leafGradient)" stroke="#16a34a" stroke-width="0.8"/>
+  </g>
+
+  <g transform="translate(110, 20)">
+    <!-- Feuille droite -->
+    <path d="M 0 0 Q 6 -8 10 0 Q 6 8 0 0" fill="url(#leafGradient)" stroke="#16a34a" stroke-width="0.8"/>
+    <path d="M 0 0 Q -6 -3 -10 0 Q -6 3 0 0" fill="url(#leafGradient)" stroke="#16a34a" stroke-width="0.8"/>
+  </g>
+
+  <g transform="translate(90, 20)">
+    <!-- Feuille gauche -->
+    <path d="M 0 0 Q 6 -8 10 0 Q 6 8 0 0" fill="url(#leafGradient)" stroke="#16a34a" stroke-width="0.8"/>
+    <path d="M 0 0 Q -6 -3 -10 0 Q -6 3 0 0" fill="url(#leafGradient)" stroke="#16a34a" stroke-width="0.8"/>
+  </g>
+
+  <!-- Reflets et ombres -->
+  <!-- Reflet principal sur le logo -->
+  <ellipse cx="100" cy="90" rx="35" ry="25" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+  
+  <!-- Reflet secondaire -->
+  <ellipse cx="100" cy="100" rx="25" ry="15" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  
+  <!-- Ombres sous les roues -->
+  <ellipse cx="60" cy="170" rx="10" ry="3" fill="rgba(0,0,0,0.15)"/>
+  <ellipse cx="140" cy="170" rx="10" ry="3" fill="rgba(0,0,0,0.15)"/>
+  
+  <!-- Ombre générale -->
+  <ellipse cx="100" cy="175" rx="45" ry="6" fill="rgba(0,0,0,0.1)"/>
+</svg> 

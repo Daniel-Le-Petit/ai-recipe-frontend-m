@@ -332,3 +332,209 @@ export interface RecipeFiltersState {
 
 // console.log('Fetched recipes:', data.data);
 // console.log('Filtered recipes:', filteredRecipes); 
+
+// Types pour les plans de semaine
+export interface StrapiWeeklyPlan {
+  id: number
+  attributes: {
+    userId: number
+    weekStart: string
+    weekEnd: string
+    selections: {
+      mealTypes: string[]
+      portions: string
+      preferences: string[]
+      cookingMode: string
+      difficulty: string
+      cookingTime: string
+      cuisineType: string
+    }
+    status: 'draft' | 'active' | 'completed' | 'archived'
+    createdAt: string
+    updatedAt: string
+    user?: {
+      data?: StrapiUser
+    }
+    weekly_plan_meals?: {
+      data?: StrapiWeeklyPlanMeal[]
+    }
+  }
+}
+
+export interface StrapiWeeklyPlanMeal {
+  id: number
+  attributes: {
+    day: string
+    mealType: 'petit-dejeuner' | 'dejeuner' | 'collation' | 'diner'
+    status: 'accepted' | 'declined' | 'pending'
+    userNotes?: string
+    createdAt: string
+    updatedAt: string
+    weekly_plan?: {
+      data?: StrapiWeeklyPlan
+    }
+    recipe?: {
+      data?: StrapiRecipe
+    }
+    alternatives?: {
+      data?: StrapiWeeklyPlanMealAlternative[]
+    }
+    changes?: {
+      data?: StrapiWeeklyPlanMealChange[]
+    }
+  }
+}
+
+// Nouvelle table pour les alternatives de recettes
+export interface StrapiWeeklyPlanMealAlternative {
+  id: number
+  attributes: {
+    reason: 'ingredients-missing' | 'time-constraint' | 'difficulty' | 'preference' | 'seasonal' | 'dietary' | 'allergy' | 'budget' | 'other'
+    reasonDetails?: string
+    isSelected: boolean
+    createdAt: string
+    updatedAt: string
+    weekly_plan_meal?: {
+      data?: StrapiWeeklyPlanMeal
+    }
+    recipe?: {
+      data?: StrapiRecipe
+    }
+  }
+}
+
+// Nouvelle table pour l'historique des changements
+export interface StrapiWeeklyPlanMealChange {
+  id: number
+  attributes: {
+    changeType: 'recipe-switch' | 'status-change' | 'alternative-selected' | 'notes-updated'
+    reason: 'ingredients-missing' | 'time-constraint' | 'difficulty' | 'preference' | 'seasonal' | 'dietary' | 'allergy' | 'budget' | 'other'
+    reasonDetails?: string
+    previousValue?: string
+    newValue?: string
+    createdAt: string
+    updatedAt: string
+    weekly_plan_meal?: {
+      data?: StrapiWeeklyPlanMeal
+    }
+    previousRecipe?: {
+      data?: StrapiRecipe
+    }
+    newRecipe?: {
+      data?: StrapiRecipe
+    }
+  }
+}
+
+// Types pour les raisons de changement
+export interface ChangeReason {
+  id: string
+  label: string
+  icon: string
+  description: string
+}
+
+// Types pour les réponses API
+export interface WeeklyPlansResponse {
+  data: StrapiWeeklyPlan[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export interface WeeklyPlanMealsResponse {
+  data: StrapiWeeklyPlanMeal[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export interface WeeklyPlanMealAlternativesResponse {
+  data: StrapiWeeklyPlanMealAlternative[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export interface WeeklyPlanMealChangesResponse {
+  data: StrapiWeeklyPlanMealChange[]
+  meta: {
+    pagination: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+// Format d'affichage des plans de semaine
+export interface WeeklyPlanData {
+  weekStart: string
+  selections: {
+    mealTypes: string[]
+    portions: string
+    preferences: string[]
+    cookingMode: string
+    difficulty: string
+    cookingTime: string
+    cuisineType: string
+  }
+  days: Array<{
+    date: string
+    day: string
+  }>
+  meals: Array<{
+    name: string
+    icon: string
+    recipes: Array<{
+      id: number
+      name: string
+      time: string
+      portions: string
+      rating: number
+      tags: string[]
+      image: string
+      status: 'accepted' | 'declined' | 'pending'
+      alternatives?: Array<{
+        id: number
+        recipe: {
+          id: number
+          name: string
+          time: string
+          portions: string
+          rating: number
+          tags: string[]
+          image: string
+        }
+        reason: string
+        reasonDetails?: string
+        isSelected: boolean
+      }>
+      changes?: Array<{
+        id: number
+        changeType: string
+        reason: string
+        reasonDetails?: string
+        previousValue?: string
+        newValue?: string
+        createdAt: string
+      }>
+    }>
+  }>
+} 

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Semaine Personnalisé - IA Culinaire Avancée</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-green': '#20B251',
+                        'custom-green-dark': '#1a8f42',
+                        'custom-green-light': '#10b981'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-circle {
+            transition: all 0.3s ease;
+        }
+        .step-line {
+            transition: background-color 0.3s ease;
+        }
+        .meal-card {
+            transition: all 0.3s ease;
+        }
+        .meal-card:hover {
+            transform: translateY(-2px);
+        }
+        .nav-button {
+            transition: all 0.2s ease;
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Cadre principal vert avec IA Culinaire Avancée -->
+        <div class="bg-gradient-to-r from-custom-green to-custom-green-light text-white p-6 rounded-xl shadow-lg mb-8 flex items-center justify-center gap-4">
+            <span class="text-3xl">💡</span>
+            <h1 class="text-2xl font-bold">IA Culinaire Avancée</h1>
+        </div>
+
+        <!-- Titre H3 en vert -->
+        <h3 class="text-3xl font-bold text-custom-green text-center mb-4">
+            Créez votre plan de semaine personnalisé !
+        </h3>
+
+        <!-- Description centrée -->
+        <p class="text-gray-600 text-lg text-center mb-8 max-w-2xl mx-auto leading-relaxed">
+            Choisissez vos types de repas préférés et laissez notre IA créer votre menu sur-mesure. Gratuit et sans engagement !
+        </p>
+
+        <!-- Bouton de test temporaire -->
+        <div class="text-center mb-4">
+            <button onclick="showStep(2)" class="bg-blue-500 text-white px-4 py-2 rounded-lg">
+                Test: Aller à l'étape 2
+            </button>
+        </div>
+
+        <!-- Barre de progression -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 max-w-4xl mx-auto">
+            <div class="flex justify-between items-center overflow-x-auto pb-4">
+                <!-- Type de repas -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-custom-green flex items-center justify-center text-white font-bold mb-2 relative z-10 border-2 border-custom-green">
+                        1
+                    </div>
+                    <span class="text-xs text-custom-green font-semibold text-center">Type de repas</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-custom-green transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Portions -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        2
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Portions</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Préférences -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        3
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Préférences</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Mode cuisson -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        4
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Mode cuisson</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Difficulté -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        5
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Difficulté</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Temps max -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        6
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Temps max</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Type de cuisine -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        7
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Type de cuisine</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Récapitulatif -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        8
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Récapitulatif</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Email -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        9
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Email</span>
+                    <div class="step-line absolute top-5 left-1/2 w-16 h-0.5 bg-gray-200 transform translate-x-1/2"></div>
+                </div>
+
+                <!-- Abonnement -->
+                <div class="flex flex-col items-center min-w-20 relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-2 relative z-10">
+                        10
+                    </div>
+                    <span class="text-xs text-gray-500 font-semibold text-center">Abonnement</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenu de l'étape 1 -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto" id="step1">
+            <!-- Titre de l'étape -->
+            <h2 class="text-2xl font-bold text-gray-800 text-center mb-8">Type de repas</h2>
+
+            <!-- Section des types de repas -->
+            <div class="mb-8">
+                <h4 class="text-lg font-bold text-gray-800 mb-6">Ou choisissez un autre type :</h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Petit déjeuner -->
+                    <button class="meal-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-left hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="toggleSelection(this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🌿</span>
+                            <div>
+                                <div class="font-bold text-gray-800">Petit déjeuner</div>
+                                <div class="text-sm text-gray-600">Pour bien commencer la journée</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Déjeuner -->
+                    <button class="meal-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-left hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="toggleSelection(this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🥗</span>
+                            <div>
+                                <div class="font-bold text-gray-800">Déjeuner</div>
+                                <div class="text-sm text-gray-600">Repas du midi équilibré</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Brunch -->
+                    <button class="meal-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-left hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="toggleSelection(this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🥐</span>
+                            <div>
+                                <div class="font-bold text-gray-800">Brunch</div>
+                                <div class="text-sm text-gray-600">Le meilleur des deux mondes</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Collation -->
+                    <button class="meal-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-left hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="toggleSelection(this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🥜</span>
+                            <div>
+                                <div class="font-bold text-gray-800">Collation</div>
+                                <div class="text-sm text-gray-600">En-cas savoureux</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Dessert -->
+                    <button class="meal-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-left hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="toggleSelection(this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🍯</span>
+                            <div>
+                                <div class="font-bold text-gray-800">Dessert</div>
+                                <div class="text-sm text-gray-600">La touche sucrée</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Dîner -->
+                    <button class="meal-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-left hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="toggleSelection(this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl">🍽️</span>
+                            <div>
+                                <div class="font-bold text-gray-800">Dîner</div>
+                                <div class="text-sm text-gray-600">Soirée gourmande</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Boutons de navigation -->
+            <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+                <button class="nav-button bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold cursor-not-allowed opacity-50" disabled>
+                    ← Précédent
+                </button>
+                
+                <span class="text-gray-600 font-medium">Étape 1</span>
+                
+                <button class="nav-button bg-gradient-to-r from-custom-green to-custom-green-light text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl" onclick="showStep(2)">
+                    Suivant →
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenu de l'étape 2 -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto hidden" id="step2">
+            <!-- Titre de l'étape -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Portions</h2>
+                <p class="text-gray-600 text-lg">Pour combien de personnes ?</p>
+            </div>
+
+            <!-- Sélection des portions -->
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">Sélectionnez le nombre de portions</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- 1 personne -->
+                    <button class="portion-card bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex flex-col items-center gap-3 min-h-36 relative hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="togglePortionSelection(this, 1)">
+                        <span class="text-4xl">🌿</span>
+                        <div class="text-center">
+                            <h4 class="font-bold text-gray-800 text-base mb-1">1 personne</h4>
+                            <p class="text-gray-600 text-sm">Solo</p>
+                        </div>
+                    </button>
+
+                    <!-- 2 personnes -->
+                    <button class="portion-card bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex flex-col items-center gap-3 min-h-36 relative hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="togglePortionSelection(this, 2)">
+                        <span class="text-4xl">🍃</span>
+                        <div class="text-center">
+                            <h4 class="font-bold text-gray-800 text-base mb-1">2 personnes</h4>
+                            <p class="text-gray-600 text-sm">En couple</p>
+                        </div>
+                    </button>
+
+                    <!-- 4 personnes -->
+                    <button class="portion-card bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex flex-col items-center gap-3 min-h-36 relative hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="togglePortionSelection(this, 4)">
+                        <span class="text-4xl">🌱</span>
+                        <div class="text-center">
+                            <h4 class="font-bold text-gray-800 text-base mb-1">4 personnes</h4>
+                            <p class="text-gray-600 text-sm">Famille</p>
+                        </div>
+                    </button>
+
+                    <!-- 6 personnes -->
+                    <button class="portion-card bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex flex-col items-center gap-3 min-h-36 relative hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="togglePortionSelection(this, 6)">
+                        <span class="text-4xl">🌾</span>
+                        <div class="text-center">
+                            <h4 class="font-bold text-gray-800 text-base mb-1">6 personnes</h4>
+                            <p class="text-gray-600 text-sm">Grandes tablées</p>
+                        </div>
+                    </button>
+
+                    <!-- 8 personnes -->
+                    <button class="portion-card bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex flex-col items-center gap-3 min-h-36 relative hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="togglePortionSelection(this, 8)">
+                        <span class="text-4xl">🌳</span>
+                        <div class="text-center">
+                            <h4 class="font-bold text-gray-800 text-base mb-1">8 personnes</h4>
+                            <p class="text-gray-600 text-sm">Soirée entre amis</p>
+                        </div>
+                    </button>
+
+                    <!-- 12+ personnes -->
+                    <button class="portion-card bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex flex-col items-center gap-3 min-h-36 relative hover:border-custom-green hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-custom-green focus:ring-opacity-50" onclick="togglePortionSelection(this, 12)">
+                        <span class="text-4xl">🌲</span>
+                        <div class="text-center">
+                            <h4 class="font-bold text-gray-800 text-base mb-1">12+ personnes</h4>
+                            <p class="text-gray-600 text-sm">Grande fête</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Message de confirmation -->
+            <div id="portion-confirmation" class="hidden bg-blue-50 border border-blue-200 rounded-xl p-4 text-center mb-6">
+                <p class="text-blue-800 text-base font-medium">
+                    ✅ Portions sélectionnées : <strong id="selected-portion-text"></strong>
+                </p>
+            </div>
+
+            <!-- Boutons de navigation -->
+            <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+                <button class="nav-button bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold cursor-not-allowed opacity-50" onclick="showStep(1)">
+                    ← Précédent
+                </button>
+                
+                <span class="text-gray-600 font-medium">Étape 2</span>
+                
+                <button class="nav-button bg-gradient-to-r from-custom-green to-custom-green-light text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl" onclick="showStep(3)">
+                    Suivant →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedPortions = 0;
+
+        // Fonction pour basculer la sélection des cartes de repas
+        function toggleSelection(element) {
+            const isSelected = element.classList.contains('selected');
+            
+            if (isSelected) {
+                element.classList.remove('selected', 'bg-custom-green', 'text-white', 'border-custom-green');
+                element.classList.add('bg-gray-50', 'border-gray-200');
+                element.querySelector('.font-bold').classList.remove('text-white');
+                element.querySelector('.font-bold').classList.add('text-gray-800');
+                element.querySelector('.text-sm').classList.remove('text-white');
+                element.querySelector('.text-sm').classList.add('text-gray-600');
+            } else {
+                element.classList.add('selected', 'bg-custom-green', 'text-white', 'border-custom-green');
+                element.classList.remove('bg-gray-50', 'border-gray-200');
+                element.querySelector('.font-bold').classList.add('text-white');
+                element.querySelector('.font-bold').classList.remove('text-gray-800');
+                element.querySelector('.text-sm').classList.add('text-white');
+                element.querySelector('.text-sm').classList.remove('text-gray-600');
+            }
+        }
+
+        // Fonction pour basculer la sélection des portions
+        function togglePortionSelection(element, portionId) {
+            // Désélectionner toutes les portions
+            document.querySelectorAll('.portion-card').forEach(card => {
+                card.classList.remove('bg-custom-green', 'border-custom-green');
+                card.classList.add('bg-gray-50', 'border-gray-200');
+                card.querySelector('h4').classList.remove('text-white');
+                card.querySelector('h4').classList.add('text-gray-800');
+                card.querySelector('p').classList.remove('text-white');
+                card.querySelector('p').classList.add('text-gray-600');
+                
+                // Supprimer l'indicateur de sélection
+                const indicator = card.querySelector('.selection-indicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            });
+
+            // Sélectionner la portion cliquée
+            element.classList.remove('bg-gray-50', 'border-gray-200');
+            element.classList.add('bg-custom-green', 'border-custom-green');
+            element.querySelector('h4').classList.remove('text-gray-800');
+            element.querySelector('h4').classList.add('text-white');
+            element.querySelector('p').classList.remove('text-gray-600');
+            element.querySelector('p').classList.add('text-white');
+
+            // Ajouter l'indicateur de sélection
+            const indicator = document.createElement('div');
+            indicator.className = 'selection-indicator absolute top-3 right-3 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md';
+            indicator.innerHTML = '<span class="text-custom-green text-sm font-bold">✓</span>';
+            element.appendChild(indicator);
+
+            // Mettre à jour la sélection
+            selectedPortions = portionId;
+
+            // Afficher la confirmation
+            const confirmation = document.getElementById('portion-confirmation');
+            const selectedText = document.getElementById('selected-portion-text');
+            const portionNames = {
+                1: '1 personne',
+                2: '2 personnes',
+                4: '4 personnes',
+                6: '6 personnes',
+                8: '8 personnes',
+                12: '12+ personnes'
+            };
+            selectedText.textContent = portionNames[portionId];
+            confirmation.classList.remove('hidden');
+        }
+
+        // Fonction pour naviguer entre les étapes
+        function showStep(stepNumber) {
+            console.log('showStep called with:', stepNumber);
+            
+            // Masquer toutes les étapes
+            document.querySelectorAll('[id^="step"]').forEach(step => {
+                step.classList.add('hidden');
+                console.log('Hiding step:', step.id);
+            });
+
+            // Afficher l'étape demandée
+            const targetStep = document.getElementById(`step${stepNumber}`);
+            if (targetStep) {
+                targetStep.classList.remove('hidden');
+                currentStep = stepNumber;
+                console.log('Showing step:', targetStep.id);
+            } else {
+                console.error('Step not found:', `step${stepNumber}`);
+            }
+
+            // Mettre à jour la barre de progression
+            updateProgressBar(stepNumber);
+        }
+
+        // Fonction pour mettre à jour la barre de progression
+        function updateProgressBar(activeStep) {
+            const stepCircles = document.querySelectorAll('.step-circle');
+            const stepLines = document.querySelectorAll('.step-line');
+            const stepTexts = document.querySelectorAll('.step-circle + span');
+
+            stepCircles.forEach((circle, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber <= activeStep) {
+                    circle.classList.remove('bg-gray-200', 'text-gray-500');
+                    circle.classList.add('bg-custom-green', 'text-white');
+                    if (stepNumber === activeStep) {
+                        circle.classList.add('border-2', 'border-custom-green');
+                    } else {
+                        circle.classList.remove('border-2', 'border-custom-green');
+                    }
+                } else {
+                    circle.classList.remove('bg-custom-green', 'text-white', 'border-2', 'border-custom-green');
+                    circle.classList.add('bg-gray-200', 'text-gray-500');
+                }
+            });
+
+            stepLines.forEach((line, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber < activeStep) {
+                    line.classList.remove('bg-gray-200');
+                    line.classList.add('bg-custom-green');
+                } else {
+                    line.classList.remove('bg-custom-green');
+                    line.classList.add('bg-gray-200');
+                }
+            });
+
+            stepTexts.forEach((text, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber <= activeStep) {
+                    text.classList.remove('text-gray-500');
+                    text.classList.add('text-custom-green');
+                } else {
+                    text.classList.remove('text-custom-green');
+                    text.classList.add('text-gray-500');
+                }
+            });
+        }
+
+        // Animation des boutons de navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-button');
+            
+            navButtons.forEach(button => {
+                if (!button.disabled) {
+                    button.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-2px)';
+                    });
+                    
+                    button.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

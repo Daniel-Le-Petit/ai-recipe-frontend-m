@@ -5,7 +5,15 @@ import type {
   RecipeParams,
   CreateRecipeData,
   UpdateRecipeData,
-  RecipeStatus
+  RecipeStatus,
+  WeeklyPlansResponse,
+  WeeklyPlanResponse,
+  WeeklyPlanMealsResponse,
+  WeeklyPlanMealResponse,
+  WeeklyPlanMealAlternativesResponse,
+  WeeklyPlanMealAlternativeResponse,
+  WeeklyPlanMealChangesResponse,
+  WeeklyPlanMealChangeResponse
 } from './types/api'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://172.22.143.84:1338';
@@ -368,6 +376,358 @@ class ApiService {
       return data;
     } catch (error) {
       console.error('Error fetching archived recipes:', error);
+      throw error;
+    }
+  }
+
+  // ===== MÉTHODES POUR LES PLANS DE SEMAINE =====
+
+  // Récupérer tous les plans de semaine d'un utilisateur
+  async getWeeklyPlans(userId?: number): Promise<WeeklyPlansResponse> {
+    try {
+      const filters = userId ? `&filters[userId][$eq]=${userId}` : '';
+      const url = `${this.baseURL}/api/weekly-plans?populate=*${filters}`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching weekly plans:', error);
+      throw error;
+    }
+  }
+
+  // Récupérer un plan de semaine par ID
+  async getWeeklyPlanById(id: number): Promise<WeeklyPlanResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plans/${id}?populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching weekly plan:', error);
+      throw error;
+    }
+  }
+
+  // Créer un nouveau plan de semaine
+  async createWeeklyPlan(planData: any): Promise<WeeklyPlanResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plans`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: planData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error creating weekly plan:', error);
+      throw error;
+    }
+  }
+
+  // Mettre à jour un plan de semaine
+  async updateWeeklyPlan(id: number, planData: any): Promise<WeeklyPlanResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plans/${id}`;
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: planData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error updating weekly plan:', error);
+      throw error;
+    }
+  }
+
+  // Supprimer un plan de semaine
+  async deleteWeeklyPlan(id: number): Promise<void> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plans/${id}`;
+      const response = await fetch(url, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error deleting weekly plan:', error);
+      throw error;
+    }
+  }
+
+  // Récupérer les repas d'un plan de semaine
+  async getWeeklyPlanMeals(planId: number): Promise<WeeklyPlanMealsResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meals?filters[weekly_plan][id][$eq]=${planId}&populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching weekly plan meals:', error);
+      throw error;
+    }
+  }
+
+  // Créer un repas dans un plan de semaine
+  async createWeeklyPlanMeal(mealData: any): Promise<WeeklyPlanMealResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meals`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: mealData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error creating weekly plan meal:', error);
+      throw error;
+    }
+  }
+
+  // Mettre à jour le statut d'un repas
+  async updateMealStatus(mealId: number, status: string): Promise<WeeklyPlanMealResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meals/${mealId}`;
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: { status } }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error updating meal status:', error);
+      throw error;
+    }
+  }
+
+  // ===== MÉTHODES POUR LES ALTERNATIVES =====
+
+  // Récupérer les alternatives d'un repas
+  async getMealAlternatives(mealId: number): Promise<WeeklyPlanMealAlternativesResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meal-alternatives?filters[weekly_plan_meal][id][$eq]=${mealId}&populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching meal alternatives:', error);
+      throw error;
+    }
+  }
+
+  // Créer une alternative pour un repas
+  async createMealAlternative(alternativeData: any): Promise<WeeklyPlanMealAlternativeResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meal-alternatives`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: alternativeData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error creating meal alternative:', error);
+      throw error;
+    }
+  }
+
+  // Sélectionner une alternative
+  async selectAlternative(alternativeId: number, isSelected: boolean): Promise<WeeklyPlanMealAlternativeResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meal-alternatives/${alternativeId}`;
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: { isSelected } }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error selecting alternative:', error);
+      throw error;
+    }
+  }
+
+  // ===== MÉTHODES POUR L'HISTORIQUE DES CHANGEMENTS =====
+
+  // Récupérer l'historique des changements d'un repas
+  async getMealChanges(mealId: number): Promise<WeeklyPlanMealChangesResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meal-changes?filters[weekly_plan_meal][id][$eq]=${mealId}&populate=*&sort[0]=createdAt:desc`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching meal changes:', error);
+      throw error;
+    }
+  }
+
+  // Enregistrer un changement
+  async recordMealChange(changeData: any): Promise<WeeklyPlanMealChangeResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meal-changes`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: changeData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error recording meal change:', error);
+      throw error;
+    }
+  }
+
+  // Changer de recette avec historique
+  async switchRecipe(mealId: number, newRecipeId: number, reason: string, reasonDetails?: string): Promise<any> {
+    try {
+      // 1. Récupérer l'ancienne recette
+      const mealResponse = await this.getWeeklyPlanMealById(mealId);
+      const oldRecipeId = mealResponse.data.attributes.recipe?.data?.id;
+
+      // 2. Mettre à jour le repas avec la nouvelle recette
+      const updateResponse = await this.updateWeeklyPlanMeal(mealId, {
+        recipe: newRecipeId
+      });
+
+      // 3. Enregistrer le changement
+      await this.recordMealChange({
+        weekly_plan_meal: mealId,
+        changeType: 'recipe-switch',
+        reason,
+        reasonDetails,
+        previousRecipe: oldRecipeId,
+        newRecipe: newRecipeId
+      });
+
+      return updateResponse;
+    } catch (error) {
+      console.error('Error switching recipe:', error);
+      throw error;
+    }
+  }
+
+  // Méthodes utilitaires pour les repas
+  async getWeeklyPlanMealById(id: number): Promise<WeeklyPlanMealResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meals/${id}?populate=*`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching weekly plan meal:', error);
+      throw error;
+    }
+  }
+
+  async updateWeeklyPlanMeal(id: number, mealData: any): Promise<WeeklyPlanMealResponse> {
+    try {
+      const url = `${this.baseURL}/api/weekly-plan-meals/${id}`;
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: mealData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error updating weekly plan meal:', error);
       throw error;
     }
   }

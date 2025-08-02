@@ -1,0 +1,127 @@
+{
+  "name": "AI et Fines Herbes - Recettes personnalisées par IA",
+  "short_name": "AI Fines Herbes",
+  "description": "Créez des recettes personnalisées grâce à l'intelligence artificielle, adaptées à vos goûts et contraintes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFBF5",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["food", "lifestyle", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop-home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Page d'accueil - Desktop"
+    },
+    {
+      "src": "/screenshots/mobile-home.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Page d'accueil - Mobile"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Créer une recette",
+      "short_name": "Créer",
+      "description": "Générer une nouvelle recette avec l'IA",
+      "url": "/creer-recette",
+      "icons": [
+        {
+          "src": "/icons/create-recipe.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Mes recettes",
+      "short_name": "Recettes",
+      "description": "Voir mes recettes sauvegardées",
+      "url": "/mes-recettes",
+      "icons": [
+        {
+          "src": "/icons/my-recipes.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Plan de la semaine",
+      "short_name": "Plan",
+      "description": "Organiser les repas de la semaine",
+      "url": "/plan-semaine",
+      "icons": [
+        {
+          "src": "/icons/meal-plan.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+recipe",
+      "url": "/recettes?url=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/upload-recipe",
+      "accept": {
+        "application/json": [".json"],
+        "text/plain": [".txt"]
+      }
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+} 

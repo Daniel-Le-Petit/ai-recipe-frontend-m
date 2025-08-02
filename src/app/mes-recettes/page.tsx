@@ -1,343 +1,678 @@
-"use client"
+'use client'
 
-import { useEffect, useState, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
-import { RecipeStatusBadge } from '../../components/RecipeStatusBadge'
-import { Clock, Users, ChefHat, Star } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { RecipeCard } from '../../components/RecipeCard'
+import { FadeIn } from '../../components/FadeIn'
+import { SlideIn } from '../../components/SlideIn'
+import { Pulse } from '../../components/Pulse'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || process.env.VITE_APP_STRAPI_API_URL || '';
-
-const sortOptions = [
-  { value: 'date', label: 'Date' },
-  { value: 'categorie', label: 'Catégorie' },
-  { value: 'titre', label: 'Titre' }
+// Mock data for recipes
+const mockRecipes = [
+  {
+    id: 1,
+    title: 'Poulet rôti aux herbes de Provence',
+    description: 'Un délicieux poulet rôti avec des herbes fraîches et des légumes de saison',
+    duration: 45,
+    difficulty: 'Facile',
+    servings: 4,
+    rating: 4.5,
+    image: '/Images/fallback-recipe.jpg',
+    recipeState: 'approved',
+    isRobotCompatible: true,
+    category: 'Plat principal',
+    tags: ['Poulet', 'Herbes', 'Rôti'],
+    createdAt: '2024-01-15'
+  },
+  {
+    id: 2,
+    title: 'Salade composée méditerranéenne',
+    description: 'Une salade fraîche et colorée avec des ingrédients méditerranéens',
+    duration: 20,
+    difficulty: 'Facile',
+    servings: 2,
+    rating: 4.2,
+    image: '/Images/fallback-recipe.jpg',
+    recipeState: 'saved',
+    isRobotCompatible: false,
+    category: 'Entrée',
+    tags: ['Salade', 'Méditerranéen', 'Végétarien'],
+    createdAt: '2024-01-10'
+  },
+  {
+    id: 3,
+    title: 'Tarte aux pommes traditionnelle',
+    description: 'La recette de grand-mère avec une pâte brisée maison',
+    duration: 90,
+    difficulty: 'Intermédiaire',
+    servings: 6,
+    rating: 4.8,
+    image: '/Images/fallback-recipe.jpg',
+    recipeState: 'completed',
+    isRobotCompatible: true,
+    category: 'Dessert',
+    tags: ['Dessert', 'Pommes', 'Tarte'],
+    createdAt: '2024-01-08'
+  },
+  {
+    id: 4,
+    title: 'Risotto aux champignons sauvages',
+    description: 'Un risotto crémeux et parfumé aux champignons de saison',
+    duration: 35,
+    difficulty: 'Intermédiaire',
+    servings: 3,
+    rating: 4.3,
+    image: '/Images/fallback-recipe.jpg',
+    recipeState: 'draft',
+    isRobotCompatible: false,
+    category: 'Plat principal',
+    tags: ['Risotto', 'Champignons', 'Italien'],
+    createdAt: '2024-01-05'
+  },
+  {
+    id: 5,
+    title: 'Soupe à l\'oignon gratinée',
+    description: 'Une soupe réconfortante avec du fromage gratiné',
+    duration: 60,
+    difficulty: 'Facile',
+    servings: 4,
+    rating: 4.6,
+    image: '/Images/fallback-recipe.jpg',
+    recipeState: 'submitted',
+    isRobotCompatible: true,
+    category: 'Soupe',
+    tags: ['Soupe', 'Oignon', 'Gratin'],
+    createdAt: '2024-01-12'
+  },
+  {
+    id: 6,
+    title: 'Tiramisu classique',
+    description: 'Le dessert italien par excellence avec du mascarpone',
+    duration: 120,
+    difficulty: 'Difficile',
+    servings: 8,
+    rating: 4.9,
+    image: '/Images/fallback-recipe.jpg',
+    recipeState: 'approved',
+    isRobotCompatible: false,
+    category: 'Dessert',
+    tags: ['Dessert', 'Italien', 'Café'],
+    createdAt: '2024-01-03'
+  }
 ]
 
-// Helper function to normalize recipe data structure
-const normalizeRecipe = (recipe: any) => {
-  if (recipe && recipe.attributes) {
-    return recipe
-  }
-  
-  if (recipe && typeof recipe === 'object') {
-    const { id, ...attributes } = recipe
-    return {
-      id: id || recipe.id,
-      attributes: {
-        title: attributes.title || '',
-        description: attributes.description || '',
-        ingredients: attributes.ingredients || [],
-        instructions: attributes.instructions || '',
-        duration: attributes.duration || 0,
-        difficulty: attributes.difficulty || 'Facile',
-        servings: attributes.servings || 1,
-        rating: attributes.rating || 0,
-        tags: attributes.tags || [],
-        isRobotCompatible: attributes.isRobotCompatible || false,
-        recipeState: attributes.recipeState || 'draft',
-        createdAt: attributes.createdAt || new Date().toISOString(),
-        updatedAt: attributes.updatedAt || new Date().toISOString(),
-        publishedAt: attributes.publishedAt || new Date().toISOString(),
-        image: attributes.image || null,
-        recipieCategory: attributes.recipieCategory ? { data: attributes.recipieCategory } : null,
-        author: attributes.author ? { data: attributes.author } : null
-      }
-    }
-  }
-  
-  return {
-    id: 0,
-    attributes: {
-      title: 'Recette invalide',
-      description: '',
-      ingredients: [],
-      instructions: '',
-      duration: 0,
-      difficulty: 'Facile',
-      servings: 1,
-      rating: 0,
-      tags: [],
-      isRobotCompatible: false,
-      recipeState: 'draft',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      publishedAt: new Date().toISOString(),
-      image: null,
-      recipieCategory: null,
-      author: null
-    }
-  }
-}
+const statusFilters = [
+  { id: 'all', label: 'Toutes', icon: '📋' },
+  { id: 'draft', label: 'Brouillons', icon: '📝' },
+  { id: 'saved', label: 'Sauvegardées', icon: '💾' },
+  { id: 'submitted', label: 'Soumises', icon: '📤' },
+  { id: 'approved', label: 'Approuvées', icon: '✅' },
+  { id: 'completed', label: 'Terminées', icon: '🎉' }
+]
 
-// Helper functions to safely access recipe properties
-const getRecipeTitle = (recipe: any): string => {
-  return recipe.attributes?.title || (recipe as any).title || 'Sans titre'
-}
+const categoryFilters = [
+  'Toutes',
+  'Entrée',
+  'Plat principal',
+  'Dessert',
+  'Soupe',
+  'Salade'
+]
 
-const getRecipeDuration = (recipe: any): number => {
-  return recipe.attributes?.duration || (recipe as any).duration || 0
-}
-
-const getRecipeServings = (recipe: any): number => {
-  return recipe.attributes?.servings || (recipe as any).servings || 1
-}
-
-const getRecipeDifficulty = (recipe: any): string => {
-  return recipe.attributes?.difficulty || (recipe as any).difficulty || 'Facile'
-}
-
-const getRecipeRating = (recipe: any): number => {
-  return recipe.attributes?.rating || (recipe as any).rating || 0
-}
-
-const getRecipeStatus = (recipe: any) => {
-  return recipe.recipeState || recipe.attributes?.recipeState || 'draft'
-}
-
-const getRecipeImage = (recipe: any) => {
-  const normalizedRecipe = normalizeRecipe(recipe)
-  const image = normalizedRecipe.attributes.image
-  
-  if (image?.data?.attributes?.formats?.medium?.url) {
-    return image.data.attributes.formats.medium.url
-  }
-  if (image?.data?.attributes?.url) {
-    return image.data.attributes.url
-  }
-  if (image?.url) {
-    return image.url
-  }
-  if (image?.formats?.medium?.url) {
-    return image.formats.medium.url
-  }
-  return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-}
-
-const formatDuration = (minutes: number) => {
-  if (minutes < 60) {
-    return `${minutes} min`
-  }
-  const hours = Math.floor(minutes / 60)
-  const remainingMinutes = minutes % 60
-  return remainingMinutes > 0 ? `${hours}h${remainingMinutes}` : `${hours}h`
-}
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  })
-}
-
-function MesRecettesContent() {
-  const [recipes, setRecipes] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [sortBy, setSortBy] = useState('date')
-  const searchParams = useSearchParams()
-  const router = useRouter()
+export default function MesRecettesPage() {
+  const [recipes, setRecipes] = useState(mockRecipes)
+  const [filteredRecipes, setFilteredRecipes] = useState(mockRecipes)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [categoryFilter, setCategoryFilter] = useState('Toutes')
+  const [sortBy, setSortBy] = useState('recent')
+  const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
 
   useEffect(() => {
-    // Vérifier si on doit rediriger vers creer-recette étape 4
-    const stepParam = searchParams.get('step')
-    if (stepParam === '4') {
-      router.push('/creer-recette?step=4')
-      return
+    let filtered = recipes
+
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter(recipe =>
+        recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
     }
 
-    // Récupère l'email de l'utilisateur connecté (à adapter selon ta logique d'auth)
-    const email = typeof window !== 'undefined' ? localStorage.getItem('user_email') : null
-    if (!email) {
-      setError("Utilisateur non connecté ou email non trouvé.")
-      setLoading(false)
-      return
+    // Filter by status
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(recipe => recipe.recipeState === statusFilter)
     }
-    fetch(`${API_URL}/api/recipies?populate=*`)
-      .then(res => res.json())
-      .then(data => {
-        setRecipes(Array.isArray(data) ? data : data.data || [])
-      })
-      .catch(() => setError("Erreur lors du chargement des recettes."))
-      .finally(() => setLoading(false))
-  }, [searchParams, router])
 
-  // Fonction de tri
-  const sortedRecipes = [...recipes].sort((a, b) => {
-    if (sortBy === 'date') {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    // Filter by category
+    if (categoryFilter !== 'Toutes') {
+      filtered = filtered.filter(recipe => recipe.category === categoryFilter)
     }
-    if (sortBy === 'categorie') {
-      const catA = a.recipieCategory?.categoryName || ''
-      const catB = b.recipieCategory?.categoryName || ''
-      return catA.localeCompare(catB)
-    }
-    if (sortBy === 'titre') {
-      return getRecipeTitle(a).localeCompare(getRecipeTitle(b))
-    }
-    return 0
-  })
 
-  // Handler pour commander (redirige vers la création de recette étape 3)
-  const handleOrder = (recipe: any) => {
-    window.location.href = `/creer-recette?id=${recipe.id}&fromCard=1&step=3`;
+    // Sort recipes
+    switch (sortBy) {
+      case 'recent':
+        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        break
+      case 'rating':
+        filtered.sort((a, b) => b.rating - a.rating)
+        break
+      case 'duration':
+        filtered.sort((a, b) => a.duration - b.duration)
+        break
+      case 'title':
+        filtered.sort((a, b) => a.title.localeCompare(b.title))
+        break
+    }
+
+    setFilteredRecipes(filtered)
+  }, [recipes, searchTerm, statusFilter, categoryFilter, sortBy])
+
+  const handleStartCooking = (recipe: any) => {
+    console.log('Commencer la cuisson:', recipe.title)
+    window.location.href = `/cuisson-guidee?id=${recipe.id}`
+  }
+
+  const handleFavorite = (recipe: any) => {
+    console.log('Ajouter aux favoris:', recipe.title)
+  }
+
+  const handleDeleteRecipe = (recipeId: number) => {
+    setRecipes(recipes.filter(recipe => recipe.id !== recipeId))
+  }
+
+  const getStatusCount = (status: string) => {
+    if (status === 'all') return recipes.length
+    return recipes.filter(recipe => recipe.recipeState === status).length
   }
 
   return (
-    <>
-      <Header />
-      <div className="max-w-5xl mx-auto py-8">
-        <div className="mb-4">
-          <button
-            onClick={() => window.history.back()}
-            className="flex items-center gap-2 text-herb-green hover:text-herb-dark font-semibold text-lg"
-            aria-label="Retour"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Retour
-          </button>
-        </div>
-
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Mes Recettes</h1>
-          <p className="text-lg text-gray-600">Gérez et suivez vos recettes personnalisées</p>
-        </div>
-
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-herb-green mx-auto mb-4"></div>
-            <p className="text-gray-600">Chargement de vos recettes...</p>
-          </div>
-        ) : error ? (
-          <div className="text-center py-12">
-            <div className="text-red-600 mb-4">
-              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
+    <div style={{ 
+      padding: '24px', 
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)',
+      minHeight: '100vh',
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    }}>
+      
+      {/* Hero Section */}
+      <SlideIn direction="down" delay={200}>
+        <div style={{
+          background: 'white',
+          borderRadius: '24px',
+          padding: '40px',
+          marginBottom: '30px',
+          textAlign: 'center',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(0, 0, 0, 0.05)'
+        }}>
+          <FadeIn delay={400}>
+            <div style={{
+              background: 'linear-gradient(135deg, #20B251 0%, #10b981 100%)',
+              borderRadius: '50px',
+              width: '80px',
+              height: '80px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px auto',
+              boxShadow: '0 8px 32px rgba(32, 178, 81, 0.3)'
+            }}>
+              <span style={{ fontSize: '40px' }}>🍽️</span>
             </div>
-            <p className="text-gray-600">{error}</p>
-          </div>
-        ) : (
-          <>
-            {/* Contrôles de tri */}
-            <div className="mb-6 flex justify-between items-center">
-              <div className="flex items-center gap-4">
-                <label className="text-sm font-medium text-gray-700">Trier par:</label>
+          </FadeIn>
+          
+          <FadeIn delay={600}>
+            <h1 style={{ 
+              color: '#1f2937', 
+              fontSize: '36px', 
+              margin: '0 0 10px 0',
+              fontWeight: 'bold'
+            }}>
+              Mes Recettes
+            </h1>
+          </FadeIn>
+
+          <FadeIn delay={800}>
+            <p style={{ 
+              color: '#6b7280', 
+              fontSize: '18px', 
+              margin: '0 0 20px 0'
+            }}>
+              Gérez et suivez vos recettes personnalisées créées par l'IA
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={1000}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '12px',
+              flexWrap: 'wrap'
+            }}>
+              <div style={{
+                background: '#f0fdf4',
+                color: '#20B251',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                fontSize: '14px',
+                fontWeight: '600',
+                border: '1px solid #bbf7d0'
+              }}>
+                📊 {recipes.length} recettes au total
+              </div>
+              <div style={{
+                background: '#fef3c7',
+                color: '#d97706',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                fontSize: '14px',
+                fontWeight: '600',
+                border: '1px solid #fde68a'
+              }}>
+                ⭐ {recipes.filter(r => r.rating >= 4.5).length} favoris
+              </div>
+              <div style={{
+                background: '#ede9fe',
+                color: '#7c3aed',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                fontSize: '14px',
+                fontWeight: '600',
+                border: '1px solid #ddd6fe'
+              }}>
+                🤖 {recipes.filter(r => r.isRobotCompatible).length} compatibles IA
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </SlideIn>
+
+      {/* Search and Filters */}
+      <SlideIn direction="up" delay={1200}>
+        <div style={{
+          background: 'white',
+          borderRadius: '16px',
+          padding: '24px',
+          marginBottom: '24px',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(0, 0, 0, 0.05)'
+        }}>
+          {/* Search Bar */}
+          <FadeIn delay={1400}>
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{
+                position: 'relative',
+                maxWidth: '500px',
+                margin: '0 auto'
+              }}>
+                <input
+                  type="text"
+                  placeholder="🔍 Rechercher une recette..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '16px 20px 16px 50px',
+                    border: '2px solid #e5e7eb',
+                    borderRadius: '12px',
+                    fontSize: '16px',
+                    outline: 'none',
+                    transition: 'all 0.2s ease',
+                    background: '#f9fafb'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#20B251'
+                    e.target.style.background = 'white'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#e5e7eb'
+                    e.target.style.background = '#f9fafb'
+                  }}
+                />
+                <span style={{
+                  position: 'absolute',
+                  left: '18px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '18px',
+                  color: '#9ca3af'
+                }}>
+                  🔍
+                </span>
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* Filters */}
+          <FadeIn delay={1600}>
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '12px',
+              marginBottom: '20px'
+            }}>
+              {/* Status Filters */}
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {statusFilters.map((filter) => (
+                  <button
+                    key={filter.id}
+                    onClick={() => setStatusFilter(filter.id)}
+                    style={{
+                      background: statusFilter === filter.id ? '#20B251' : '#f3f4f6',
+                      color: statusFilter === filter.id ? 'white' : '#6b7280',
+                      border: 'none',
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (statusFilter !== filter.id) {
+                        e.target.style.background = '#e5e7eb'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (statusFilter !== filter.id) {
+                        e.target.style.background = '#f3f4f6'
+                      }
+                    }}
+                  >
+                    <span>{filter.icon}</span>
+                    {filter.label}
+                    <span style={{
+                      background: statusFilter === filter.id ? 'rgba(255,255,255,0.2)' : '#e5e7eb',
+                      color: statusFilter === filter.id ? 'white' : '#6b7280',
+                      padding: '2px 8px',
+                      borderRadius: '10px',
+                      fontSize: '12px',
+                      marginLeft: '4px'
+                    }}>
+                      {getStatusCount(filter.id)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* Category and Sort Controls */}
+          <FadeIn delay={1800}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '16px'
+            }}>
+              {/* Category Filter */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '600' }}>
+                  Catégorie:
+                </span>
                 <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-herb-green"
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  aria-label="Filtrer par catégorie"
+                  style={{
+                    padding: '8px 12px',
+                    border: '2px solid #e5e7eb',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    background: 'white',
+                    outline: 'none',
+                    cursor: 'pointer'
+                  }}
                 >
-                  {sortOptions.map(option => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
+                  {categoryFilters.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
                     </option>
                   ))}
                 </select>
               </div>
-              <div className="text-sm text-gray-600">
-                {sortedRecipes.length} recette{sortedRecipes.length !== 1 ? 's' : ''}
+
+              {/* Sort Options */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '600' }}>
+                  Trier par:
+                </span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Trier les recettes"
+                  style={{
+                    padding: '8px 12px',
+                    border: '2px solid #e5e7eb',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    background: 'white',
+                    outline: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value="recent">Plus récentes</option>
+                  <option value="rating">Meilleures notes</option>
+                  <option value="duration">Durée croissante</option>
+                  <option value="title">Ordre alphabétique</option>
+                </select>
+              </div>
+
+              {/* View Mode Toggle */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '600' }}>
+                  Affichage:
+                </span>
+                <div style={{
+                  display: 'flex',
+                  background: '#f3f4f6',
+                  borderRadius: '8px',
+                  padding: '2px'
+                }}>
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    style={{
+                      background: viewMode === 'grid' ? '#20B251' : 'transparent',
+                      color: viewMode === 'grid' ? 'white' : '#6b7280',
+                      border: 'none',
+                      padding: '6px 12px',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    📱 Grille
+                  </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    style={{
+                      background: viewMode === 'list' ? '#20B251' : 'transparent',
+                      color: viewMode === 'list' ? 'white' : '#6b7280',
+                      border: 'none',
+                      padding: '6px 12px',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    📋 Liste
+                  </button>
+                </div>
               </div>
             </div>
+          </FadeIn>
+        </div>
+      </SlideIn>
 
-            {/* Grille des recettes */}
-            {sortedRecipes.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-gray-400 mb-4">
-                  <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
+      {/* Results Count */}
+      <FadeIn delay={2000}>
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '20px'
+        }}>
+          <p style={{
+            color: '#6b7280',
+            fontSize: '16px',
+            margin: '0'
+          }}>
+            {filteredRecipes.length} recette{filteredRecipes.length !== 1 ? 's' : ''} trouvée{filteredRecipes.length !== 1 ? 's' : ''}
+            {searchTerm && ` pour "${searchTerm}"`}
+          </p>
+        </div>
+      </FadeIn>
+
+      {/* Recipe Grid/List */}
+      <SlideIn direction="up" delay={2200}>
+        {filteredRecipes.length > 0 ? (
+          <div style={{
+            display: viewMode === 'grid' ? 'grid' : 'block',
+            gridTemplateColumns: viewMode === 'grid' ? 'repeat(auto-fill, minmax(320px, 1fr))' : 'none',
+            gap: '24px'
+          }}>
+            {filteredRecipes.map((recipe, index) => (
+              <FadeIn key={recipe.id} delay={2400 + index * 100}>
+                <div style={{
+                  background: 'white',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid rgba(0, 0, 0, 0.05)',
+                  transition: 'all 0.3s ease',
+                  position: 'relative'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)'
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                }}>
+                  <RecipeCard
+                    recipe={recipe}
+                    onStartCooking={handleStartCooking}
+                    onFavorite={handleFavorite}
+                    showStatus={true}
+                    showRating={true}
+                    showTags={true}
+                    compact={viewMode === 'list'}
+                  />
+                  
+                  {/* Action Buttons */}
+                  <div style={{
+                    padding: '16px',
+                    borderTop: '1px solid #f3f4f6',
+                    display: 'flex',
+                    gap: '8px'
+                  }}>
+                    <button
+                      onClick={() => handleStartCooking(recipe)}
+                      style={{
+                        flex: 1,
+                        background: 'linear-gradient(135deg, #20B251 0%, #10b981 100%)',
+                        color: 'white',
+                        border: 'none',
+                        padding: '10px 16px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => e.target.style.transform = 'scale(1.02)'}
+                      onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                    >
+                      🍳 Commencer
+                    </button>
+                    <button
+                      onClick={() => handleDeleteRecipe(recipe.id)}
+                      style={{
+                        background: '#fee2e2',
+                        color: '#dc2626',
+                        border: '1px solid #fecaca',
+                        padding: '10px 16px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = '#fecaca'
+                        e.target.style.transform = 'scale(1.02)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = '#fee2e2'
+                        e.target.style.transform = 'scale(1)'
+                      }}
+                    >
+                      🗑️
+                    </button>
+                  </div>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune recette trouvée</h3>
-                <p className="text-gray-600 mb-6">Vous n&apos;avez pas encore créé de recettes personnalisées.</p>
-                <button
-                  onClick={() => router.push('/creer-recette')}
-                  className="bg-herb-green text-white px-6 py-3 rounded-lg hover:bg-herb-dark transition-colors"
-                >
-                  Créer ma première recette
-                </button>
+              </FadeIn>
+            ))}
+          </div>
+        ) : (
+          <FadeIn delay={2400}>
+            <div style={{
+              background: 'white',
+              borderRadius: '16px',
+              padding: '60px 40px',
+              textAlign: 'center',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              border: '1px solid rgba(0, 0, 0, 0.05)'
+            }}>
+              <div style={{
+                fontSize: '64px',
+                marginBottom: '20px'
+              }}>
+                🍽️
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sortedRecipes.map((recipe) => {
-                  const normalizedRecipe = normalizeRecipe(recipe)
-                  return (
-                    <div key={normalizedRecipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="relative">
-                        <img
-                          src={getRecipeImage(normalizedRecipe)}
-                          alt={getRecipeTitle(normalizedRecipe)}
-                          className="w-full h-48 object-cover"
-                        />
-                        <div className="absolute top-2 right-2">
-                          <RecipeStatusBadge status={getRecipeStatus(normalizedRecipe)} />
-                        </div>
-                      </div>
-                      
-                      <div className="p-4">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                          {getRecipeTitle(normalizedRecipe)}
-                        </h3>
-                        
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{formatDuration(getRecipeDuration(normalizedRecipe))}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{getRecipeServings(normalizedRecipe)} pers.</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <ChefHat className="h-4 w-4" />
-                            <span>{getRecipeDifficulty(normalizedRecipe)}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                            <span className="text-sm text-gray-600">{getRecipeRating(normalizedRecipe)}/5</span>
-                          </div>
-                          <button
-                            onClick={() => handleOrder(normalizedRecipe)}
-                            className="bg-herb-green text-white px-4 py-2 rounded-md text-sm hover:bg-herb-dark transition-colors"
-                          >
-                            Commander
-                          </button>
-                        </div>
-                        
-                        <div className="mt-3 text-xs text-gray-500">
-                          Créée le {formatDate(normalizedRecipe.attributes.createdAt)}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </>
+              <h3 style={{
+                color: '#1f2937',
+                fontSize: '24px',
+                margin: '0 0 10px 0',
+                fontWeight: 'bold'
+              }}>
+                Aucune recette trouvée
+              </h3>
+              <p style={{
+                color: '#6b7280',
+                fontSize: '16px',
+                margin: '0 0 20px 0'
+              }}>
+                {searchTerm ? 'Essayez de modifier vos critères de recherche.' : 'Commencez par créer votre première recette !'}
+              </p>
+              <button
+                onClick={() => window.location.href = '/creer-recette'}
+                style={{
+                  background: 'linear-gradient(135deg, #20B251 0%, #10b981 100%)',
+                  color: 'white',
+                  border: 'none',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 4px 16px rgba(32, 178, 81, 0.3)'
+                }}
+                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                ✨ Créer une recette
+              </button>
+            </div>
+          </FadeIn>
         )}
-      </div>
-      <Footer />
-    </>
-  )
-}
-
-export default function MesRecettesPage() {
-  return (
-    <Suspense fallback={
-      <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-herb-green mx-auto mb-4"></div>
-        <p className="text-gray-600">Chargement...</p>
-      </div>
-    }>
-      <MesRecettesContent />
-    </Suspense>
+      </SlideIn>
+    </div>
   )
 } 
