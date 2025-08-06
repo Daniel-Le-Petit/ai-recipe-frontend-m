@@ -434,8 +434,18 @@ export default function CreateRecipePage() {
             borderRadius: '8px',
             transition: 'background-color 0.2s ease'
           }}
-          onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'}
-          onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'transparent'}
+          onMouseEnter={(e) => {
+            const target = e.target as HTMLElement
+            if (target && target.style) {
+              target.style.backgroundColor = '#f0f9ff'
+            }
+          }}
+          onMouseLeave={(e) => {
+            const target = e.target as HTMLElement
+            if (target && target.style) {
+              target.style.backgroundColor = 'transparent'
+            }
+          }}
           >Accueil</a>
           <a href="/mes-recettes" style={{ 
             color: '#20B251', 
@@ -446,8 +456,18 @@ export default function CreateRecipePage() {
             borderRadius: '8px',
             transition: 'background-color 0.2s ease'
           }}
-          onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'}
-          onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'transparent'}
+          onMouseEnter={(e) => {
+            const target = e.target as HTMLElement
+            if (target && target.style) {
+              target.style.backgroundColor = '#f0f9ff'
+            }
+          }}
+          onMouseLeave={(e) => {
+            const target = e.target as HTMLElement
+            if (target && target.style) {
+              target.style.backgroundColor = 'transparent'
+            }
+          }}
           >Mes Recettes</a>
           <a href="/connexion" style={{ 
             color: '#20B251', 
@@ -458,8 +478,18 @@ export default function CreateRecipePage() {
             borderRadius: '8px',
             transition: 'background-color 0.2s ease'
           }}
-          onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'}
-          onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'transparent'}
+          onMouseEnter={(e) => {
+            const target = e.target as HTMLElement
+            if (target && target.style) {
+              target.style.backgroundColor = '#f0f9ff'
+            }
+          }}
+          onMouseLeave={(e) => {
+            const target = e.target as HTMLElement
+            if (target && target.style) {
+              target.style.backgroundColor = 'transparent'
+            }
+          }}
           >Connexion</a>
         </div>
       </FadeIn>
@@ -589,8 +619,18 @@ export default function CreateRecipePage() {
                       fontSize: '16px',
                       transition: 'border-color 0.2s ease'
                     }}
-                    onFocus={(e) => (e.target as HTMLElement).style.borderColor = '#20B251'}
-                    onBlur={(e) => (e.target as HTMLElement).style.borderColor = '#e5e7eb'}
+                    onFocus={(e) => {
+                      const target = e.target as HTMLElement
+                      if (target && target.style) {
+                        target.style.borderColor = '#20B251'
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const target = e.target as HTMLElement
+                      if (target && target.style) {
+                        target.style.borderColor = '#e5e7eb'
+                      }
+                    }}
                   />
                 </form>
 
@@ -680,14 +720,20 @@ export default function CreateRecipePage() {
                         }}
                         onMouseEnter={(e) => {
                           if (!selectedIngredients.includes(ingredient.name)) {
-                            (e.target as HTMLElement).style.borderColor = '#20B251'
-                            (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#20B251'
+                              target.style.backgroundColor = '#f0f9ff'
+                            }
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (!selectedIngredients.includes(ingredient.name)) {
-                            (e.target as HTMLElement).style.borderColor = '#e5e7eb'
-                            (e.target as HTMLElement).style.backgroundColor = 'white'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#e5e7eb'
+                              target.style.backgroundColor = 'white'
+                            }
                           }
                         }}
                       >
@@ -756,14 +802,20 @@ export default function CreateRecipePage() {
                       }}
                       onMouseEnter={(e) => {
                         if (selectedCategory !== category.id) {
-                          (e.target as HTMLElement).style.borderColor = '#20B251'
-                          (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'
+                          const target = e.target as HTMLElement
+                          if (target && target.style) {
+                            target.style.borderColor = '#20B251'
+                            target.style.backgroundColor = '#f0f9ff'
+                          }
                         }
                       }}
                       onMouseLeave={(e) => {
                         if (selectedCategory !== category.id) {
-                          (e.target as HTMLElement).style.borderColor = '#d1d5db'
-                          (e.target as HTMLElement).style.backgroundColor = '#f3f4f6'
+                          const target = e.target as HTMLElement
+                          if (target && target.style) {
+                            target.style.borderColor = '#d1d5db'
+                            target.style.backgroundColor = '#f3f4f6'
+                          }
                         }
                       }}
                     >
@@ -940,12 +992,18 @@ export default function CreateRecipePage() {
                             }}
                             onMouseEnter={(e) => {
                               if (selectedMealType !== suggestion.id) {
-                                (e.target as HTMLElement).style.backgroundColor = '#e0f2fe'
+                                const target = e.target as HTMLElement
+                                if (target && target.style) {
+                                  target.style.backgroundColor = '#e0f2fe'
+                                }
                               }
                             }}
                             onMouseLeave={(e) => {
                               if (selectedMealType !== suggestion.id) {
-                                (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'
+                                const target = e.target as HTMLElement
+                                if (target && target.style) {
+                                  target.style.backgroundColor = '#f0f9ff'
+                                }
                               }
                             }}
                           >
@@ -1031,14 +1089,20 @@ export default function CreateRecipePage() {
                             }}
                             onMouseEnter={(e) => {
                               if (selectedMealType !== mealType.id) {
-                                (e.target as HTMLElement).style.borderColor = '#20B251'
-                                (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'
+                                const target = e.target as HTMLElement
+                                if (target && target.style) {
+                                  target.style.borderColor = '#20B251'
+                                  target.style.backgroundColor = '#f0f9ff'
+                                }
                               }
                             }}
                             onMouseLeave={(e) => {
                               if (selectedMealType !== mealType.id) {
-                                (e.target as HTMLElement).style.borderColor = '#d1d5db'
-                                (e.target as HTMLElement).style.backgroundColor = '#f3f4f6'
+                                const target = e.target as HTMLElement
+                                if (target && target.style) {
+                                  target.style.borderColor = '#d1d5db'
+                                  target.style.backgroundColor = '#f3f4f6'
+                                }
                               }
                             }}
                           >
@@ -1148,14 +1212,20 @@ export default function CreateRecipePage() {
                         }}
                         onMouseEnter={(e) => {
                           if (selectedPortions !== portion.id) {
-                            (e.target as HTMLElement).style.borderColor = '#20B251'
-                            (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#20B251'
+                              target.style.backgroundColor = '#f0f9ff'
+                            }
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (selectedPortions !== portion.id) {
-                            (e.target as HTMLElement).style.borderColor = '#d1d5db'
-                            (e.target as HTMLElement).style.backgroundColor = '#f3f4f6'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#d1d5db'
+                              target.style.backgroundColor = '#f3f4f6'
+                            }
                           }
                         }}
                       >
@@ -1288,14 +1358,20 @@ export default function CreateRecipePage() {
                         }}
                         onMouseEnter={(e) => {
                           if (selectedDietaryPreference !== preference.id) {
-                            (e.target as HTMLElement).style.borderColor = '#20B251'
-                            (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#20B251'
+                              target.style.backgroundColor = '#f0f9ff'
+                            }
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (selectedDietaryPreference !== preference.id) {
-                            (e.target as HTMLElement).style.borderColor = '#d1d5db'
-                            (e.target as HTMLElement).style.backgroundColor = '#f3f4f6'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#d1d5db'
+                              target.style.backgroundColor = '#f3f4f6'
+                            }
                           }
                         }}
                       >
@@ -1458,14 +1534,20 @@ export default function CreateRecipePage() {
                         }}
                         onMouseEnter={(e) => {
                           if (selectedCookingMode !== mode.id) {
-                            (e.target as HTMLElement).style.borderColor = '#20B251'
-                            (e.target as HTMLElement).style.backgroundColor = '#f0f9ff'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#20B251'
+                              target.style.backgroundColor = '#f0f9ff'
+                            }
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (selectedCookingMode !== mode.id) {
-                            (e.target as HTMLElement).style.borderColor = '#d1d5db'
-                            (e.target as HTMLElement).style.backgroundColor = '#f3f4f6'
+                            const target = e.target as HTMLElement
+                            if (target && target.style) {
+                              target.style.borderColor = '#d1d5db'
+                              target.style.backgroundColor = '#f3f4f6'
+                            }
                           }
                         }}
                       >
