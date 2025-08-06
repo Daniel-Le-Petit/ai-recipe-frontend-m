@@ -41,7 +41,7 @@ export default function PlanSemaineVoirPage() {
 
   // Initialiser les statuts des repas (tous acceptés par défaut)
   useEffect(() => {
-    const initialStatuses = {}
+    const initialStatuses: Record<string, string> = {}
     weeklyPlans.forEach((weekPlan, weekIndex) => {
       weekPlan.days.forEach(day => {
         weekPlan.meals.forEach(meal => {

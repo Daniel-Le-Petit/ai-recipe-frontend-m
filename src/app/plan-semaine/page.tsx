@@ -24,18 +24,18 @@ export default function PlanSemainePage() {
   const totalSteps = 10
 
   // États pour les étapes
-  const [selectedMealTypes, setSelectedMealTypes] = useState([])
-  const [selectedPortions, setSelectedPortions] = useState('')
-  const [selectedPreferences, setSelectedPreferences] = useState([])
-  const [selectedCookingMode, setSelectedCookingMode] = useState('')
-  const [selectedDifficulty, setSelectedDifficulty] = useState('')
-  const [selectedCookingTime, setSelectedCookingTime] = useState('')
-  const [selectedCuisineType, setSelectedCuisineType] = useState('')
-  const [email, setEmail] = useState('')
-  const [emailError, setEmailError] = useState('')
-  const [selectedPlan, setSelectedPlan] = useState('')
-  const [timeLeft, setTimeLeft] = useState(600) // 10 minutes en secondes
-  const [mealStatuses, setMealStatuses] = useState({})
+  const [selectedMealTypes, setSelectedMealTypes] = useState<string[]>([])
+  const [selectedPortions, setSelectedPortions] = useState<string>('')
+  const [selectedPreferences, setSelectedPreferences] = useState<string[]>([])
+  const [selectedCookingMode, setSelectedCookingMode] = useState<string>('')
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('')
+  const [selectedCookingTime, setSelectedCookingTime] = useState<string>('')
+  const [selectedCuisineType, setSelectedCuisineType] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [emailError, setEmailError] = useState<string>('')
+  const [selectedPlan, setSelectedPlan] = useState<string>('')
+  const [timeLeft, setTimeLeft] = useState<number>(600) // 10 minutes en secondes
+  const [mealStatuses, setMealStatuses] = useState<Record<string, string>>({})
 
   // Données du plan de semaine généré
   const weeklyPlanData = {
@@ -239,14 +239,14 @@ export default function PlanSemainePage() {
     }
   }, [currentStep])
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const remainingSeconds = seconds % 60
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
   }
 
   // Validation email
-  const validateEmail = (email) => {
+  const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return regex.test(email)
   }
@@ -278,7 +278,7 @@ export default function PlanSemainePage() {
   }
 
   // Fonctions de sélection
-  const handleMealTypeToggle = (mealType) => {
+  const handleMealTypeToggle = (mealType: string) => {
     setSelectedMealTypes(prev => 
       prev.includes(mealType) 
         ? prev.filter(type => type !== mealType)
@@ -286,11 +286,11 @@ export default function PlanSemainePage() {
     )
   }
 
-  const handleOptionSelect = (optionId, setter) => {
+  const handleOptionSelect = (optionId: string, setter: (value: string) => void) => {
     setter(optionId)
   }
 
-  const handlePreferencesToggle = (preferenceId) => {
+  const handlePreferencesToggle = (preferenceId: string) => {
     setSelectedPreferences(prev => {
       if (prev.includes(preferenceId)) {
         return prev.filter(id => id !== preferenceId)
@@ -300,7 +300,7 @@ export default function PlanSemainePage() {
     })
   }
 
-  const toggleMealStatus = (mealName, dayDate) => {
+  const toggleMealStatus = (mealName: string, dayDate: string) => {
     const key = `${mealName}-${dayDate}`
     setMealStatuses(prev => ({
       ...prev,
@@ -308,7 +308,7 @@ export default function PlanSemainePage() {
     }))
   }
 
-  const getMealStatus = (mealName, dayDate) => {
+  const getMealStatus = (mealName: string, dayDate: string) => {
     const key = `${mealName}-${dayDate}`
     return mealStatuses[key] || 'accepted' // Par défaut, tous les repas sont acceptés
   }
@@ -342,7 +342,7 @@ export default function PlanSemainePage() {
   }
 
   // Rendu des options de sélection
-  const renderOptions = (options, selectedValue, onSelect, isMultiSelect = false) => {
+  const renderOptions = (options: any[], selectedValue: string | string[], onSelect: (value: string) => void, isMultiSelect = false) => {
     return (
                 <div style={{ 
                   display: 'grid', 
@@ -378,14 +378,20 @@ export default function PlanSemainePage() {
                       }}
                       onMouseEnter={(e) => {
                 if (!isSelected) {
-                                 e.target.style.borderColor = '#20B251'
-                  e.target.style.backgroundColor = '#f0fdf4'
+                                 const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.borderColor = '#20B251'
+                    target.style.backgroundColor = '#f0fdf4'
+                  }
                         }
                       }}
                       onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.target.style.borderColor = '#e5e7eb'
-                  e.target.style.backgroundColor = '#ffffff'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.borderColor = '#e5e7eb'
+                    target.style.backgroundColor = '#ffffff'
+                  }
                 }
               }}
             >
@@ -1299,14 +1305,20 @@ export default function PlanSemainePage() {
                   boxShadow: '0 4px 15px rgba(32, 178, 81, 0.3)'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#1a8f42'
-                  e.target.style.transform = 'translateY(-2px)'
-                  e.target.style.boxShadow = '0 6px 20px rgba(32, 178, 81, 0.4)'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = '#1a8f42'
+                    target.style.transform = 'translateY(-2px)'
+                    target.style.boxShadow = '0 6px 20px rgba(32, 178, 81, 0.4)'
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#20B251'
-                  e.target.style.transform = 'translateY(0)'
-                  e.target.style.boxShadow = '0 4px 15px rgba(32, 178, 81, 0.3)'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = '#20B251'
+                    target.style.transform = 'translateY(0)'
+                    target.style.boxShadow = '0 4px 15px rgba(32, 178, 81, 0.3)'
+                  }
                 }}
               >
                 Obtenez votre plan de la semaine du 21 Juillet 2025 personnalisé !

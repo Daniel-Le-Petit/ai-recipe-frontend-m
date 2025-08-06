@@ -591,8 +591,18 @@ export default function MesRecettesPage() {
                         cursor: 'pointer',
                         transition: 'all 0.2s ease'
                       }}
-                      onMouseEnter={(e) => e.target.style.transform = 'scale(1.02)'}
-                      onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                      onMouseEnter={(e) => {
+                        const target = e.target as HTMLElement
+                        if (target && target.style) {
+                          target.style.transform = 'scale(1.02)'
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        const target = e.target as HTMLElement
+                        if (target && target.style) {
+                          target.style.transform = 'scale(1)'
+                        }
+                      }}
                     >
                       🍳 Commencer
                     </button>
@@ -610,12 +620,18 @@ export default function MesRecettesPage() {
                         transition: 'all 0.2s ease'
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.background = '#fecaca'
-                        e.target.style.transform = 'scale(1.02)'
+                        const target = e.target as HTMLElement
+                        if (target && target.style) {
+                          target.style.background = '#fecaca'
+                          target.style.transform = 'scale(1.02)'
+                        }
                       }}
                       onMouseLeave={(e) => {
-                        e.target.style.background = '#fee2e2'
-                        e.target.style.transform = 'scale(1)'
+                        const target = e.target as HTMLElement
+                        if (target && target.style) {
+                          target.style.background = '#fee2e2'
+                          target.style.transform = 'scale(1)'
+                        }
                       }}
                     >
                       🗑️
@@ -670,8 +686,18 @@ export default function MesRecettesPage() {
                   transition: 'all 0.2s ease',
                   boxShadow: '0 4px 16px rgba(32, 178, 81, 0.3)'
                 }}
-                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
-                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+                onMouseEnter={(e) => {
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.transform = 'translateY(-2px)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.transform = 'translateY(0)'
+                  }
+                }}
               >
                 ✨ Créer une recette
               </button>
