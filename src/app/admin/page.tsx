@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Recipe } from '@/types/api';
+import { StrapiRecipe } from '@/types/api';
 import { Database, Server, User, Lock, Eye, EyeOff } from 'lucide-react';
 
 interface AdminStats {
@@ -23,7 +23,7 @@ export default function AdminDashboard() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [recentRecipes, setRecentRecipes] = useState<Recipe[]>([]);
+  const [recentRecipes, setRecentRecipes] = useState<StrapiRecipe[]>([]);
   const [showSensitiveInfo, setShowSensitiveInfo] = useState(false);
   const [apiUrl, setApiUrl] = useState<string>(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338');
   const [apiDiag, setApiDiag] = useState<{status: number|null, statusText: string, count: number|null, error?: string}|null>(null);

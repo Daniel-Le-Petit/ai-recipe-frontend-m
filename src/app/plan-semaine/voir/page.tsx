@@ -116,7 +116,7 @@ export default function PlanSemaineVoirPage() {
                 fontWeight: '700'
               }}>
                 Plan de la Semaine
-              </h1>
+            </h1>
               <p style={{ 
                 color: '#6b7280', 
                 fontSize: '18px', 
@@ -170,15 +170,15 @@ export default function PlanSemaineVoirPage() {
                 <div>
                   <strong>Mode cuisson</strong><br />
                   {currentPlan.filters.cookingMode}
-                </div>
+              </div>
                 <div>
                   <strong>Temps max</strong><br />
                   {currentPlan.filters.maxTime}
-                </div>
+              </div>
                 <div>
                   <strong>Type de cuisine</strong><br />
                   {currentPlan.filters.cuisine}
-                </div>
+              </div>
               </div>
             </div>
           </FadeIn>
@@ -244,8 +244,8 @@ export default function PlanSemaineVoirPage() {
                       {currentPlan.days.map(day => {
                         const status = getMealStatus(meal.name, day.date)
                         const isAccepted = status === 'accepted'
-                        
-                        return (
+
+              return (
                           <td key={day.date} style={{
                             padding: '16px',
                             textAlign: 'center',
@@ -365,6 +365,6 @@ export default function PlanSemaineVoirPage() {
           </FadeIn>
         </div>
       </SlideIn>
-    </div>
+      </div>
   )
 } 

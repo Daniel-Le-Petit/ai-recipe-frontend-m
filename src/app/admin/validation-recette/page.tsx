@@ -65,10 +65,10 @@ export default function AdminValidationPage() {
 
   // Filtered recipes
   const filteredRecipes = pendingRecipes
-    .filter(recipe => recipe && typeof recipe.title === 'string')
+    .filter(recipe => recipe && typeof recipe.attributes?.title === 'string')
     .filter(recipe => {
-      const title = recipe.title.toLowerCase();
-      const cat = recipe.recipieCategory?.categoryName || '';
+      const title = recipe.attributes.title.toLowerCase();
+      const cat = recipe.attributes?.recipieCategory?.data?.categoryName || '';
       return (
         title.includes(search.toLowerCase()) &&
         (categoryFilter === '' || cat === categoryFilter)
@@ -79,7 +79,7 @@ export default function AdminValidationPage() {
   const categories = Array.from(
     new Set(
       pendingRecipes
-        .map(r => r?.recipieCategory?.categoryName)
+        .map(r => r?.attributes?.recipieCategory?.data?.categoryName)
         .filter(Boolean)
     )
   );
@@ -196,8 +196,8 @@ export default function AdminValidationPage() {
                   </td>
                   <td className="p-2">
                     <img
-                      src={recipe.image && recipe.image.url ? recipe.image.url : '/Images/fallback-recipe.jpg'}
-                      alt={recipe.title || 'Recette'}
+                      src={recipe.attributes?.image?.data?.attributes?.url ? `${process.env.NEXT_PUBLIC_API_URL}${recipe.attributes.image.data.attributes.url}` : '/Images/fallback-recipe.jpg'}
+                      alt={recipe.attributes?.title || 'Recette'}
                       className="h-12 w-12 object-cover rounded"
                       onError={e => {
                         if (!e.currentTarget.src.endsWith('/Images/fallback-recipe.jpg')) {
@@ -206,10 +206,10 @@ export default function AdminValidationPage() {
                       }}
                     />
                   </td>
-                  <td className="p-2">{recipe.title}</td>
-                  <td className="p-2">{recipe.RecipeUser?.username || '—'}</td>
-                  <td className="p-2">{recipe.recipieCategory?.categoryName || '—'}</td>
-                  <td className="p-2"><StatusBadge status={recipe.recipeState || 'draft'} /></td>
+                  <td className="p-2">{recipe.attributes?.title}</td>
+                                      <td className="p-2">{recipe.attributes?.author?.data?.attributes?.username || '—'}</td>
+                    <td className="p-2">{recipe.attributes?.recipieCategory?.data?.categoryName || '—'}</td>
+                                      <td className="p-2"><StatusBadge status={recipe.attributes?.recipeState || 'draft'} /></td>
                 </tr>
               ))}
             </tbody>
@@ -223,8 +223,8 @@ export default function AdminValidationPage() {
               <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onClick={() => setQuickViewRecipe(null)}>✖️</button>
               <div className="overflow-y-auto p-6 flex-1">
                 <img
-                  src={quickViewRecipe.image?.url || '/Images/fallback-recipe.jpg'}
-                  alt={quickViewRecipe.title || 'Recette'}
+                  src={quickViewRecipe.attributes?.image?.data?.attributes?.url ? `${process.env.NEXT_PUBLIC_API_URL}${quickViewRecipe.attributes.image.data.attributes.url}` : '/Images/fallback-recipe.jpg'}
+                  alt={quickViewRecipe.attributes?.title || 'Recette'}
                   className="w-full h-48 object-cover rounded mb-4"
                   onError={e => {
                     if (!e.currentTarget.src.endsWith('/Images/fallback-recipe.jpg')) {
@@ -232,35 +232,35 @@ export default function AdminValidationPage() {
                     }
                   }}
                 />
-                <h2 className="text-2xl font-bold mb-2">{quickViewRecipe.title}</h2>
+                <h2 className="text-2xl font-bold mb-2">{quickViewRecipe.attributes?.title}</h2>
                 <div className="flex gap-2 my-2 flex-wrap">
-                  <span>🧑‍🍳 {quickViewRecipe.RecipeUser?.username || '—'}</span>
-                  <span>📂 {quickViewRecipe.recipieCategory?.categoryName || '—'}</span>
-                  <span>🕒 {quickViewRecipe.duration} min</span>
-                  <span>🍽️ {quickViewRecipe.servings}</span>
-                  <span>💪 {quickViewRecipe.difficulty}</span>
+                                      <span>🧑‍🍳 {quickViewRecipe.attributes?.author?.data?.attributes?.username || '—'}</span>
+                    <span>📂 {quickViewRecipe.attributes?.recipieCategory?.data?.categoryName || '—'}</span>
+                  <span>🕒 {quickViewRecipe.attributes?.duration || '—'} min</span>
+                  <span>🍽️ {quickViewRecipe.attributes?.servings || '—'}</span>
+                  <span>💪 {quickViewRecipe.attributes?.difficulty || '—'}</span>
                 </div>
                 <div className="my-2">
                   <strong>Description:</strong>
-                  <p>{Array.isArray(quickViewRecipe.description) ? quickViewRecipe.description.map((d, i) => d.children?.map((c, j) => <span key={j}>{c.text}</span>)) : quickViewRecipe.description}</p>
+                  <p>{Array.isArray(quickViewRecipe.attributes?.description) ? quickViewRecipe.attributes.description.map((d: any, i: number) => d.children?.map((c: any, j: number) => <span key={j}>{c.text}</span>)) : quickViewRecipe.attributes?.description}</p>
                 </div>
-                {quickViewRecipe.ingredients && (
+                {quickViewRecipe.attributes?.ingredients && (
                   <div className="my-2">
                     <strong>Ingrédients:</strong>
-                    <div className="text-sm text-gray-700 whitespace-pre-line">{Array.isArray(quickViewRecipe.ingredients) ? quickViewRecipe.ingredients.map((ing, i) => <div key={i}>- {ing.name} {ing.quantity}</div>) : quickViewRecipe.ingredients}</div>
+                    <div className="text-sm text-gray-700 whitespace-pre-line">{Array.isArray(quickViewRecipe.attributes.ingredients) ? quickViewRecipe.attributes.ingredients.map((ing, i) => <div key={i}>- {ing.name} {ing.quantity}</div>) : quickViewRecipe.attributes.ingredients}</div>
                   </div>
                 )}
-                {quickViewRecipe.instructions && (
+                {quickViewRecipe.attributes?.instructions && (
                   <div className="my-2">
                     <strong>Instructions:</strong>
-                    <div className="text-sm text-gray-700 whitespace-pre-line">{quickViewRecipe.instructions}</div>
+                    <div className="text-sm text-gray-700 whitespace-pre-line">{quickViewRecipe.attributes.instructions}</div>
                   </div>
                 )}
                 {/* Extra info: robot, tags, state */}
                 <div className="my-2 flex flex-wrap gap-4 items-center">
-                  <span className="flex items-center">🤖 <span className="ml-1">Compatible robot :</span> <span className="ml-1 font-semibold">{quickViewRecipe.isRobotCompatible ? '✅' : '❌'}</span></span>
-                  <span className="flex items-center">🏷️ <span className="ml-1">Tags :</span> <span className="ml-1 font-semibold">{Array.isArray(quickViewRecipe.tags) && quickViewRecipe.tags.length > 0 ? quickViewRecipe.tags.map((t, i) => typeof t === 'string' ? t : t.name).join(', ') : '—'}</span></span>
-                  <span className="flex items-center">📄 <span className="ml-1">État actuel :</span> <span className="ml-1 font-semibold">{quickViewRecipe.recipeState || '—'}</span></span>
+                  <span className="flex items-center">🤖 <span className="ml-1">Compatible robot :</span> <span className="ml-1 font-semibold">{quickViewRecipe.attributes?.isRobotCompatible ? '✅' : '❌'}</span></span>
+                  <span className="flex items-center">🏷️ <span className="ml-1">Tags :</span> <span className="ml-1 font-semibold">{Array.isArray(quickViewRecipe.attributes?.tags) && quickViewRecipe.attributes.tags.length > 0 ? quickViewRecipe.attributes.tags.map((t: any, i: number) => typeof t === 'string' ? t : (t?.name || t)).join(', ') : '—'}</span></span>
+                  <span className="flex items-center">📄 <span className="ml-1">État actuel :</span> <span className="ml-1 font-semibold">{quickViewRecipe.attributes?.recipeState || '—'}</span></span>
                 </div>
               </div>
               <div className="flex gap-4 p-4 border-t bg-white sticky bottom-0 z-10">

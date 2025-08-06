@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Recipe } from '@/types/api';
+import { StrapiRecipe } from '@/types/api';
 
 interface RecipeFormData {
   title: string;
@@ -19,7 +19,7 @@ interface RecipeFormData {
 
 export default function EditRecipePage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [recipe, setRecipe] = useState<StrapiRecipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);

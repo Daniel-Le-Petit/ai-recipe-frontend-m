@@ -266,7 +266,7 @@ export function useMealAlternatives(mealId: number) {
     if (mealId) {
       fetchAlternatives()
     }
-  }, [fetchAlternatives])
+  }, [fetchAlternatives, mealId])
 
   return {
     alternatives,
@@ -325,7 +325,7 @@ export function useMealChanges(mealId: number) {
     if (mealId) {
       fetchChanges()
     }
-  }, [fetchChanges])
+  }, [fetchChanges, mealId])
 
   return {
     changes,

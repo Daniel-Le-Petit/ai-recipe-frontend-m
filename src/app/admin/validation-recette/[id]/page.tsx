@@ -123,10 +123,11 @@ export default function ValidationRecettePage() {
       console.error('Erreur lors du chargement de la recette:', error);
       
       // Message d'erreur plus spécifique
-      if (error.message.includes('ECONNREFUSED') || error.message.includes('fetch failed')) {
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue'
+      if (errorMessage.includes('ECONNREFUSED') || errorMessage.includes('fetch failed')) {
         setError('Le serveur backend n\'est pas démarré. Veuillez démarrer le backend Strapi avec "npm run develop" dans le dossier backend-js.');
       } else {
-        setError(error instanceof Error ? error.message : 'Erreur lors du chargement de la recette');
+        setError(errorMessage);
       }
     } finally {
       setLoading(false);

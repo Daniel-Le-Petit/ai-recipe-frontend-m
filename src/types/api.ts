@@ -483,6 +483,55 @@ export interface WeeklyPlanMealChangesResponse {
   }
 }
 
+// Types pour les réponses API individuelles
+export interface WeeklyPlanResponse {
+  data: StrapiWeeklyPlan
+  meta: {
+    pagination?: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export interface WeeklyPlanMealResponse {
+  data: StrapiWeeklyPlanMeal
+  meta: {
+    pagination?: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export interface WeeklyPlanMealAlternativeResponse {
+  data: StrapiWeeklyPlanMealAlternative
+  meta: {
+    pagination?: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
+export interface WeeklyPlanMealChangeResponse {
+  data: StrapiWeeklyPlanMealChange
+  meta: {
+    pagination?: {
+      page: number
+      pageSize: number
+      pageCount: number
+      total: number
+    }
+  }
+}
+
 // Format d'affichage des plans de semaine
 export interface WeeklyPlanData {
   weekStart: string

@@ -344,8 +344,8 @@ export default function PlanSemainePage() {
   // Rendu des options de sélection
   const renderOptions = (options, selectedValue, onSelect, isMultiSelect = false) => {
     return (
-      <div style={{
-        display: 'grid',
+                <div style={{ 
+                  display: 'grid', 
         gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '16px',
         maxWidth: '1000px',
@@ -358,38 +358,38 @@ export default function PlanSemainePage() {
             : selectedValue === option.id
 
           return (
-            <button
+                    <button
               key={option.id}
               onClick={() => onSelect(option.id)}
-              style={{
-                padding: '16px',
+                      style={{
+                               padding: '16px',
                 borderRadius: '12px',
                 border: isSelected ? '2px solid #20B251' : '2px solid #e5e7eb',
                 backgroundColor: isSelected ? '#f0fdf4' : '#ffffff',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                textAlign: 'left',
+                        display: 'flex',
+                        alignItems: 'center',
+                               gap: '12px',
+                               textAlign: 'left',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
                 width: '100%',
                 minHeight: 'auto',
                 boxSizing: 'border-box'
-              }}
-              onMouseEnter={(e) => {
+                      }}
+                      onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.target.style.borderColor = '#20B251'
+                                 e.target.style.borderColor = '#20B251'
                   e.target.style.backgroundColor = '#f0fdf4'
-                }
-              }}
-              onMouseLeave={(e) => {
+                        }
+                      }}
+                      onMouseLeave={(e) => {
                 if (!isSelected) {
                   e.target.style.borderColor = '#e5e7eb'
                   e.target.style.backgroundColor = '#ffffff'
                 }
               }}
             >
-              <div style={{
+                        <div style={{ 
                 fontSize: '24px',
                 display: 'flex',
                 alignItems: 'center',
@@ -404,41 +404,41 @@ export default function PlanSemainePage() {
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{
-                  fontSize: '14px',
-                  fontWeight: 'bold',
+                                 fontSize: '14px', 
+                          fontWeight: 'bold',
                   color: isSelected ? '#20B251' : '#374151',
                   marginBottom: '4px'
-                }}>
+                        }}>
                   {option.name}
-                </div>
-                <div style={{
+                        </div>
+                        <div style={{ 
                   fontSize: '12px',
                   color: isSelected ? '#20B251' : '#6b7280',
                   lineHeight: '1.4'
-                }}>
+                        }}>
                   {option.description}
-                </div>
-              </div>
+                        </div>
+                      </div>
               {isSelected && (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                               <div style={{
+                                 display: 'flex',
+                                 alignItems: 'center',
+                                 justifyContent: 'center',
                   width: '24px',
                   height: '24px',
                   borderRadius: '50%',
                   backgroundColor: '#20B251',
                   color: 'white',
                   fontSize: '14px',
-                  fontWeight: 'bold'
-                }}>
-                  ✓
-                </div>
-              )}
-            </button>
+                                   fontWeight: 'bold' 
+                                 }}>
+                                   ✓
+                               </div>
+                             )}
+                    </button>
           )
         })}
-      </div>
+                                             </div>
     )
   }
 
@@ -457,8 +457,8 @@ export default function PlanSemainePage() {
             }}>
               Type de repas
             </h2>
-            <p style={{
-              fontSize: '16px',
+                        <p style={{ 
+                          fontSize: '16px', 
               color: '#6b7280',
               marginBottom: '24px',
               textAlign: 'center'
@@ -467,7 +467,7 @@ export default function PlanSemainePage() {
             </p>
             {renderOptions(MEAL_TYPES, selectedMealTypes, handleMealTypeToggle, true)}
             {selectedMealTypes.length > 0 && (
-              <div style={{
+                     <div style={{
                 marginTop: '20px',
                 padding: '16px',
                 backgroundColor: '#f0fdf4',
@@ -477,40 +477,40 @@ export default function PlanSemainePage() {
                 <p style={{
                   color: '#20B251',
                   fontWeight: 'bold',
-                  fontSize: '14px',
+                         fontSize: '14px',
                   margin: 0
                 }}>
                   ✅ Type de repas sélectionnés : {selectedMealTypes.map(type => 
                     MEAL_TYPES.find(opt => opt.id === type)?.name
                   ).join(', ')}
                 </p>
-              </div>
-            )}
+                </div>
+          )}
           </div>
         )
 
       case 2:
         return (
-          <div>
-            <h2 style={{
+              <div>
+                  <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Portions
-            </h2>
-            <p style={{
+                  }}>
+                    Portions
+                  </h2>
+                  <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                    color: '#6b7280', 
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Pour combien de personnes ?
-            </p>
+                  }}>
+                    Pour combien de personnes ?
+                  </p>
             <p style={{
-              fontSize: '14px',
+                               fontSize: '14px', 
               color: '#6b7280',
               marginBottom: '24px',
               textAlign: 'center'
@@ -518,49 +518,49 @@ export default function PlanSemainePage() {
               Sélectionnez le nombre de portions
             </p>
             {renderOptions(PORTION_OPTIONS, selectedPortions, (id) => handleOptionSelect(id, setSelectedPortions))}
-            {selectedPortions && (
-              <div style={{
+                  {selectedPortions && (
+                    <div style={{
                 marginTop: '20px',
-                padding: '16px',
+                      padding: '16px',
                 backgroundColor: '#f0fdf4',
                 borderRadius: '12px',
                 border: '2px solid #20B251'
-              }}>
-                <p style={{
+                    }}>
+                        <p style={{ 
                   color: '#20B251',
                   fontWeight: 'bold',
                   fontSize: '14px',
                   margin: 0
                 }}>
                   ✅ Préférence sélectionnée : {PORTION_OPTIONS.find(opt => opt.id === selectedPortions)?.name}
-                </p>
-              </div>
-            )}
-          </div>
+                        </p>
+                      </div>
+                  )}
+                </div>
         )
 
       case 3:
         return (
-          <div>
-            <h2 style={{
+              <div>
+                  <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Préférences alimentaires
-            </h2>
-            <p style={{
+                  }}>
+                      Préférences alimentaires
+                  </h2>
+                  <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                    color: '#6b7280', 
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Des restrictions particulières ? (optionnel)
-            </p>
+                  }}>
+                      Des restrictions particulières ? (optionnel)
+                  </p>
             <p style={{
-              fontSize: '14px',
+                              fontSize: '14px', 
               color: '#6b7280',
               marginBottom: '24px',
               textAlign: 'center'
@@ -568,15 +568,15 @@ export default function PlanSemainePage() {
               Sélectionnez vos préférences alimentaires
             </p>
             {renderOptions(PREFERENCE_OPTIONS, selectedPreferences, handlePreferencesToggle, true)}
-            {selectedPreferences.length > 0 && (
-              <div style={{
+                  {selectedPreferences.length > 0 && (
+                    <div style={{
                 marginTop: '20px',
-                padding: '16px',
+                      padding: '16px',
                 backgroundColor: '#f0fdf4',
                 borderRadius: '12px',
                 border: '2px solid #20B251'
-              }}>
-                <p style={{
+                    }}>
+                      <p style={{ 
                   color: '#20B251',
                   fontWeight: 'bold',
                   fontSize: '14px',
@@ -585,34 +585,34 @@ export default function PlanSemainePage() {
                   ✅ Préférences sélectionnées : {selectedPreferences.map(pref =>
                     PREFERENCE_OPTIONS.find(opt => opt.id === pref)?.name
                   ).join(', ')}
-                </p>
-              </div>
-            )}
-          </div>
+                      </p>
+                    </div>
+                  )}
+                  </div>
         )
-
+              
       case 4:
         return (
-          <div>
-            <h2 style={{
+              <div>
+                  <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Mode cuisson
-            </h2>
-            <p style={{
+                  }}>
+                    Mode cuisson
+                  </h2>
+                  <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                    color: '#6b7280', 
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Choisissez votre mode cuisson
-            </p>
+                  }}>
+                      Choisissez votre mode cuisson
+                  </p>
             <p style={{
-              fontSize: '14px',
+                              fontSize: '14px', 
               color: '#6b7280',
               marginBottom: '24px',
               textAlign: 'center'
@@ -620,49 +620,49 @@ export default function PlanSemainePage() {
               Sélectionnez votre appareil de cuisine pour un guidage personnalisé
             </p>
             {renderOptions(COOKING_MODE_OPTIONS, selectedCookingMode, (id) => handleOptionSelect(id, setSelectedCookingMode))}
-            {selectedCookingMode && (
-              <div style={{
+                  {selectedCookingMode && (
+                    <div style={{
                 marginTop: '20px',
-                padding: '16px',
+                      padding: '16px',
                 backgroundColor: '#f0fdf4',
                 borderRadius: '12px',
                 border: '2px solid #20B251'
-              }}>
-                <p style={{
+                    }}>
+                      <p style={{ 
                   color: '#20B251',
                   fontWeight: 'bold',
                   fontSize: '14px',
                   margin: 0
                 }}>
                   ✅ Préférence sélectionnée : {COOKING_MODE_OPTIONS.find(opt => opt.id === selectedCookingMode)?.name}
-                </p>
-              </div>
-            )}
-          </div>
+                      </p>
+                    </div>
+                  )}
+                  </div>
         )
-
+              
       case 5:
         return (
-          <div>
-            <h2 style={{
+              <div>
+                  <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Difficulté
-            </h2>
-            <p style={{
+                  }}>
+                    Difficulté
+                  </h2>
+                  <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                    color: '#6b7280', 
               marginBottom: '8px',
               textAlign: 'center'
             }}>
               Choisissez votre niveau de difficulté
             </p>
             <p style={{
-              fontSize: '14px',
+                              fontSize: '14px', 
               color: '#6b7280',
               marginBottom: '24px',
               textAlign: 'center'
@@ -670,49 +670,49 @@ export default function PlanSemainePage() {
               Sélectionnez votre niveau de difficulté
             </p>
             {renderOptions(DIFFICULTY_OPTIONS, selectedDifficulty, (id) => handleOptionSelect(id, setSelectedDifficulty))}
-            {selectedDifficulty && (
-              <div style={{
+                  {selectedDifficulty && (
+                    <div style={{
                 marginTop: '20px',
-                padding: '16px',
+                      padding: '16px',
                 backgroundColor: '#f0fdf4',
                 borderRadius: '12px',
                 border: '2px solid #20B251'
-              }}>
-                <p style={{
+                    }}>
+                      <p style={{ 
                   color: '#20B251',
                   fontWeight: 'bold',
                   fontSize: '14px',
                   margin: 0
                 }}>
                   ✅ Préférence sélectionnée : {DIFFICULTY_OPTIONS.find(opt => opt.id === selectedDifficulty)?.name}
-                </p>
-              </div>
-            )}
-          </div>
+                        </p>
+                      </div>
+                  )}
+                </div>
         )
 
       case 6:
         return (
-          <div>
-            <h2 style={{
+              <div>
+                  <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Temps max par repas
-            </h2>
-            <p style={{
+                  }}>
+                      Temps max par repas
+                  </h2>
+                  <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                    color: '#6b7280', 
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Combien de temps pour préparer un repas
-            </p>
+                  }}>
+                      Combien de temps pour préparer un repas
+                  </p>
             <p style={{
-              fontSize: '14px',
+                              fontSize: '14px', 
               color: '#6b7280',
               marginBottom: '24px',
               textAlign: 'center'
@@ -720,49 +720,49 @@ export default function PlanSemainePage() {
               Sélectionnez votre temps maximum par repas
             </p>
             {renderOptions(COOKING_TIME_OPTIONS, selectedCookingTime, (id) => handleOptionSelect(id, setSelectedCookingTime))}
-            {selectedCookingTime && (
-              <div style={{
+                  {selectedCookingTime && (
+                    <div style={{
                 marginTop: '20px',
-                padding: '16px',
+                      padding: '16px',
                 backgroundColor: '#f0fdf4',
                 borderRadius: '12px',
                 border: '2px solid #20B251'
-              }}>
-                <p style={{
+                    }}>
+                      <p style={{ 
                   color: '#20B251',
                   fontWeight: 'bold',
                   fontSize: '14px',
                   margin: 0
                 }}>
                   ✅ Préférence sélectionnée : {COOKING_TIME_OPTIONS.find(opt => opt.id === selectedCookingTime)?.name}
-                </p>
-              </div>
-            )}
-          </div>
+                      </p>
+                    </div>
+                  )}
+                  </div>
         )
-
+              
       case 7:
         return (
-          <div>
-            <h2 style={{
+              <div>
+                  <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Type de cuisine
-            </h2>
-            <p style={{
+                  }}>
+                    Type de cuisine
+                  </h2>
+                  <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                    color: '#6b7280', 
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Quel type de cuisine préférez-vous
-            </p>
+                  }}>
+                      Quel type de cuisine préférez-vous
+                  </p>
             <p style={{
-              fontSize: '14px',
+                              fontSize: '14px', 
               color: '#6b7280',
               marginBottom: '24px',
               textAlign: 'center'
@@ -770,31 +770,31 @@ export default function PlanSemainePage() {
               Sélectionnez votre type de cuisine préféré
             </p>
             {renderOptions(CUISINE_TYPE_OPTIONS, selectedCuisineType, (id) => handleOptionSelect(id, setSelectedCuisineType))}
-            {selectedCuisineType && (
-              <div style={{
+                  {selectedCuisineType && (
+                    <div style={{
                 marginTop: '20px',
-                padding: '16px',
+                      padding: '16px',
                 backgroundColor: '#f0fdf4',
                 borderRadius: '12px',
                 border: '2px solid #20B251'
-              }}>
-                <p style={{
+                    }}>
+                      <p style={{ 
                   color: '#20B251',
                   fontWeight: 'bold',
                   fontSize: '14px',
                   margin: 0
                 }}>
                   ✅ Préférence sélectionnée : {CUISINE_TYPE_OPTIONS.find(opt => opt.id === selectedCuisineType)?.name}
-                </p>
-              </div>
-            )}
-          </div>
+                      </p>
+                    </div>
+                  )}
+                  </div>
         )
-
+              
       case 8:
         return (
-          <div>
-            <h2 style={{
+              <div>
+                  <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
@@ -802,56 +802,56 @@ export default function PlanSemainePage() {
               textAlign: 'center'
             }}>
               Récapitulatif de vos choix pour le plan de la semaine
-            </h2>
-            <p style={{
+                  </h2>
+                  <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                    color: '#6b7280', 
               marginBottom: '24px',
               textAlign: 'center'
-            }}>
-              Vérifiez vos choix avant de générer le plan...
-            </p>
-            
-            <div style={{
+                  }}>
+                    Vérifiez vos choix avant de générer le plan...
+                  </p>
+
+                <div style={{ 
               backgroundColor: '#ffffff',
               borderRadius: '12px',
-              padding: '24px',
+                    padding: '24px',
               boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
               marginBottom: '24px'
             }}>
-              <table style={{
-                width: '100%',
+                    <table style={{
+                      width: '100%',
                 borderCollapse: 'collapse'
-              }}>
-                <tbody>
+                    }}>
+                      <tbody>
                   <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-                    <td style={{
+                          <td style={{
                       padding: '12px 0',
-                      fontWeight: 'bold',
+                        fontWeight: 'bold',
                       color: '#374151',
                       width: '30%'
-                    }}>
-                      Type de repas :
-                    </td>
-                    <td style={{
+                      }}>
+                        Type de repas :
+                          </td>
+                          <td style={{
                       padding: '12px 0',
-                      fontWeight: 'bold',
+                            fontWeight: 'bold',
                       color: '#374151',
                       width: '30%'
-                    }}>
-                      Portions :
-                    </td>
-                    <td style={{
+                          }}>
+                            Portions :
+                          </td>
+                          <td style={{
                       padding: '12px 0',
-                      fontWeight: 'bold',
+                            fontWeight: 'bold',
                       color: '#374151',
                       width: '40%'
-                    }}>
-                      Préférences :
-                    </td>
-                  </tr>
+                          }}>
+                            Préférences :
+                          </td>
+                        </tr>
                   <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-                    <td style={{
+                          <td style={{
                       padding: '12px 0',
                       color: '#6b7280'
                     }}>
@@ -861,8 +861,8 @@ export default function PlanSemainePage() {
                           ).join(', ')
                         : 'Aucun sélectionné'
                       }
-                    </td>
-                    <td style={{
+                          </td>
+                          <td style={{
                       padding: '12px 0',
                       color: '#6b7280'
                     }}>
@@ -870,8 +870,8 @@ export default function PlanSemainePage() {
                         ? PORTION_OPTIONS.find(opt => opt.id === selectedPortions)?.name
                         : 'Non sélectionné'
                       }
-                    </td>
-                    <td style={{
+                          </td>
+                          <td style={{
                       padding: '12px 0',
                       color: '#6b7280'
                     }}>
@@ -881,34 +881,34 @@ export default function PlanSemainePage() {
                           ).join(', ')
                         : 'Aucune sélectionnée'
                       }
-                    </td>
-                  </tr>
-                  
+                          </td>
+                        </tr>
+                        
                   <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-                    <td style={{
+                          <td style={{
                       padding: '12px 0',
-                      fontWeight: 'bold',
+                            fontWeight: 'bold',
                       color: '#374151'
-                    }}>
-                      Mode cuisson :
-                    </td>
-                    <td style={{
+                          }}>
+                            Mode cuisson :
+                          </td>
+                          <td style={{
                       padding: '12px 0',
-                      fontWeight: 'bold',
+                            fontWeight: 'bold',
                       color: '#374151'
-                    }}>
-                      Difficulté :
-                    </td>
-                    <td style={{
+                          }}>
+                            Difficulté :
+                          </td>
+                          <td style={{
                       padding: '12px 0',
-                      fontWeight: 'bold',
+                            fontWeight: 'bold',
                       color: '#374151'
-                    }}>
-                      Temps max :
-                    </td>
-                  </tr>
+                          }}>
+                            Temps max :
+                          </td>
+                        </tr>
                   <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-                    <td style={{
+                          <td style={{
                       padding: '12px 0',
                       color: '#6b7280'
                     }}>
@@ -916,8 +916,8 @@ export default function PlanSemainePage() {
                         ? COOKING_MODE_OPTIONS.find(opt => opt.id === selectedCookingMode)?.name
                         : 'Non sélectionné'
                       }
-                    </td>
-                    <td style={{
+                          </td>
+                          <td style={{
                       padding: '12px 0',
                       color: '#6b7280'
                     }}>
@@ -925,8 +925,8 @@ export default function PlanSemainePage() {
                         ? DIFFICULTY_OPTIONS.find(opt => opt.id === selectedDifficulty)?.name
                         : 'Non sélectionné'
                       }
-                    </td>
-                    <td style={{
+                          </td>
+                          <td style={{
                       padding: '12px 0',
                       color: '#6b7280'
                     }}>
@@ -934,18 +934,18 @@ export default function PlanSemainePage() {
                         ? COOKING_TIME_OPTIONS.find(opt => opt.id === selectedCookingTime)?.name
                         : 'Non sélectionné'
                       }
-                    </td>
-                  </tr>
-                  
-                  <tr>
-                    <td style={{
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td style={{
                       padding: '12px 0',
-                      fontWeight: 'bold',
+                            fontWeight: 'bold',
                       color: '#374151'
-                    }}>
-                      Type de cuisine :
-                    </td>
-                    <td style={{
+                          }}>
+                            Type de cuisine :
+                          </td>
+                          <td style={{
                       padding: '12px 0',
                       color: '#6b7280'
                     }}>
@@ -953,19 +953,19 @@ export default function PlanSemainePage() {
                         ? CUISINE_TYPE_OPTIONS.find(opt => opt.id === selectedCuisineType)?.name
                         : 'Non sélectionné'
                       }
-                    </td>
+                          </td>
                     <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                        </tr>
+                      </tbody>
+                    </table>
+                      </div>
+                      </div>
         )
 
       case 9:
         return (
-          <div>
-            <h2 style={{
+                <div>
+                    <h2 style={{ 
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
@@ -973,7 +973,7 @@ export default function PlanSemainePage() {
               textAlign: 'center'
             }}>
               ✅ Votre Plan de la semaine personnalisé est prêt
-            </h2>
+                    </h2>
             
             <div style={{
               color: '#ef4444',
@@ -983,319 +983,319 @@ export default function PlanSemainePage() {
               textAlign: 'center',
               fontWeight: 'bold',
               fontSize: '18px'
-            }}>
-              🍽️ Obtenir mon plan personnalisé
-            </div>
-            
-            <p style={{
+                    }}>
+                      🍽️ Obtenir mon plan personnalisé
+                  </div>
+
+                    <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                      color: '#6b7280', 
               marginBottom: '16px',
               textAlign: 'center'
-            }}>
-              Entrez votre adresse email pour obtenir votre plan personnel
-            </p>
-            
-            <div style={{
+                    }}>
+                      Entrez votre adresse email pour obtenir votre plan personnel
+                    </p>
+
+                    <div style={{ 
               backgroundColor: '#ffffff',
               borderRadius: '12px',
               padding: '16px',
               border: '2px solid #e5e7eb',
               marginBottom: '16px'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
                 gap: '8px'
-              }}>
-                <span style={{ fontSize: '20px' }}>📧</span>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                    }}>
+                      <span style={{ fontSize: '20px' }}>📧</span>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                   placeholder="Votre e-mail"
-                  style={{
+                        style={{
                     flex: 1,
-                    border: 'none',
-                    outline: 'none',
-                    fontSize: '16px',
-                    backgroundColor: 'transparent'
-                  }}
-                />
-              </div>
+                          border: 'none',
+                          outline: 'none',
+                          fontSize: '16px',
+                          backgroundColor: 'transparent'
+                        }}
+                      />
+                    </div>
             </div>
             
-            {emailError && (
+                    {emailError && (
               <p style={{
                 color: '#ef4444',
                 marginTop: '8px',
                 fontSize: '14px',
                 textAlign: 'center'
               }}>
-                L'email est requis
-              </p>
-            )}
-            
-            <div style={{
+                        L'email est requis
+                      </p>
+                    )}
+
+                      <div style={{ 
               marginTop: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                        fontSize: '14px', 
               color: '#6b7280',
               justifyContent: 'center'
-            }}>
+                      }}>
               <span>🔒</span>
               <p style={{ margin: 0 }}>
                 Nous respectons votre vie privée et traitons vos données exclusivement conformément à notre <u>politique de confidentialité</u>
-              </p>
-            </div>
-            
-            <div style={{
+                    </p>
+                      </div>
+
+                      <div style={{ 
               marginTop: '24px',
               backgroundColor: '#ef4444',
-              color: 'white',
-              padding: '16px',
-              borderRadius: '12px',
+                    color: 'white',
+                    padding: '16px',
+                    borderRadius: '12px',
               textAlign: 'center'
             }}>
               <p style={{ margin: 0 }}>
                 Cette offre prend fin dans <span style={{ fontWeight: 'bold' }}>{formatTime(timeLeft)}</span> min.
-              </p>
-            </div>
-            
-            {/* Plans d'abonnement */}
-            <div style={{
-              display: 'grid',
+                    </p>
+                    </div>
+
+                  {/* Plans d'abonnement */}
+                  <div style={{
+                    display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
               gap: '24px',
               marginTop: '32px'
-            }}>
-              {/* Plan Essai gratuit */}
+                  }}>
+                    {/* Plan Essai gratuit */}
               <div
                 onClick={() => setSelectedPlan('trial')}
                 style={{
-                  padding: '24px',
+                      padding: '24px',
                   borderRadius: '12px',
                   border: selectedPlan === 'trial' ? '2px solid #20B251' : '2px solid #e5e7eb',
                   backgroundColor: selectedPlan === 'trial' ? '#f0fdf4' : '#ffffff',
-                  cursor: 'pointer',
+                      cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   textAlign: 'center'
                 }}
               >
                 <div style={{ fontSize: '32px', marginBottom: '12px' }}>📅</div>
-                <h3 style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
+                        <h3 style={{ 
+                          fontSize: '18px', 
+                        fontWeight: 'bold',
                   color: '#374151',
                   marginBottom: '12px'
-                }}>
-                  🟢 Essai gratuit — 7 jours
-                </h3>
-                <div style={{
+                      }}>
+                          🟢 Essai gratuit — 7 jours
+                        </h3>
+                      <div style={{ 
                   fontSize: '24px',
                   fontWeight: 'bold',
-                  color: '#20B251',
+                          color: '#20B251', 
                   marginBottom: '8px'
-                }}>
+                        }}>
                   🎁 Gratuit
-                </div>
-                <p style={{
-                  fontSize: '14px',
+                      </div>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '8px'
-                }}>
-                  3 recettes personnalisées générées par notre IA
-                </p>
-                <p style={{
-                  fontSize: '14px',
+                      }}>
+                        3 recettes personnalisées générées par notre IA
+                      </p>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '16px'
-                }}>
-                  Sans engagement
-                </p>
-                {selectedPlan === 'trial' && (
-                  <div style={{
+                      }}>
+                        Sans engagement
+                      </p>
+                      {selectedPlan === 'trial' && (
+                        <div style={{
                     marginTop: '16px',
                     color: '#20B251',
                     fontSize: '20px',
-                    fontWeight: 'bold'
-                  }}>
-                    ✓
-                  </div>
-                )}
-              </div>
+                            fontWeight: 'bold' 
+                          }}>
+                            ✓
+                        </div>
+                      )}
+                    </div>
 
-              {/* Plan Mensuel */}
+                    {/* Plan Mensuel */}
               <div
                 onClick={() => setSelectedPlan('monthly')}
                 style={{
-                  padding: '24px',
+                      padding: '24px',
                   borderRadius: '12px',
                   border: selectedPlan === 'monthly' ? '2px solid #20B251' : '2px solid #e5e7eb',
                   backgroundColor: selectedPlan === 'monthly' ? '#f0fdf4' : '#ffffff',
-                  cursor: 'pointer',
+                      cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   textAlign: 'center'
                 }}
               >
                 <div style={{ fontSize: '32px', marginBottom: '12px' }}>⭐</div>
-                <h3 style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
+                        <h3 style={{ 
+                          fontSize: '18px', 
+                        fontWeight: 'bold',
                   color: '#374151',
                   marginBottom: '12px'
-                }}>
-                  Plan mensuel — 1 mois
-                </h3>
-                <div style={{
+                      }}>
+                          Plan mensuel — 1 mois
+                        </h3>
+                      <div style={{ 
                   fontSize: '24px',
                   fontWeight: 'bold',
                   color: '#20B251',
                   marginBottom: '8px'
                 }}>
                   🔄 23,99€
-                </div>
-                <p style={{
-                  fontSize: '14px',
+                    </div>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '8px',
                   textDecoration: 'line-through'
-                }}>
-                  <s>29,99€</s> — Économisez 20%
-                </p>
-                <p style={{
-                  fontSize: '14px',
+                      }}>
+                        <s>29,99€</s> — Économisez 20%
+                      </p>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '8px'
-                }}>
-                  4 à 5 recettes/semaine (20 total)
-                </p>
-                <p style={{
-                  fontSize: '14px',
+                      }}>
+                        4 à 5 recettes/semaine (20 total)
+                      </p>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '8px'
-                }}>
-                  0,80€/jour
-                </p>
-                <p style={{
-                  fontSize: '14px',
+                      }}>
+                        0,80€/jour
+                      </p>
+                      <p style={{ 
+                        fontSize: '14px', 
                   color: '#20B251',
-                  fontWeight: 'bold',
+                        fontWeight: 'bold',
                   marginBottom: '16px'
-                }}>
-                  ✅ Recommandé
-                </p>
-                {selectedPlan === 'monthly' && (
-                  <div style={{
+                      }}>
+                        ✅ Recommandé
+                      </p>
+                      {selectedPlan === 'monthly' && (
+                      <div style={{ 
                     marginTop: '16px',
                     color: '#20B251',
                     fontSize: '20px',
-                    fontWeight: 'bold'
-                  }}>
-                    ✓
-                  </div>
-                )}
-              </div>
+                            fontWeight: 'bold' 
+                          }}>
+                            ✓
+                      </div>
+                      )}
+                    </div>
 
-              {/* Plan Trimestriel */}
+                    {/* Plan Trimestriel */}
               <div
                 onClick={() => setSelectedPlan('quarterly')}
                 style={{
-                  padding: '24px',
+                      padding: '24px',
                   borderRadius: '12px',
                   border: selectedPlan === 'quarterly' ? '2px solid #20B251' : '2px solid #e5e7eb',
                   backgroundColor: selectedPlan === 'quarterly' ? '#f0fdf4' : '#ffffff',
-                  cursor: 'pointer',
+                      cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   textAlign: 'center'
                 }}
               >
                 <div style={{ fontSize: '32px', marginBottom: '12px' }}>🌱</div>
-                <h3 style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
+                        <h3 style={{ 
+                          fontSize: '18px', 
+                        fontWeight: 'bold',
                   color: '#374151',
                   marginBottom: '12px'
-                }}>
-                  Plan trimestriel — 3 mois
-                </h3>
-                <div style={{
+                      }}>
+                          Plan trimestriel — 3 mois
+                        </h3>
+                      <div style={{ 
                   fontSize: '24px',
                   fontWeight: 'bold',
                   color: '#20B251',
                   marginBottom: '8px'
                 }}>
                   🔄 59,99€
-                </div>
-                <p style={{
-                  fontSize: '14px',
+                    </div>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '8px',
                   textDecoration: 'line-through'
-                }}>
-                  <s>89,97€</s> — Économisez 33%
-                </p>
-                <p style={{
-                  fontSize: '14px',
+                      }}>
+                        <s>89,97€</s> — Économisez 33%
+                      </p>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '8px'
-                }}>
-                  5 recettes/semaine (60 total)
-                </p>
-                <p style={{
-                  fontSize: '14px',
+                      }}>
+                        5 recettes/semaine (60 total)
+                      </p>
+                      <p style={{ 
+                        fontSize: '14px',
                   color: '#6b7280',
                   marginBottom: '8px'
-                }}>
-                  0,67€/jour
-                </p>
-                <p style={{
-                  fontSize: '14px',
+                      }}>
+                        0,67€/jour
+                      </p>
+                      <p style={{ 
+                        fontSize: '14px', 
                   color: '#20B251',
-                  fontWeight: 'bold',
+                        fontWeight: 'bold',
                   marginBottom: '16px'
-                }}>
-                  🌿 Le plus populaire
-                </p>
-                {selectedPlan === 'quarterly' && (
-                  <div style={{
+                      }}>
+                        🌿 Le plus populaire
+                      </p>
+                      {selectedPlan === 'quarterly' && (
+                      <div style={{ 
                     marginTop: '16px',
                     color: '#20B251',
                     fontSize: '20px',
-                    fontWeight: 'bold'
-                  }}>
-                    ✓
+                            fontWeight: 'bold' 
+                          }}>
+                            ✓
+                      </div>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
 
-            <div style={{
+                  <div style={{
               marginTop: '32px',
               textAlign: 'center'
             }}>
-              <p style={{
+                    <p style={{ 
                 fontSize: '14px',
-                color: '#6b7280',
+                      color: '#6b7280', 
                 marginBottom: '24px'
-              }}>
+                    }}>
                 🌱 🎯 73% de nos utilisateurs choisissent le plan 3 mois pour des résultats durables.
-              </p>
-              
-              <button
+                    </p>
+
+                  <button
                 onClick={handleEmailSubmit}
-                style={{
+                    style={{
                   backgroundColor: '#20B251',
-                  color: 'white',
-                  padding: '16px 32px',
-                  borderRadius: '12px',
-                  fontWeight: 'bold',
+                      color: 'white',
+                        padding: '16px 32px',
+                        borderRadius: '12px',
+                      fontWeight: 'bold',
                   fontSize: '18px',
-                  border: 'none',
+                border: 'none',
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
+                        transition: 'all 0.2s ease',
                   boxShadow: '0 4px 15px rgba(32, 178, 81, 0.3)'
                 }}
                 onMouseEnter={(e) => {
@@ -1311,40 +1311,40 @@ export default function PlanSemainePage() {
               >
                 Obtenez votre plan de la semaine du 21 Juillet 2025 personnalisé !
               </button>
-            </div>
-          </div>
+                  </div>
+                </div>
         )
 
       case 10:
         return (
-          <div>
+                <div>
             <h2 style={{
               fontSize: '24px',
               fontWeight: 'bold',
               color: '#20B251',
               marginBottom: '8px',
               textAlign: 'center'
-            }}>
-              Plan de la Semaine
+                      }}>
+                        Plan de la Semaine
             </h2>
-            <p style={{
+                      <p style={{ 
               fontSize: '16px',
-              color: '#6b7280',
+                        color: '#6b7280', 
               marginBottom: '24px',
               textAlign: 'center'
-            }}>
+                      }}>
               Semaine du: {weeklyPlanData.weekStart}
-            </p>
-
-            {/* Récapitulatif des sélections */}
-            <div style={{
+                      </p>
+                    
+                    {/* Récapitulatif des sélections */}
+                      <div style={{
               backgroundColor: '#ffffff',
               borderRadius: '12px',
-              padding: '24px',
+                        padding: '24px',
               boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
               marginBottom: '32px'
-            }}>
-              <h3 style={{
+                      }}>
+                        <h3 style={{ 
                 fontSize: '18px',
                 fontWeight: 'bold',
                 color: '#374151',
@@ -1352,13 +1352,13 @@ export default function PlanSemainePage() {
                 textAlign: 'center'
               }}>
                 Récapitulatif des sélections de mon Plan de la Semaine du: {weeklyPlanData.weekStart}
-              </h3>
-              
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '16px'
-              }}>
+                        </h3>
+                        
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                          gap: '16px'
+                        }}>
                 <div>
                   <strong>Type de repas</strong><br />
                   {selectedMealTypes.length > 0 
@@ -1367,21 +1367,21 @@ export default function PlanSemainePage() {
                       ).join(', ')
                     : 'Aucun sélectionné'
                   }
-                </div>
+                          </div>
                 <div>
                   <strong>Portions</strong><br />
                   {selectedPortions 
                     ? PORTION_OPTIONS.find(opt => opt.id === selectedPortions)?.name
                     : 'Non sélectionné'
                   }
-                </div>
+                          </div>
                 <div>
                   <strong>Difficulté</strong><br />
                   {selectedDifficulty 
                     ? DIFFICULTY_OPTIONS.find(opt => opt.id === selectedDifficulty)?.name
                     : 'Non sélectionné'
                   }
-                </div>
+                          </div>
                 <div>
                   <strong>Préférences</strong><br />
                   {selectedPreferences.length > 0
@@ -1390,35 +1390,35 @@ export default function PlanSemainePage() {
                       ).join(', ')
                     : 'Aucune sélectionnée'
                   }
-                </div>
+                          </div>
                 <div>
                   <strong>Mode cuisson</strong><br />
                   {selectedCookingMode 
                     ? COOKING_MODE_OPTIONS.find(opt => opt.id === selectedCookingMode)?.name
                     : 'Non sélectionné'
                   }
-                </div>
+                          </div>
                 <div>
                   <strong>Temps max</strong><br />
                   {selectedCookingTime 
                     ? COOKING_TIME_OPTIONS.find(opt => opt.id === selectedCookingTime)?.name
                     : 'Non sélectionné'
                   }
-                </div>
+                          </div>
                 <div>
                   <strong>Type de cuisine</strong><br />
                   {selectedCuisineType 
                     ? CUISINE_TYPE_OPTIONS.find(opt => opt.id === selectedCuisineType)?.name
                     : 'Non sélectionné'
                   }
-                </div>
-              </div>
-            </div>
-
+                          </div>
+                        </div>
+                      </div>
+                    
             {/* Tableau des repas */}
-            <div style={{
+                      <div style={{
               backgroundColor: '#ffffff',
-              borderRadius: '12px',
+                        borderRadius: '12px',
               padding: '24px',
               boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
               overflowX: 'auto'
@@ -1434,10 +1434,10 @@ export default function PlanSemainePage() {
                     borderBottom: '2px solid #e5e7eb'
                   }}>
                     <th style={{
-                      padding: '16px',
+                          padding: '16px',
                       textAlign: 'left',
-                      fontWeight: 'bold',
-                      color: '#374151',
+                          fontWeight: 'bold',
+                      color: '#20B251',
                       borderRight: '1px solid #e5e7eb'
                     }}>
                       Repas
@@ -1447,7 +1447,7 @@ export default function PlanSemainePage() {
                         padding: '16px',
                         textAlign: 'center',
                         fontWeight: 'bold',
-                        color: '#374151',
+                        color: '#20B251',
                         borderRight: '1px solid #e5e7eb'
                       }}>
                         {day.day}
@@ -1461,10 +1461,10 @@ export default function PlanSemainePage() {
                       borderBottom: '1px solid #e5e7eb'
                     }}>
                       <td style={{
-                        padding: '16px',
-                        fontWeight: 'bold',
-                        color: '#374151',
-                        borderRight: '1px solid #e5e7eb',
+                              padding: '16px',
+                   fontWeight: 'bold',
+                        color: '#20B251',
+                              borderRight: '1px solid #e5e7eb',
                         backgroundColor: '#f9fafb'
                       }}>
                         {meal.icon} {meal.name}
@@ -1477,72 +1477,72 @@ export default function PlanSemainePage() {
                         return (
                           <td key={day.date} style={{
                             padding: '8px',
-                            borderRight: '1px solid #e5e7eb',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
+                                  borderRight: '1px solid #e5e7eb',
+                   cursor: 'pointer',
+                   transition: 'all 0.2s ease',
                             backgroundColor: isAccepted ? '#f0fdf4' : '#fef2f2'
                           }}
                           onClick={() => toggleMealStatus(meal.name, day.date)}
-                          >
-                            <div style={{
+                              >
+                                <div style={{
                               padding: '12px',
                               borderRadius: '8px',
                               backgroundColor: isAccepted ? '#dcfce7' : '#fee2e2',
                               border: isAccepted ? '2px solid #22c55e' : '2px solid #ef4444',
                               textAlign: 'center'
-                            }}>
-                              <div style={{
-                                fontWeight: 'bold',
+                                }}>
+                                  <div style={{
+                                    fontWeight: 'bold',
                                 color: isAccepted ? '#22c55e' : '#ef4444',
                                 marginBottom: '4px',
                                 fontSize: '12px'
-                              }}>
+                                  }}>
                                 {recipe.name}
-                              </div>
-                              <div style={{
+                                </div>
+                                <div style={{
                                 color: isAccepted ? '#22c55e' : '#ef4444',
                                 fontSize: '16px',
                                 fontWeight: 'bold',
                                 marginBottom: '4px'
                               }}>
                                 {isAccepted ? '✔' : 'X'}
-                              </div>
-                              <div style={{
+                                </div>
+                                <div style={{
                                 color: isAccepted ? '#22c55e' : '#ef4444',
                                 fontSize: '10px',
                                 marginBottom: '2px'
                               }}>
                                 {recipe.time} {recipe.portions} {recipe.rating}
-                              </div>
-                              <div style={{
+                                </div>
+                                <div style={{
                                 color: isAccepted ? '#22c55e' : '#ef4444',
                                 fontSize: '9px',
                                 marginBottom: '2px'
                               }}>
                                 {recipe.tags.join(' ')}
-                              </div>
-                              <div style={{
+                                </div>
+                                <div style={{
                                 color: isAccepted ? '#22c55e' : '#ef4444',
                                 fontSize: '8px'
-                              }}>
+                                }}>
                                 {recipe.ingredients.join(' ')}
+                                </div>
                               </div>
-                            </div>
                           </td>
                         )
                       })}
                     </tr>
-                  ))}
+                            ))}
                 </tbody>
               </table>
-            </div>
-
-            <div style={{
+                          </div>
+                          
+                          <div style={{
               marginTop: '24px',
               textAlign: 'center'
             }}>
               <p style={{
-                fontSize: '14px',
+                                    fontSize: '14px',
                 color: '#6b7280',
                 marginBottom: '16px'
               }}>
@@ -1554,8 +1554,8 @@ export default function PlanSemainePage() {
               }}>
                 Cliquez sur un repas pour l'accepter (✔) ou le décliner (X)
               </p>
-            </div>
-          </div>
+                                </div>
+                                </div>
         )
 
       default:
@@ -1564,7 +1564,7 @@ export default function PlanSemainePage() {
   }
 
   return (
-    <div style={{ 
+                                <div style={{
       padding: '24px', 
       background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)',
       minHeight: '100vh',
@@ -1573,7 +1573,7 @@ export default function PlanSemainePage() {
       
       {/* Contenu principal */}
       <SlideIn direction="up" delay={1400}>
-        <div style={{ 
+                                <div style={{
           maxWidth: '1200px', 
           margin: '0 auto',
           padding: '20px',
@@ -1582,21 +1582,21 @@ export default function PlanSemainePage() {
 
           {/* En-tête avec IA Culinaire Avancée */}
           <FadeIn delay={600}>
-            <div style={{ 
-              display: 'flex', 
+                <div style={{ 
+                  display: 'flex', 
               flexDirection: 'column',
-              alignItems: 'center', 
+                  alignItems: 'center',
               marginBottom: '30px'
-            }}>
+                                }}>
               {/* Cadre vert avec IA Culinaire Avancée */}
-              <div style={{
+                                  <div style={{
                 background: 'linear-gradient(135deg, #20B251 0%, #10b981 100%)',
                 color: 'white',
                 padding: '16px 32px',
                 borderRadius: '12px',
                 marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
+                                    display: 'flex',
+                                    alignItems: 'center',
                 gap: '12px',
                 boxShadow: '0 8px 24px rgba(32, 178, 81, 0.3)'
               }}>
@@ -1604,11 +1604,11 @@ export default function PlanSemainePage() {
                 <h1 style={{ 
                   margin: 0,
                   fontSize: '24px',
-                  fontWeight: 'bold'
-                }}>
+                    fontWeight: 'bold'
+                  }}>
                   IA Culinaire Avancée
                 </h1>
-              </div>
+                                </div>
 
               {/* Titre H3 */}
               <h3 style={{ 
@@ -1634,7 +1634,7 @@ export default function PlanSemainePage() {
               </p>
 
               {/* Barre de progression */}
-              <div style={{ 
+                          <div style={{
                 backgroundColor: 'white', 
                 padding: '30px',
                 borderRadius: '16px',
@@ -1642,8 +1642,8 @@ export default function PlanSemainePage() {
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                 maxWidth: '1000px',
                 margin: '0 auto 20px auto'
-              }}>
-                <div style={{ 
+                          }}>
+                            <div style={{
                   display: 'flex', 
                   justifyContent: 'space-between', 
                   alignItems: 'center',
@@ -1653,15 +1653,15 @@ export default function PlanSemainePage() {
                 }}>
                   {STEPS.map((step, index) => (
                     <div key={step.id} style={{ 
-                      display: 'flex', 
+                                  display: 'flex',
                       flexDirection: 'column', 
-                      alignItems: 'center',
+                                  alignItems: 'center',
                       minWidth: '60px',
                       position: 'relative'
-                    }}>
+                                }}>
                       {/* Ligne de connexion */}
                       {index < STEPS.length - 1 && (
-                        <div style={{
+                                  <div style={{
                           position: 'absolute',
                           top: '20px',
                           left: '50%',
@@ -1676,23 +1676,23 @@ export default function PlanSemainePage() {
                       <div style={{
                         width: '40px',
                         height: '40px',
-                        borderRadius: '50%',
+                                    borderRadius: '50%',
                         backgroundColor: index < currentStep ? '#20B251' : '#f3f4f6',
                         border: index === currentStep - 1 ? '3px solid #20B251' : 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                         color: index < currentStep ? 'white' : '#9ca3af',
                         fontSize: '16px',
-                        fontWeight: 'bold',
+                                    fontWeight: 'bold',
                         zIndex: 1,
                         position: 'relative'
-                      }}>
+                                  }}>
                         {index < currentStep - 1 ? '✓' : step.icon}
-                      </div>
+                                  </div>
                       
                       {/* Nom de l'étape */}
-                      <div style={{
+                                <div style={{
                         marginTop: '8px',
                         fontSize: '12px',
                         fontWeight: '500',
@@ -1701,14 +1701,14 @@ export default function PlanSemainePage() {
                         maxWidth: '80px'
                       }}>
                         {step.name}
-                      </div>
-                    </div>
+                                </div>
+                                </div>
                   ))}
-                </div>
+                                </div>
               </div>
 
               {/* Contenu de l'étape */}
-              <div style={{ 
+                                <div style={{
                 backgroundColor: 'white', 
                 padding: '40px',
                 borderRadius: '16px',
@@ -1717,34 +1717,34 @@ export default function PlanSemainePage() {
                 minHeight: '400px'
               }}>
                 {renderStepContent()}
-              </div>
+                                </div>
 
               {/* Boutons de navigation */}
-              <div style={{
-                display: 'flex',
+                      <div style={{
+                        display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 maxWidth: '600px',
                 width: '100%',
                 marginTop: '20px'
-              }}>
-                <button
+                      }}>
+                  <button
                   onClick={handlePrevious}
                   disabled={currentStep === 1}
-                  style={{
-                    padding: '12px 24px',
-                    borderRadius: '8px',
+                    style={{
+                            padding: '12px 24px',
+                            borderRadius: '8px',
                     border: '2px solid #20B251',
                     backgroundColor: 'transparent',
                     color: '#20B251',
-                    fontWeight: '600',
+                            fontWeight: '600',
                     cursor: currentStep === 1 ? 'not-allowed' : 'pointer',
                     opacity: currentStep === 1 ? 0.5 : 1,
                     transition: 'all 0.2s ease'
                   }}
                 >
                   ← Précédent
-                </button>
+                  </button>
 
                 <div style={{
                   fontSize: '14px',
@@ -1753,19 +1753,19 @@ export default function PlanSemainePage() {
                 }}>
                   Étape {currentStep}
                 </div>
-
-                <button
+                        
+                        <button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  style={{
-                    padding: '12px 24px',
-                    borderRadius: '8px',
+                          style={{
+                            padding: '12px 24px',
+                  borderRadius: '8px', 
                     border: 'none',
                     background: canProceed() 
                       ? 'linear-gradient(135deg, #20B251 0%, #10b981 100%)'
                       : '#e5e7eb',
                     color: 'white',
-                    fontWeight: '600',
+                            fontWeight: '600',
                     cursor: canProceed() ? 'pointer' : 'not-allowed',
                     opacity: canProceed() ? 1 : 0.5,
                     transition: 'all 0.2s ease',
@@ -1773,7 +1773,7 @@ export default function PlanSemainePage() {
                   }}
                 >
                   Suivant →
-                </button>
+                        </button>
               </div>
             </div>
           </FadeIn>

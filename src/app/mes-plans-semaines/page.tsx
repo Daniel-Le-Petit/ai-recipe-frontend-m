@@ -431,15 +431,15 @@ export default function MesPlansSemainesPage() {
               }}>
                 🤖 IA Culinaire Avancée
               </h1>
-              <h2 style={{ 
-                color: '#374151', 
-                fontSize: '24px', 
-                margin: '0 0 16px 0',
-                textAlign: 'center',
-                fontWeight: '600'
-              }}>
-                <strong>Visualiser mes Plans de la Semaine</strong>
-              </h2>
+                             <h2 style={{ 
+                 color: '#20B251', 
+                 fontSize: '24px', 
+                 margin: '0 0 16px 0',
+                 textAlign: 'center',
+                 fontWeight: '600'
+               }}>
+                 <strong>Visualiser mes Plans de la Semaine</strong>
+               </h2>
               <p style={{
                 fontSize: '18px',
                 color: '#6b7280',
@@ -508,22 +508,23 @@ export default function MesPlansSemainesPage() {
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <button
-              onClick={goToPreviousWeek}
-              disabled={currentWeekIndex === 0}
-              style={{
-                padding: '8px 16px',
-                borderRadius: '8px',
-                border: '2px solid #e5e7eb',
-                backgroundColor: currentWeekIndex === 0 ? '#f3f4f6' : '#ffffff',
-                color: currentWeekIndex === 0 ? '#9ca3af' : '#374151',
-                cursor: currentWeekIndex === 0 ? 'not-allowed' : 'pointer',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}
-            >
-              ← Semaine précédente
-            </button>
+                         <button
+               onClick={goToPreviousWeek}
+               disabled={currentWeekIndex === 0}
+               style={{
+                 padding: '8px 16px',
+                 borderRadius: '8px',
+                 border: '2px solid #20B251',
+                 backgroundColor: currentWeekIndex === 0 ? '#f0fdf4' : '#ffffff',
+                 color: currentWeekIndex === 0 ? '#9ca3af' : '#20B251',
+                 cursor: currentWeekIndex === 0 ? 'not-allowed' : 'pointer',
+                 fontSize: '14px',
+                 fontWeight: 'bold',
+                 transition: 'all 0.2s ease'
+               }}
+             >
+               ← Semaine précédente
+             </button>
 
             <div style={{
               display: 'flex',
@@ -550,22 +551,23 @@ export default function MesPlansSemainesPage() {
               ))}
             </div>
 
-            <button
-              onClick={goToNextWeek}
-              disabled={currentWeekIndex === weeklyPlans.length - 1}
-              style={{
-                padding: '8px 16px',
-                borderRadius: '8px',
-                border: '2px solid #e5e7eb',
-                backgroundColor: currentWeekIndex === weeklyPlans.length - 1 ? '#f3f4f6' : '#ffffff',
-                color: currentWeekIndex === weeklyPlans.length - 1 ? '#9ca3af' : '#374151',
-                cursor: currentWeekIndex === weeklyPlans.length - 1 ? 'not-allowed' : 'pointer',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}
-            >
-              Semaine suivante →
-            </button>
+                         <button
+               onClick={goToNextWeek}
+               disabled={currentWeekIndex === weeklyPlans.length - 1}
+               style={{
+                 padding: '8px 16px',
+                 borderRadius: '8px',
+                 border: '2px solid #20B251',
+                 backgroundColor: currentWeekIndex === weeklyPlans.length - 1 ? '#f0fdf4' : '#ffffff',
+                 color: currentWeekIndex === weeklyPlans.length - 1 ? '#9ca3af' : '#20B251',
+                 cursor: currentWeekIndex === weeklyPlans.length - 1 ? 'not-allowed' : 'pointer',
+                 fontSize: '14px',
+                 fontWeight: 'bold',
+                 transition: 'all 0.2s ease'
+               }}
+             >
+               Semaine suivante →
+             </button>
           </div>
 
           {/* Récapitulatif des sélections */}
@@ -576,44 +578,58 @@ export default function MesPlansSemainesPage() {
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
             marginBottom: '32px'
           }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '16px'
-            }}>
-              <div>
-                <strong>Type de repas</strong><br />
-                                 {currentPlan.selections.mealTypes.map((type: string) =>
-                   MEAL_TYPES.find(opt => opt.id === type)?.name
-                 ).join(', ')}
-              </div>
-              <div>
-                <strong>Portions</strong><br />
-                {PORTION_OPTIONS.find(opt => opt.id === currentPlan.selections.portions)?.name}
-              </div>
-              <div>
-                <strong>Difficulté</strong><br />
-                {DIFFICULTY_OPTIONS.find(opt => opt.id === currentPlan.selections.difficulty)?.name}
-              </div>
-              <div>
-                <strong>Préférences</strong><br />
-                                 {currentPlan.selections.preferences.map((pref: string) =>
-                   PREFERENCE_OPTIONS.find(opt => opt.id === pref)?.name
-                 ).join(', ')}
-              </div>
-              <div>
-                <strong>Mode cuisson</strong><br />
-                {COOKING_MODE_OPTIONS.find(opt => opt.id === currentPlan.selections.cookingMode)?.name}
-              </div>
-              <div>
-                <strong>Temps max</strong><br />
-                {COOKING_TIME_OPTIONS.find(opt => opt.id === currentPlan.selections.cookingTime)?.name}
-              </div>
-              <div>
-                <strong>Type de cuisine</strong><br />
-                {CUISINE_TYPE_OPTIONS.find(opt => opt.id === currentPlan.selections.cuisineType)?.name}
-              </div>
-            </div>
+                           <div style={{
+                 display: 'grid',
+                 gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                 gap: '16px'
+               }}>
+                 <div>
+                   <strong style={{ color: '#20B251' }}>Type de repas</strong><br />
+                   <span style={{ color: '#374151' }}>
+                     {currentPlan.selections.mealTypes.map((type: string) =>
+                       MEAL_TYPES.find(opt => opt.id === type)?.name
+                     ).join(', ')}
+                   </span>
+                 </div>
+                 <div>
+                   <strong style={{ color: '#20B251' }}>Portions</strong><br />
+                   <span style={{ color: '#374151' }}>
+                     {PORTION_OPTIONS.find(opt => opt.id === currentPlan.selections.portions)?.name}
+                   </span>
+                 </div>
+                 <div>
+                   <strong style={{ color: '#20B251' }}>Difficulté</strong><br />
+                   <span style={{ color: '#374151' }}>
+                     {DIFFICULTY_OPTIONS.find(opt => opt.id === currentPlan.selections.difficulty)?.name}
+                   </span>
+                 </div>
+                 <div>
+                   <strong style={{ color: '#20B251' }}>Préférences</strong><br />
+                   <span style={{ color: '#374151' }}>
+                     {currentPlan.selections.preferences.map((pref: string) =>
+                       PREFERENCE_OPTIONS.find(opt => opt.id === pref)?.name
+                     ).join(', ')}
+                   </span>
+                 </div>
+                 <div>
+                   <strong style={{ color: '#20B251' }}>Mode cuisson</strong><br />
+                   <span style={{ color: '#374151' }}>
+                     {COOKING_MODE_OPTIONS.find(opt => opt.id === currentPlan.selections.cookingMode)?.name}
+                   </span>
+                 </div>
+                 <div>
+                   <strong style={{ color: '#20B251' }}>Temps max</strong><br />
+                   <span style={{ color: '#374151' }}>
+                     {COOKING_TIME_OPTIONS.find(opt => opt.id === currentPlan.selections.cookingTime)?.name}
+                   </span>
+                 </div>
+                 <div>
+                   <strong style={{ color: '#20B251' }}>Type de cuisine</strong><br />
+                   <span style={{ color: '#374151' }}>
+                     {CUISINE_TYPE_OPTIONS.find(opt => opt.id === currentPlan.selections.cuisineType)?.name}
+                   </span>
+                 </div>
+               </div>
           </div>
 
           {/* Tableau des repas (lecture seule) */}
@@ -638,7 +654,7 @@ export default function MesPlansSemainesPage() {
                     padding: '16px',
                     textAlign: 'left',
                     fontWeight: 'bold',
-                    color: '#374151',
+                    color: '#20B251',
                     borderRight: '1px solid #e5e7eb'
                   }}>
                     Repas
@@ -648,7 +664,7 @@ export default function MesPlansSemainesPage() {
                       padding: '16px',
                       textAlign: 'center',
                       fontWeight: 'bold',
-                      color: '#374151',
+                      color: '#20B251',
                       borderRight: '1px solid #e5e7eb'
                     }}>
                       {day.day}
@@ -664,7 +680,7 @@ export default function MesPlansSemainesPage() {
                     <td style={{
                       padding: '16px',
                       fontWeight: 'bold',
-                      color: '#374151',
+                      color: '#20B251',
                       borderRight: '1px solid #e5e7eb',
                       backgroundColor: '#f9fafb'
                     }}>
@@ -733,18 +749,22 @@ export default function MesPlansSemainesPage() {
             </table>
           </div>
 
-          <div style={{
-            marginTop: '24px',
-            textAlign: 'center'
-          }}>
-            <p style={{
-              fontSize: '14px',
-              color: '#6b7280',
-              fontStyle: 'italic'
-            }}>
-              Cette page affiche vos plans hebdomadaires en lecture seule. Les sélections ne sont pas modifiables.
-            </p>
-          </div>
+                     <div style={{
+             marginTop: '24px',
+             textAlign: 'center'
+           }}>
+             <p style={{
+               fontSize: '14px',
+               color: '#20B251',
+               fontStyle: 'italic',
+               backgroundColor: '#f0fdf4',
+               padding: '12px',
+               borderRadius: '8px',
+               border: '1px solid #bbf7d0'
+             }}>
+               ✅ Cette page affiche vos plans hebdomadaires en lecture seule. Les sélections ne sont pas modifiables.
+             </p>
+           </div>
 
         </div>
       </SlideIn>

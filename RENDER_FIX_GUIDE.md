@@ -91,6 +91,7 @@ node check-render-config.js
 curl https://aifb-backend.onrender.com/api/recipie?populate=*
 ```
 
+
 ### Script 3 : Vérifier les Variables d'Environnement
 ```bash
 echo "NEXT_PUBLIC_API_URL: $NEXT_PUBLIC_API_URL"

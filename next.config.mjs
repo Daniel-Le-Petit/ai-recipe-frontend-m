@@ -1,31 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    // ⚠️ Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    ignoreBuildErrors: true,
-  },
   images: {
-    domains: ['images.unsplash.com'],
-    // Disable image optimization during build for faster builds
+    domains: ['localhost', 'ai-fines-herbes.vercel.app', 'render.com'],
     unoptimized: true,
   },
-  // Disable source maps in production for faster builds
-  productionBrowserSourceMaps: false,
-  // Ensure admin routes work on Render
-  async rewrites() {
-    return [
-      {
-        source: '/admin/:path*',
-        destination: '/admin/:path*',
-      },
-    ];
+  // Configuration pour éviter les timeouts de build
+  staticPageGenerationTimeout: 120, // Augmenter le timeout à 120 secondes
+  // Optimisations pour le build
+  swcMinify: true,
+  compress: true,
+  // Configuration pour le sitemap
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
   },
-  // Ensure static generation works for admin pages
+  // Configuration pour les pages statiques
   trailingSlash: false,
+  // Configuration pour éviter les erreurs de build
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
 }
 
 export default nextConfig 

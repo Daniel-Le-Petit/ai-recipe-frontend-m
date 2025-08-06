@@ -61,7 +61,8 @@ export default function AdminRecipesPage() {
       console.error('Error fetching recipes:', err)
       
       // Message d'erreur plus spécifique
-      if (err.message.includes('ECONNREFUSED') || err.message.includes('fetch failed')) {
+      const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
+      if (errorMessage.includes('ECONNREFUSED') || errorMessage.includes('fetch failed')) {
         setError('Le serveur backend n\'est pas démarré. Veuillez démarrer le backend Strapi avec "npm run develop" dans le dossier backend-js.')
       } else {
         setError('Erreur lors du chargement des recettes')
@@ -100,7 +101,8 @@ export default function AdminRecipesPage() {
             console.log(`   ❌ Erreur pour ${status}: ${response.status}`)
           }
         } catch (err) {
-          console.log(`   ❌ Erreur réseau pour ${status}:`, err.message)
+          const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
+          console.log(`   ❌ Erreur réseau pour ${status}:`, errorMessage)
         }
       }
       

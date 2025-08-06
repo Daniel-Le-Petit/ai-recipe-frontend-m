@@ -73,8 +73,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'background-color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#20B251'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#374151'}
             >
               📘
             </a>
@@ -90,8 +90,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'background-color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#20B251'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#374151'}
             >
               📷
             </a>
@@ -107,8 +107,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'background-color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#20B251'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#374151'}
             >
               🐦
             </a>
@@ -135,8 +135,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               Accueil
             </Link>
@@ -145,8 +145,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               Mes Recettes
             </Link>
@@ -155,8 +155,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               Créer Recette
             </Link>
@@ -165,8 +165,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               Contact
             </Link>
@@ -193,8 +193,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               Centre d'aide
             </Link>
@@ -203,8 +203,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               Comment ça marche
             </Link>
@@ -213,8 +213,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               À propos
             </Link>
@@ -223,8 +223,8 @@ export default function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s ease'
             }}
-            onMouseEnter={(e) => e.target.style.color = '#20B251'}
-            onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+            onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+            onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#9ca3af'}
             >
               Conditions d'utilisation
             </Link>
