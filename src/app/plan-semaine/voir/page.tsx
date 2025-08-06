@@ -5,7 +5,7 @@ import { SlideIn } from '../../../components/SlideIn'
 import React, { useState, useEffect } from 'react'
 
 export default function PlanSemaineVoirPage() {
-  const [mealStatuses, setMealStatuses] = useState({})
+  const [mealStatuses, setMealStatuses] = useState<Record<string, string>>({})
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0)
 
   // Données des semaines (simulation - en vrai ça viendrait de l'API)
@@ -53,7 +53,7 @@ export default function PlanSemaineVoirPage() {
     setMealStatuses(initialStatuses)
   }, [weeklyPlans])
 
-  const toggleMealStatus = (mealName, dayDate) => {
+  const toggleMealStatus = (mealName: string, dayDate: string) => {
     const key = `${mealName}-${dayDate}`
     setMealStatuses(prev => ({
       ...prev,
@@ -61,7 +61,7 @@ export default function PlanSemaineVoirPage() {
     }))
   }
 
-  const getMealStatus = (mealName, dayDate) => {
+  const getMealStatus = (mealName: string, dayDate: string) => {
     const key = `${mealName}-${dayDate}`
     return mealStatuses[key] || 'accepted'
   }
@@ -78,7 +78,7 @@ export default function PlanSemaineVoirPage() {
     }
   }
 
-  const goToWeek = (weekIndex) => {
+  const goToWeek = (weekIndex: number) => {
     setCurrentWeekIndex(weekIndex)
   }
 
@@ -331,8 +331,18 @@ export default function PlanSemaineVoirPage() {
                   transition: 'all 0.2s ease',
                   boxShadow: '0 4px 16px rgba(32, 178, 81, 0.3)'
                 }}
-                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
-                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+                onMouseEnter={(e) => {
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.transform = 'translateY(-2px)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.transform = 'translateY(0)'
+                  }
+                }}
               >
                 ✨ Créer une recette
               </button>
@@ -351,12 +361,18 @@ export default function PlanSemaineVoirPage() {
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.background = '#20B251'
-                  e.target.style.color = 'white'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.background = '#20B251'
+                    target.style.color = 'white'
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = 'white'
-                  e.target.style.color = '#20B251'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.background = 'white'
+                    target.style.color = '#20B251'
+                  }
                 }}
               >
                 📋 Mes Recettes
