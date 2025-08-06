@@ -51,7 +51,7 @@ export default function PlanSemaineVoirPage() {
       })
     })
     setMealStatuses(initialStatuses)
-  }, [])
+  }, [weeklyPlans])
 
   const toggleMealStatus = (mealName, dayDate) => {
     const key = `${mealName}-${dayDate}`

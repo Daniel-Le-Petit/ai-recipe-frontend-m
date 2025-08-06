@@ -1900,14 +1900,20 @@ export default function CreateRecipePage() {
                       gap: '12px'
                     }}
                     onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = '#1a8f42'
-                      e.target.style.transform = 'translateY(-2px)'
-                      e.target.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.15)'
+                      const target = e.target as HTMLElement
+                      if (target && target.style) {
+                        target.style.backgroundColor = '#1a8f42'
+                        target.style.transform = 'translateY(-2px)'
+                        target.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.15)'
+                      }
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = '#20B251'
-                      e.target.style.transform = 'translateY(0)'
-                      e.target.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'
+                      const target = e.target as HTMLElement
+                      if (target && target.style) {
+                        target.style.backgroundColor = '#20B251'
+                        target.style.transform = 'translateY(0)'
+                        target.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'
+                      }
                     }}
                   >
                     <span style={{ fontSize: '24px' }}>✨</span>
@@ -2142,14 +2148,20 @@ export default function CreateRecipePage() {
                   }}
                   onClick={handleViewOtherRecipes}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#20B251'
-                    e.currentTarget.style.backgroundColor = '#f0fdf4'
-                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    const target = e.currentTarget as HTMLElement
+                    if (target && target.style) {
+                      target.style.borderColor = '#20B251'
+                      target.style.backgroundColor = '#f0fdf4'
+                      target.style.transform = 'translateY(-2px)'
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#e5e7eb'
-                    e.currentTarget.style.backgroundColor = 'white'
-                    e.currentTarget.style.transform = 'translateY(0)'
+                    const target = e.currentTarget as HTMLElement
+                    if (target && target.style) {
+                      target.style.borderColor = '#e5e7eb'
+                      target.style.backgroundColor = 'white'
+                      target.style.transform = 'translateY(0)'
+                    }
                   }}
                   >
                     <div style={{ fontSize: '48px', marginBottom: '15px' }}>📚</div>
@@ -2182,14 +2194,20 @@ export default function CreateRecipePage() {
                   }}
                   onClick={handleCreateNewRecipe}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#20B251'
-                    e.currentTarget.style.backgroundColor = '#f0fdf4'
-                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    const target = e.currentTarget as HTMLElement
+                    if (target && target.style) {
+                      target.style.borderColor = '#20B251'
+                      target.style.backgroundColor = '#f0fdf4'
+                      target.style.transform = 'translateY(-2px)'
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#e5e7eb'
-                    e.currentTarget.style.backgroundColor = 'white'
-                    e.currentTarget.style.transform = 'translateY(0)'
+                    const target = e.currentTarget as HTMLElement
+                    if (target && target.style) {
+                      target.style.borderColor = '#e5e7eb'
+                      target.style.backgroundColor = 'white'
+                      target.style.transform = 'translateY(0)'
+                    }
                   }}
                   >
                     <div style={{ fontSize: '48px', marginBottom: '15px' }}>✨</div>
@@ -2222,14 +2240,20 @@ export default function CreateRecipePage() {
                   }}
                   onClick={() => window.location.href = '/'}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#20B251'
-                    e.currentTarget.style.backgroundColor = '#f0fdf4'
-                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    const target = e.currentTarget as HTMLElement
+                    if (target && target.style) {
+                      target.style.borderColor = '#20B251'
+                      target.style.backgroundColor = '#f0fdf4'
+                      target.style.transform = 'translateY(-2px)'
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#e5e7eb'
-                    e.currentTarget.style.backgroundColor = 'white'
-                    e.currentTarget.style.transform = 'translateY(0)'
+                    const target = e.currentTarget as HTMLElement
+                    if (target && target.style) {
+                      target.style.borderColor = '#e5e7eb'
+                      target.style.backgroundColor = 'white'
+                      target.style.transform = 'translateY(0)'
+                    }
                   }}
                   >
                     <div style={{ fontSize: '48px', marginBottom: '15px' }}>🏠</div>
@@ -2282,12 +2306,18 @@ export default function CreateRecipePage() {
               }}
               onMouseEnter={(e) => {
                 if (currentStep !== 1) {
-                  e.target.style.backgroundColor = '#f9fafb'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = '#f9fafb'
+                  }
                 }
               }}
               onMouseLeave={(e) => {
                 if (currentStep !== 1) {
-                  e.target.style.backgroundColor = 'white'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = 'white'
+                  }
                 }
               }}
             >
@@ -2367,7 +2397,10 @@ export default function CreateRecipePage() {
                   !(currentStep === 3 && !selectedMealType) &&
                   !(currentStep === 4 && selectedPortions === 0)
                 ) {
-                  e.target.style.backgroundColor = '#1a8f42'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = '#1a8f42'
+                  }
                 }
               }}
               onMouseLeave={(e) => {
@@ -2381,7 +2414,10 @@ export default function CreateRecipePage() {
                   !(currentStep === 3 && !selectedMealType) &&
                   !(currentStep === 4 && selectedPortions === 0)
                 ) {
-                  e.target.style.backgroundColor = '#20B251'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = '#20B251'
+                  }
                 }
               }}
             >

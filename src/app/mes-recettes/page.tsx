@@ -373,12 +373,18 @@ export default function MesRecettesPage() {
                     }}
                     onMouseEnter={(e) => {
                       if (statusFilter !== filter.id) {
-                        e.target.style.background = '#e5e7eb'
+                        const target = e.target as HTMLElement
+                        if (target && target.style) {
+                          target.style.background = '#e5e7eb'
+                        }
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (statusFilter !== filter.id) {
-                        e.target.style.background = '#f3f4f6'
+                        const target = e.target as HTMLElement
+                        if (target && target.style) {
+                          target.style.background = '#f3f4f6'
+                        }
                       }
                     }}
                   >

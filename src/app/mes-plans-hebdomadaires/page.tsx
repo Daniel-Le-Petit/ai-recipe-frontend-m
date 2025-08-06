@@ -268,7 +268,7 @@ export default function MesPlansHebdomadairesPage() {
     setCurrentWeekIndex(prev => Math.min(weeklyPlans.length - 1, prev + 1))
   }
 
-  const goToWeek = (weekIndex) => {
+  const goToWeek = (weekIndex: number) => {
     setCurrentWeekIndex(weekIndex)
   }
 
