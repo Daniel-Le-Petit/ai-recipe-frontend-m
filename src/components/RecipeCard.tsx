@@ -755,7 +755,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
                           borderRadius: '8px',
                           fontSize: '14px',
                           fontWeight: '600',
-                          border: '1px solid '#fde68a',
+                          border: '1px solid #fde68a',
                           cursor: 'pointer',
                           transition: 'all 0.2s ease'
                         }}
@@ -775,7 +775,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
                         style={{
                           backgroundColor: '#f3f4f6',
                           color: '#6b7280',
-                          border: '1px solid '#d1d5db',
+                          border: '1px solid #d1d5db',
                           padding: '10px 16px',
                           borderRadius: '8px',
                           fontSize: '14px',
@@ -792,6 +792,126 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
                         }}
                       >
                         ✏️ Modifier
+                      </button>
+                    </div>
+                  )
+
+                case 'ordered':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={() => {
+                          console.log('Track order:', recipe.id)
+                        }}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#7c3aed',
+                          color: 'white',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#6d28d9'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#7c3aed'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        📦 Suivre la commande
+                      </button>
+                      <button
+                        onClick={() => {
+                          console.log('View order details:', recipe.id)
+                        }}
+                        style={{
+                          backgroundColor: '#f3f4f6',
+                          color: '#6b7280',
+                          border: '1px solid #d1d5db',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          minWidth: '120px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#e5e7eb'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f3f4f6'
+                        }}
+                      >
+                        📋 Détails commande
+                      </button>
+                    </div>
+                  )
+
+                case 'archived':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={() => {
+                          console.log('Restore recipe:', recipe.id)
+                        }}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#6b7280',
+                          color: 'white',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#4b5563'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#6b7280'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        🔄 Restaurer
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (confirm('Êtes-vous sûr de vouloir supprimer définitivement cette recette ?')) {
+                            console.log('Permanently delete recipe:', recipe.id)
+                          }
+                        }}
+                        style={{
+                          backgroundColor: '#fee2e2',
+                          color: '#dc2626',
+                          border: '1px solid #fecaca',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          minWidth: '80px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fecaca'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fee2e2'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        🗑️ Supprimer
                       </button>
                     </div>
                   )
