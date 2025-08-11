@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { FadeIn } from '../../components/FadeIn'
 import { SlideIn } from '../../components/SlideIn'
 import { Pulse } from '../../components/Pulse'
+import { GeneratedRecipeDisplay } from '../../components/GeneratedRecipeDisplay'
+import { RecipeSelectionScreen } from '../../components/RecipeSelectionScreen'
 
 // Définition des étapes
 const STEPS = [
@@ -252,6 +254,65 @@ const COOKING_MODES = [
   }
 ]
 
+// Recettes simulées pour la démonstration
+const MOCK_RECIPES = [
+  {
+    id: '1',
+    title: 'Salade composée aux tomates et basilic',
+    description: 'Une salade fraîche et colorée parfaite pour l\'été',
+    ingredients: ['Tomates', 'Basilic', 'Mozzarella', 'Huile d\'olive', 'Vinaigre balsamique'],
+    instructions: [
+      'Lavez et coupez les tomates en quartiers',
+      'Tranchez la mozzarella',
+      'Arrangez les tomates et la mozzarella sur un plat',
+      'Ajoutez le basilic frais',
+      'Arrosez d\'huile d\'olive et de vinaigre balsamique',
+      'Salez et poivrez selon vos goûts'
+    ],
+    duration: 15,
+    servings: 4,
+    difficulty: 'Facile',
+    category: 'entree',
+    image: '/Images/entree-category.svg'
+  },
+  {
+    id: '2',
+    title: 'Risotto aux légumes de saison',
+    description: 'Un risotto crémeux et réconfortant',
+    ingredients: ['Riz Arborio', 'Légumes de saison', 'Parmesan', 'Bouillon de légumes'],
+    instructions: [
+      'Faites revenir les légumes dans l\'huile d\'olive',
+      'Ajoutez le riz et faites-le nacrer',
+      'Versez le bouillon progressivement en remuant',
+      'Ajoutez le parmesan à la fin',
+      'Laissez reposer 2 minutes avant de servir'
+    ],
+    duration: 30,
+    servings: 4,
+    difficulty: 'Intermédiaire',
+    category: 'plat-principal',
+    image: '/Images/plat-principal-category.svg'
+  },
+  {
+    id: '3',
+    title: 'Tarte aux fruits rouges',
+    description: 'Une tarte légère et fruitée',
+    ingredients: ['Pâte sablée', 'Fruits rouges', 'Crème pâtissière', 'Gelée de fruits'],
+    instructions: [
+      'Préchauffez le four à 180°C',
+      'Foncez le moule avec la pâte',
+      'Préparez la crème pâtissière',
+      'Disposez les fruits sur la crème',
+      'Nappez de gelée et laissez refroidir'
+    ],
+    duration: 45,
+    servings: 6,
+    difficulty: 'Intermédiaire',
+    category: 'dessert',
+    image: '/Images/dessert-category.svg'
+  }
+]
+
 export default function CreateRecipePage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([])
@@ -261,6 +322,9 @@ export default function CreateRecipePage() {
   const [selectedPortions, setSelectedPortions] = useState<number>(0)
   const [selectedDietaryPreference, setSelectedDietaryPreference] = useState<string>('')
   const [selectedCookingMode, setSelectedCookingMode] = useState<string>('')
+  const [generatedRecipe, setGeneratedRecipe] = useState<any>(null)
+  const [selectedRecipe, setSelectedRecipe] = useState<any>(null)
+  const [showRecipeSelection, setShowRecipeSelection] = useState(false)
 
   const handleNext = () => {
     if (currentStep < STEPS.length) {
@@ -318,18 +382,50 @@ export default function CreateRecipePage() {
     
     // Simuler la génération de recette
     setTimeout(() => {
-      // Ici on pourrait ajouter la logique pour générer la recette
-      console.log('Génération de recette avec les paramètres:', {
-        ingredients: selectedIngredients,
-        category: selectedCategory,
-        mealType: selectedMealType,
-        portions: selectedPortions,
-        dietaryPreference: selectedDietaryPreference,
+      // Générer une recette basée sur les paramètres sélectionnés
+      const newRecipe = {
+        id: 'generated-1',
+        title: `Recette personnalisée ${selectedCategory ? `- ${RECIPE_CATEGORIES.find(c => c.id === selectedCategory)?.name}` : ''}`,
+        description: `Une délicieuse recette créée spécialement pour vous avec ${selectedIngredients.join(', ')}`,
+        ingredients: [...selectedIngredients, 'Sel', 'Poivre', 'Huile d\'olive'],
+        instructions: [
+          'Préparez tous vos ingrédients',
+          'Faites chauffer l\'huile dans une poêle',
+          'Ajoutez vos ingrédients principaux',
+          'Assaisonnez selon vos goûts',
+          'Laissez cuire à feu moyen',
+          'Servez chaud et dégustez !'
+        ],
+        duration: 25,
+        servings: selectedPortions || 2,
+        difficulty: 'Facile',
+        category: selectedCategory || 'plat-principal',
         cookingMode: selectedCookingMode
-      })
-      // Passer à l'étape suivante après génération
+      }
+      
+      setGeneratedRecipe(newRecipe)
       setCurrentStep(9)
     }, 3000) // Simulation de 3 secondes de génération
+  }
+
+  const handleRecipeSelect = (recipe: any) => {
+    setSelectedRecipe(recipe)
+    setShowRecipeSelection(true)
+  }
+
+  const handleConnectToMerchant = () => {
+    // Logique pour se connecter au commerçant
+    alert('Connexion au commerçant en cours...')
+  }
+
+  const handleStartCooking = () => {
+    // Rediriger vers la page de cuisson guidée
+    window.location.href = `/cuisson-guidee?recipe=${selectedRecipe?.id}`
+  }
+
+  const handleBackToRecipes = () => {
+    setShowRecipeSelection(false)
+    setSelectedRecipe(null)
   }
 
   const handleViewOtherRecipes = () => {
@@ -346,6 +442,9 @@ export default function CreateRecipePage() {
     setSelectedPortions(0)
     setSelectedDietaryPreference('')
     setSelectedCookingMode('')
+    setGeneratedRecipe(null)
+    setSelectedRecipe(null)
+    setShowRecipeSelection(false)
   }
 
   return (
@@ -2105,177 +2204,24 @@ export default function CreateRecipePage() {
             </FadeIn>
           )}
 
-          {/* Étape 9: Demande d'autres recettes */}
-          {currentStep === 9 && (
-            <FadeIn delay={1600}>
-              <div>
-                {/* Titre de l'étape */}
-                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                  <h2 style={{ 
-                    color: '#1f2937', 
-                    fontSize: '32px', 
-                    margin: '0 0 20px 0',
-                    fontWeight: 'bold'
-                  }}>
-                    🎉 Votre recette a été générée !
-                  </h2>
-                  <p style={{ 
-                    color: '#6b7280', 
-                    fontSize: '18px', 
-                    margin: '0'
-                  }}>
-                    Souhaitez-vous voir d'autres recettes ou créer une nouvelle recette ?
-                  </p>
-                </div>
+          {/* Étape 9: Affichage de la recette générée */}
+          {currentStep === 9 && !showRecipeSelection && (
+            <GeneratedRecipeDisplay
+              generatedRecipe={generatedRecipe}
+              onRecipeSelect={handleRecipeSelect}
+              onViewOtherRecipes={handleViewOtherRecipes}
+              onCreateNewRecipe={handleCreateNewRecipe}
+            />
+          )}
 
-                {/* Options */}
-                <div style={{ 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  gap: '20px',
-                  maxWidth: '600px',
-                  margin: '0 auto'
-                }}>
-                  {/* Option 1: Voir d'autres recettes */}
-                  <div style={{
-                    backgroundColor: 'white',
-                    border: '2px solid #e5e7eb',
-                    borderRadius: '16px',
-                    padding: '30px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    textAlign: 'center'
-                  }}
-                  onClick={handleViewOtherRecipes}
-                  onMouseEnter={(e) => {
-                    const target = e.currentTarget as HTMLElement
-                    if (target && target.style) {
-                      target.style.borderColor = '#20B251'
-                      target.style.backgroundColor = '#f0fdf4'
-                      target.style.transform = 'translateY(-2px)'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    const target = e.currentTarget as HTMLElement
-                    if (target && target.style) {
-                      target.style.borderColor = '#e5e7eb'
-                      target.style.backgroundColor = 'white'
-                      target.style.transform = 'translateY(0)'
-                    }
-                  }}
-                  >
-                    <div style={{ fontSize: '48px', marginBottom: '15px' }}>📚</div>
-                    <h3 style={{ 
-                      color: '#1f2937', 
-                      fontSize: '24px', 
-                      margin: '0 0 10px 0',
-                      fontWeight: 'bold'
-                    }}>
-                      Voir d'autres recettes
-                    </h3>
-                    <p style={{ 
-                      color: '#6b7280', 
-                      fontSize: '16px', 
-                      margin: '0'
-                    }}>
-                      Découvrez notre collection de recettes existantes
-                    </p>
-                  </div>
-
-                  {/* Option 2: Créer une nouvelle recette */}
-                  <div style={{
-                    backgroundColor: 'white',
-                    border: '2px solid #e5e7eb',
-                    borderRadius: '16px',
-                    padding: '30px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    textAlign: 'center'
-                  }}
-                  onClick={handleCreateNewRecipe}
-                  onMouseEnter={(e) => {
-                    const target = e.currentTarget as HTMLElement
-                    if (target && target.style) {
-                      target.style.borderColor = '#20B251'
-                      target.style.backgroundColor = '#f0fdf4'
-                      target.style.transform = 'translateY(-2px)'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    const target = e.currentTarget as HTMLElement
-                    if (target && target.style) {
-                      target.style.borderColor = '#e5e7eb'
-                      target.style.backgroundColor = 'white'
-                      target.style.transform = 'translateY(0)'
-                    }
-                  }}
-                  >
-                    <div style={{ fontSize: '48px', marginBottom: '15px' }}>✨</div>
-                    <h3 style={{ 
-                      color: '#1f2937', 
-                      fontSize: '24px', 
-                      margin: '0 0 10px 0',
-                      fontWeight: 'bold'
-                    }}>
-                      Créer une nouvelle recette
-                    </h3>
-                    <p style={{ 
-                      color: '#6b7280', 
-                      fontSize: '16px', 
-                      margin: '0'
-                    }}>
-                      Recommencer le processus avec de nouveaux ingrédients
-                    </p>
-                  </div>
-
-                  {/* Option 3: Retour à l'accueil */}
-                  <div style={{
-                    backgroundColor: 'white',
-                    border: '2px solid #e5e7eb',
-                    borderRadius: '16px',
-                    padding: '30px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    textAlign: 'center'
-                  }}
-                  onClick={() => window.location.href = '/'}
-                  onMouseEnter={(e) => {
-                    const target = e.currentTarget as HTMLElement
-                    if (target && target.style) {
-                      target.style.borderColor = '#20B251'
-                      target.style.backgroundColor = '#f0fdf4'
-                      target.style.transform = 'translateY(-2px)'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    const target = e.currentTarget as HTMLElement
-                    if (target && target.style) {
-                      target.style.borderColor = '#e5e7eb'
-                      target.style.backgroundColor = 'white'
-                      target.style.transform = 'translateY(0)'
-                    }
-                  }}
-                  >
-                    <div style={{ fontSize: '48px', marginBottom: '15px' }}>🏠</div>
-                    <h3 style={{ 
-                      color: '#1f2937', 
-                      fontSize: '24px', 
-                      margin: '0 0 10px 0',
-                      fontWeight: 'bold'
-                    }}>
-                      Retour à l'accueil
-                    </h3>
-                    <p style={{ 
-                      color: '#6b7280', 
-                      fontSize: '16px', 
-                      margin: '0'
-                    }}>
-                      Retourner à la page d'accueil
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
+          {/* Écran de sélection de recette */}
+          {showRecipeSelection && selectedRecipe && (
+            <RecipeSelectionScreen
+              selectedRecipe={selectedRecipe}
+              onConnectToMerchant={handleConnectToMerchant}
+              onStartCooking={handleStartCooking}
+              onBackToRecipes={handleBackToRecipes}
+            />
           )}
 
           {/* Navigation des étapes */}

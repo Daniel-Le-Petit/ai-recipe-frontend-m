@@ -389,33 +389,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
           </div>
         )}
 
-        {/* Favorite button */}
-        <div style={{ position: 'absolute', top: '8px', left: '8px' }}>
-          <button
-            onClick={handleFavorite}
-            style={{
-              width: '32px',
-              height: '32px',
-              backgroundColor: 'white',
-              border: 'none',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              transition: 'all 0.2s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)'
-            }}
-          >
-            ❤️
-          </button>
-        </div>
+
       </div>
 
       {/* Content */}
@@ -480,61 +454,381 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
           </div>
         )}
 
-        {/* Actions - Only show for full version */}
+        {/* Action buttons - Only show for full version */}
         {!compact && (
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {onStartCooking && (
-              <button
-                data-testid="start-cooking-button"
-                onClick={handleCardClick}
-                style={{
-                  flex: 1,
-                  backgroundColor: '#2563eb',
-                  color: 'white',
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#1d4ed8'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#2563eb'
-                }}
-              >
-                Commencer
-              </button>
-            )}
-            {onFavorite && (
-              <button
-                data-testid="favorite-button"
-                onClick={handleFavorite}
-                style={{
-                  padding: '8px 16px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  backgroundColor: 'white',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f9fafb'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'white'
-                }}
-              >
-                ❤️
-              </button>
-            )}
+          <div style={{ 
+            marginTop: '12px',
+            paddingTop: '12px',
+            borderTop: '1px solid #f3f4f6'
+          }}>
+            {(() => {
+              switch (status) {
+                case 'draft':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={handleCardClick}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#20B251',
+                          color: 'white',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#1a8f42'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#20B251'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        ✏️ Continuer l'édition
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')) {
+                            console.log('Delete recipe:', recipe.id)
+                          }
+                        }}
+                        style={{
+                          backgroundColor: '#fee2e2',
+                          color: '#dc2626',
+                          border: '1px solid #fecaca',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          minWidth: '48px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fecaca'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fee2e2'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  )
+
+                case 'saved':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={() => {
+                          // Handle submit for approval
+                          console.log('Submit recipe for approval:', recipe.id)
+                        }}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#3b82f6',
+                          color: 'white',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#2563eb'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#3b82f6'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        📤 Soumettre pour validation
+                      </button>
+                      <button
+                        onClick={handleCardClick}
+                        style={{
+                          backgroundColor: '#f3f4f6',
+                          color: '#6b7280',
+                          border: '1px solid #d1d5db',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          minWidth: '80px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#e5e7eb'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f3f4f6'
+                        }}
+                      >
+                        ✏️ Modifier
+                      </button>
+                    </div>
+                  )
+
+                case 'submitted':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        disabled
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#fef3c7',
+                          color: '#d97706',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: '1px solid #fde68a',
+                          cursor: 'not-allowed',
+                          opacity: '0.8'
+                        }}
+                      >
+                        ⏳ En attente de validation
+                      </button>
+                      <button
+                        onClick={() => {
+                          console.log('View status:', recipe.id)
+                        }}
+                        style={{
+                          backgroundColor: '#f3f4f6',
+                          color: '#6b7280',
+                          border: '1px solid #d1d5db',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          minWidth: '100px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#e5e7eb'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f3f4f6'
+                        }}
+                      >
+                        📊 Voir le statut
+                      </button>
+                    </div>
+                  )
+
+                case 'approved':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={handleCardClick}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#20B251',
+                          color: 'white',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#1a8f42'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#20B251'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        🍳 Commencer la cuisson
+                      </button>
+                      <button
+                        onClick={() => {
+                          console.log('Order ingredients:', recipe.id)
+                        }}
+                        style={{
+                          backgroundColor: '#f3f4f6',
+                          color: '#6b7280',
+                          border: '1px solid #d1d5db',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          minWidth: '120px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#e5e7eb'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f3f4f6'
+                        }}
+                      >
+                        🛒 Commander
+                      </button>
+                    </div>
+                  )
+
+                case 'completed':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={handleCardClick}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#20B251',
+                          color: 'white',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#1a8f42'
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#20B251'
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        🔄 Refaire cette recette
+                      </button>
+                      <button
+                        onClick={() => {
+                          console.log('Rate recipe:', recipe.id)
+                        }}
+                                                 style={{
+                           backgroundColor: '#fef3c7',
+                           color: '#d97706',
+                           border: '1px solid #fde68a',
+                           padding: '10px 16px',
+                           borderRadius: '8px',
+                           fontSize: '14px',
+                           fontWeight: '600',
+                           cursor: 'pointer',
+                           transition: 'all 0.2s ease',
+                           minWidth: '100px'
+                         }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fde68a'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fef3c7'
+                        }}
+                      >
+                        ⭐ Noter
+                      </button>
+                    </div>
+                  )
+
+                case 'rejected':
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={() => {
+                          console.log('View feedback:', recipe.id)
+                        }}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#fef3c7',
+                          color: '#d97706',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: '1px solid '#fde68a',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fde68a'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fef3c7'
+                        }}
+                      >
+                        📝 Voir les commentaires
+                      </button>
+                      <button
+                        onClick={() => {
+                          console.log('Edit and resubmit:', recipe.id)
+                        }}
+                        style={{
+                          backgroundColor: '#f3f4f6',
+                          color: '#6b7280',
+                          border: '1px solid '#d1d5db',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          minWidth: '120px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#e5e7eb'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f3f4f6'
+                        }}
+                      >
+                        ✏️ Modifier
+                      </button>
+                    </div>
+                  )
+
+                default:
+                  return (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={handleCardClick}
+                        style={{
+                          flex: 1,
+                          backgroundColor: '#6b7280',
+                          color: 'white',
+                          padding: '10px 16px',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#4b5563'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#6b7280'
+                        }}
+                      >
+                        Voir les détails
+                      </button>
+                    </div>
+                  )
+              }
+            })()}
           </div>
         )}
+
       </div>
     </div>
   )

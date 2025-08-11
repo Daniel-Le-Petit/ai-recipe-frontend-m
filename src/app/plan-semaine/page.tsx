@@ -1327,159 +1327,321 @@ export default function PlanSemainePage() {
                 </div>
         )
 
-      case 10:
+            case 10:
         return (
-                <div>
-            <h2 style={{
-              fontSize: '24px',
+          <div>
+            {/* Titre principal - très grande police */}
+            <h1 style={{
+              fontSize: '48px',
               fontWeight: 'bold',
               color: '#20B251',
-              marginBottom: '8px',
-              textAlign: 'center'
-                      }}>
-                        Plan de la Semaine
+              textAlign: 'center',
+              marginBottom: '16px',
+              textShadow: '0 2px 4px rgba(32, 178, 81, 0.2)'
+            }}>
+              Votre Plan de la Semaine
+            </h1>
+
+            {/* Sous-titre - grande police mais moins que le titre */}
+            <h2 style={{
+              fontSize: '32px',
+              fontWeight: '600',
+              color: '#374151',
+              textAlign: 'center',
+              marginBottom: '40px'
+            }}>
+              Récapitulatif de vos préférences pour la semaine
             </h2>
-                      <p style={{ 
-              fontSize: '16px',
-                        color: '#6b7280', 
+
+            {/* Tableau des préférences */}
+            <div style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              padding: '32px',
+              marginBottom: '40px',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              border: '2px solid #20B251'
+            }}>
+              <table style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                border: '2px solid #20B251'
+              }}>
+                <tbody>
+                  <tr style={{ borderBottom: '2px solid #20B251' }}>
+                    <td style={{
+                      padding: '16px',
+                      fontWeight: 'bold',
+                      color: '#20B251',
+                      fontSize: '18px',
+                      width: '30%',
+                      borderRight: '2px solid #20B251',
+                      backgroundColor: '#f0fdf4'
+                    }}>
+                      Type de repas:
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      fontWeight: 'bold',
+                      color: '#20B251',
+                      fontSize: '18px',
+                      width: '30%',
+                      borderRight: '2px solid #20B251',
+                      backgroundColor: '#f0fdf4'
+                    }}>
+                      Portions:
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      fontWeight: 'bold',
+                      color: '#20B251',
+                      fontSize: '18px',
+                      width: '40%',
+                      backgroundColor: '#f0fdf4'
+                    }}>
+                      Difficulté:
+                    </td>
+                  </tr>
+                  <tr style={{ borderBottom: '2px solid #20B251' }}>
+                    <td style={{
+                      padding: '16px',
+                      color: '#10b981',
+                      fontSize: '16px',
+                      borderRight: '2px solid #20B251'
+                    }}>
+                      {selectedMealTypes.length > 0 
+                        ? selectedMealTypes.map(type =>
+                            MEAL_TYPES.find(opt => opt.id === type)?.name
+                          ).join(', ')
+                        : 'Aucun sélectionné'
+                      }
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      color: '#10b981',
+                      fontSize: '16px',
+                      borderRight: '2px solid #20B251'
+                    }}>
+                      {selectedPortions 
+                        ? PORTION_OPTIONS.find(opt => opt.id === selectedPortions)?.name
+                        : 'Non sélectionné'
+                      }
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      color: '#10b981',
+                      fontSize: '16px'
+                    }}>
+                      {selectedDifficulty 
+                        ? DIFFICULTY_OPTIONS.find(opt => opt.id === selectedDifficulty)?.name
+                        : 'Non sélectionné'
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{
+                      padding: '16px',
+                      fontWeight: 'bold',
+                      color: '#20B251',
+                      fontSize: '18px',
+                      borderRight: '2px solid #20B251',
+                      backgroundColor: '#f0fdf4'
+                    }}>
+                      Préférences:
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      fontWeight: 'bold',
+                      color: '#20B251',
+                      fontSize: '18px',
+                      borderRight: '2px solid #20B251',
+                      backgroundColor: '#f0fdf4'
+                    }}>
+                      Mode cuisson:
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      fontWeight: 'bold',
+                      color: '#20B251',
+                      fontSize: '18px',
+                      backgroundColor: '#f0fdf4'
+                    }}>
+                      Type de cuisine:
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{
+                      padding: '16px',
+                      color: '#10b981',
+                      fontSize: '16px',
+                      borderRight: '2px solid #20B251'
+                    }}>
+                      {selectedPreferences.length > 0
+                        ? selectedPreferences.map(pref =>
+                            PREFERENCE_OPTIONS.find(opt => opt.id === pref)?.name
+                          ).join(', ')
+                        : 'Aucune sélectionnée'
+                      }
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      color: '#10b981',
+                      fontSize: '16px',
+                      borderRight: '2px solid #20B251'
+                    }}>
+                      {selectedCookingMode 
+                        ? COOKING_MODE_OPTIONS.find(opt => opt.id === selectedCookingMode)?.name
+                        : 'Non sélectionné'
+                      }
+                    </td>
+                    <td style={{
+                      padding: '16px',
+                      color: '#10b981',
+                      fontSize: '16px'
+                    }}>
+                      {selectedCuisineType 
+                        ? CUISINE_TYPE_OPTIONS.find(opt => opt.id === selectedCuisineType)?.name
+                        : 'Non sélectionné'
+                      }
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* En-tête de la semaine avec navigation */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
               marginBottom: '24px',
-              textAlign: 'center'
-                      }}>
-              Semaine du: {weeklyPlanData.weekStart}
-                      </p>
-                    
-                    {/* Récapitulatif des sélections */}
-                      <div style={{
               backgroundColor: '#ffffff',
               borderRadius: '12px',
-                        padding: '24px',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-              marginBottom: '32px'
-                      }}>
-                        <h3 style={{ 
-                fontSize: '18px',
+              padding: '20px',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)'
+            }}>
+              <button
+                onClick={() => {}}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '24px',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  borderRadius: '50%',
+                  transition: 'all 0.2s ease',
+                  color: '#20B251'
+                }}
+                onMouseEnter={(e) => {
+                  const target = e.target as HTMLElement
+                  target.style.backgroundColor = '#f0fdf4'
+                  target.style.transform = 'scale(1.1)'
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.target as HTMLElement
+                  target.style.backgroundColor = 'transparent'
+                  target.style.transform = 'scale(1)'
+                }}
+              >
+                ←
+              </button>
+              
+              <h3 style={{
+                fontSize: '28px',
                 fontWeight: 'bold',
-                color: '#374151',
-                marginBottom: '16px',
+                color: '#20B251',
+                margin: 0,
                 textAlign: 'center'
               }}>
-                Récapitulatif des sélections de mon Plan de la Semaine du: {weeklyPlanData.weekStart}
-                        </h3>
-                        
-                        <div style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                          gap: '16px'
-                        }}>
-                <div>
-                  <strong>Type de repas</strong><br />
-                  {selectedMealTypes.length > 0 
-                    ? selectedMealTypes.map(type =>
-                        MEAL_TYPES.find(opt => opt.id === type)?.name
-                      ).join(', ')
-                    : 'Aucun sélectionné'
-                  }
-                          </div>
-                <div>
-                  <strong>Portions</strong><br />
-                  {selectedPortions 
-                    ? PORTION_OPTIONS.find(opt => opt.id === selectedPortions)?.name
-                    : 'Non sélectionné'
-                  }
-                          </div>
-                <div>
-                  <strong>Difficulté</strong><br />
-                  {selectedDifficulty 
-                    ? DIFFICULTY_OPTIONS.find(opt => opt.id === selectedDifficulty)?.name
-                    : 'Non sélectionné'
-                  }
-                          </div>
-                <div>
-                  <strong>Préférences</strong><br />
-                  {selectedPreferences.length > 0
-                    ? selectedPreferences.map(pref =>
-                        PREFERENCE_OPTIONS.find(opt => opt.id === pref)?.name
-                      ).join(', ')
-                    : 'Aucune sélectionnée'
-                  }
-                          </div>
-                <div>
-                  <strong>Mode cuisson</strong><br />
-                  {selectedCookingMode 
-                    ? COOKING_MODE_OPTIONS.find(opt => opt.id === selectedCookingMode)?.name
-                    : 'Non sélectionné'
-                  }
-                          </div>
-                <div>
-                  <strong>Temps max</strong><br />
-                  {selectedCookingTime 
-                    ? COOKING_TIME_OPTIONS.find(opt => opt.id === selectedCookingTime)?.name
-                    : 'Non sélectionné'
-                  }
-                          </div>
-                <div>
-                  <strong>Type de cuisine</strong><br />
-                  {selectedCuisineType 
-                    ? CUISINE_TYPE_OPTIONS.find(opt => opt.id === selectedCuisineType)?.name
-                    : 'Non sélectionné'
-                  }
-                          </div>
-                        </div>
-                      </div>
-                    
-            {/* Tableau des repas */}
-                      <div style={{
+                Semaine du: {weeklyPlanData.weekStart}
+              </h3>
+              
+              <button
+                onClick={() => {}}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '24px',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  borderRadius: '50%',
+                  transition: 'all 0.2s ease',
+                  color: '#20B251'
+                }}
+                onMouseEnter={(e) => {
+                  const target = e.target as HTMLElement
+                  target.style.backgroundColor = '#f0fdf4'
+                  target.style.transform = 'scale(1.1)'
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.target as HTMLElement
+                  target.style.backgroundColor = 'transparent'
+                  target.style.transform = 'scale(1)'
+                }}
+              >
+                →
+              </button>
+            </div>
+
+            {/* Tableau principal des repas */}
+            <div style={{
               backgroundColor: '#ffffff',
-                        borderRadius: '12px',
+              borderRadius: '16px',
               padding: '24px',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               overflowX: 'auto'
             }}>
               <table style={{
                 width: '100%',
                 borderCollapse: 'collapse',
-                minWidth: '800px'
+                minWidth: '1200px',
+                border: '2px solid #20B251'
               }}>
                 <thead>
-                  <tr style={{
-                    backgroundColor: '#f9fafb',
-                    borderBottom: '2px solid #e5e7eb'
-                  }}>
+                  <tr style={{ backgroundColor: '#f0fdf4' }}>
                     <th style={{
-                          padding: '16px',
+                      padding: '16px',
                       textAlign: 'left',
-                          fontWeight: 'bold',
+                      fontWeight: 'bold',
                       color: '#20B251',
-                      borderRight: '1px solid #e5e7eb'
+                      fontSize: '16px',
+                      border: '2px solid #20B251',
+                      width: '200px'
                     }}>
-                      Repas
+                      Type de Repas
                     </th>
-                    {weeklyPlanData.days.map(day => (
+                    {weeklyPlanData.days.map((day, index) => (
                       <th key={day.date} style={{
-                        padding: '16px',
+                        padding: '12px 8px',
                         textAlign: 'center',
                         fontWeight: 'bold',
                         color: '#20B251',
-                        borderRight: '1px solid #e5e7eb'
+                        fontSize: '14px',
+                        border: '2px solid #20B251'
                       }}>
-                        {day.day}
+                        <div style={{ marginBottom: '4px' }}>
+                          {day.day.split(' ')[0].slice(0, 3)}
+                        </div>
+                        <div style={{ fontSize: '12px' }}>
+                          {day.date.split('-')[2]}
+                        </div>
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {weeklyPlanData.meals.map(meal => (
-                    <tr key={meal.name} style={{
-                      borderBottom: '1px solid #e5e7eb'
-                    }}>
+                    <tr key={meal.name} style={{ borderBottom: '2px solid #20B251' }}>
                       <td style={{
-                              padding: '16px',
-                   fontWeight: 'bold',
+                        padding: '16px',
+                        fontWeight: 'bold',
                         color: '#20B251',
-                              borderRight: '1px solid #e5e7eb',
-                        backgroundColor: '#f9fafb'
+                        fontSize: '16px',
+                        border: '2px solid #20B251',
+                        backgroundColor: '#f9fafb',
+                        verticalAlign: 'top'
                       }}>
-                        {meal.icon} {meal.name}
+                        {meal.name}:
                       </td>
                       {weeklyPlanData.days.map(day => {
                         const status = getMealStatus(meal.name, day.date)
@@ -1488,86 +1650,133 @@ export default function PlanSemainePage() {
                         
                         return (
                           <td key={day.date} style={{
-                            padding: '8px',
-                                  borderRight: '1px solid #e5e7eb',
-                   cursor: 'pointer',
-                   transition: 'all 0.2s ease',
-                            backgroundColor: isAccepted ? '#f0fdf4' : '#fef2f2'
-                          }}
-                          onClick={() => toggleMealStatus(meal.name, day.date)}
-                              >
-                                <div style={{
-                              padding: '12px',
-                              borderRadius: '8px',
-                              backgroundColor: isAccepted ? '#dcfce7' : '#fee2e2',
-                              border: isAccepted ? '2px solid #22c55e' : '2px solid #ef4444',
-                              textAlign: 'center'
-                                }}>
-                                  <div style={{
-                                    fontWeight: 'bold',
-                                color: isAccepted ? '#22c55e' : '#ef4444',
-                                marginBottom: '4px',
-                                fontSize: '12px'
-                                  }}>
-                                {recipe.name}
-                                </div>
-                                <div style={{
-                                color: isAccepted ? '#22c55e' : '#ef4444',
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                                marginBottom: '4px'
-                              }}>
-                                {isAccepted ? '✔' : 'X'}
-                                </div>
-                                <div style={{
-                                color: isAccepted ? '#22c55e' : '#ef4444',
-                                fontSize: '10px',
-                                marginBottom: '2px'
-                              }}>
-                                {recipe.time} {recipe.portions} {recipe.rating}
-                                </div>
-                                <div style={{
-                                color: isAccepted ? '#22c55e' : '#ef4444',
-                                fontSize: '9px',
-                                marginBottom: '2px'
-                              }}>
-                                {recipe.tags.join(' ')}
-                                </div>
-                                <div style={{
-                                color: isAccepted ? '#22c55e' : '#ef4444',
-                                fontSize: '8px'
-                                }}>
-                                {recipe.ingredients.join(' ')}
-                                </div>
+                            padding: '12px',
+                            border: '2px solid #20B251',
+                            verticalAlign: 'top'
+                          }}>
+                            {/* Informations nutritionnelles */}
+                            <div style={{ marginBottom: '8px' }}>
+                              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '2px' }}>
+                                Énergie Glucides Protéines Lipides
                               </div>
+                              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '8px' }}>
+                                0 KCal 0 KCal 0 KCal 0 KCal
+                              </div>
+                            </div>
+
+                            {/* Statut accepté/décliné */}
+                            <div style={{ marginBottom: '8px' }}>
+                              <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px' }}>
+                                <input
+                                  type="checkbox"
+                                  checked={isAccepted}
+                                  onChange={() => toggleMealStatus(meal.name, day.date)}
+                                  style={{ width: '12px', height: '12px' }}
+                                />
+                                <span style={{ 
+                                  color: isAccepted ? '#22c55e' : '#ef4444',
+                                  fontWeight: 'bold'
+                                }}>
+                                  {isAccepted ? 'Accepté' : 'Décliné'}
+                                </span>
+                              </label>
+                            </div>
+
+                            {/* Détails du repas */}
+                            <div style={{ marginBottom: '8px', fontSize: '11px', color: '#6b7280' }}>
+                              <div>⏱️ {recipe.time} 👥 {recipe.portions} ⭐ {recipe.rating}</div>
+                            </div>
+
+                            {/* Bouton d'action */}
+                            <div style={{ marginBottom: '8px' }}>
+                              <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px' }}>
+                                <input
+                                  type="checkbox"
+                                  style={{ 
+                                    width: '14px', 
+                                    height: '14px',
+                                    accentColor: '#f97316'
+                                  }}
+                                />
+                                <span style={{ color: '#f97316', fontWeight: 'bold' }}>
+                                  {isAccepted ? 'Accepté' : 'Décliné'}
+                                </span>
+                              </label>
+                            </div>
+
+                            {/* Bouton "..." pour alternatives */}
+                            <button
+                              onClick={() => {}}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                fontSize: '16px',
+                                cursor: 'pointer',
+                                color: '#6b7280',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                const target = e.target as HTMLElement
+                                target.style.backgroundColor = '#f3f4f6'
+                              }}
+                              onMouseLeave={(e) => {
+                                const target = e.target as HTMLElement
+                                target.style.backgroundColor = 'transparent'
+                              }}
+                            >
+                              ...
+                            </button>
+
+                            {/* Proposition du jour */}
+                            <div style={{ marginTop: '8px' }}>
+                              <div style={{ fontSize: '10px', color: '#6b7280', marginBottom: '4px' }}>
+                                Proposition du jour:
+                              </div>
+                              {recipe.ingredients.map((ingredient, index) => (
+                                <div key={index} style={{ 
+                                  fontSize: '10px', 
+                                  color: '#374151',
+                                  marginBottom: '2px'
+                                }}>
+                                  - {ingredient}
+                                </div>
+                              ))}
+                            </div>
                           </td>
                         )
                       })}
                     </tr>
-                            ))}
+                  ))}
                 </tbody>
               </table>
-                          </div>
-                          
-                          <div style={{
-              marginTop: '24px',
+            </div>
+
+            {/* Bouton d'achat */}
+            <div style={{
+              marginTop: '40px',
               textAlign: 'center'
             }}>
-              <p style={{
-                                    fontSize: '14px',
-                color: '#6b7280',
-                marginBottom: '16px'
+              <div style={{
+                backgroundColor: '#ef4444',
+                color: 'white',
+                padding: '20px',
+                borderRadius: '12px',
+                display: 'inline-block',
+                boxShadow: '0 8px 24px rgba(239, 68, 68, 0.3)'
               }}>
-                <strong>Important !</strong> Par défaut, tous les plats sont acceptés.
-              </p>
-              <p style={{
-                fontSize: '12px',
-                color: '#6b7280'
-              }}>
-                Cliquez sur un repas pour l'accepter (✔) ou le décliner (X)
-              </p>
-                                </div>
-                                </div>
+                <h3 style={{
+                  fontSize: '24px',
+                  fontWeight: 'bold',
+                  margin: 0,
+                  textAlign: 'center'
+                }}>
+                  Acheter ce Plan Personnalisé !
+                </h3>
+              </div>
+            </div>
+          </div>
         )
 
       default:

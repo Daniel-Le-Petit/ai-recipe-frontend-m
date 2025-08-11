@@ -543,101 +543,15 @@ export default function MesRecettesPage() {
           }}>
             {filteredRecipes.map((recipe, index) => (
               <FadeIn key={recipe.id} delay={2400 + index * 100}>
-                <div style={{
-                  background: 'white',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                  border: '1px solid rgba(0, 0, 0, 0.05)',
-                  transition: 'all 0.3s ease',
-                  position: 'relative'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)'
-                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                }}>
-                  <RecipeCard
-                    recipe={recipe}
-                    onStartCooking={handleStartCooking}
-                    onFavorite={handleFavorite}
-                    showStatus={true}
-                    showRating={true}
-                    showTags={true}
-                    compact={viewMode === 'list'}
-                  />
-                  
-                  {/* Action Buttons */}
-                  <div style={{
-                    padding: '16px',
-                    borderTop: '1px solid #f3f4f6',
-                    display: 'flex',
-                    gap: '8px'
-                  }}>
-                    <button
-                      onClick={() => handleStartCooking(recipe)}
-                      style={{
-                        flex: 1,
-                        background: 'linear-gradient(135deg, #20B251 0%, #10b981 100%)',
-                        color: 'white',
-                        border: 'none',
-                        padding: '10px 16px',
-                        borderRadius: '8px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        const target = e.target as HTMLElement
-                        if (target && target.style) {
-                          target.style.transform = 'scale(1.02)'
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        const target = e.target as HTMLElement
-                        if (target && target.style) {
-                          target.style.transform = 'scale(1)'
-                        }
-                      }}
-                    >
-                      🍳 Commencer
-                    </button>
-                    <button
-                      onClick={() => handleDeleteRecipe(recipe.id)}
-                      style={{
-                        background: '#fee2e2',
-                        color: '#dc2626',
-                        border: '1px solid #fecaca',
-                        padding: '10px 16px',
-                        borderRadius: '8px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        const target = e.target as HTMLElement
-                        if (target && target.style) {
-                          target.style.background = '#fecaca'
-                          target.style.transform = 'scale(1.02)'
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        const target = e.target as HTMLElement
-                        if (target && target.style) {
-                          target.style.background = '#fee2e2'
-                          target.style.transform = 'scale(1)'
-                        }
-                      }}
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </div>
+                <RecipeCard
+                  recipe={recipe}
+                  onStartCooking={handleStartCooking}
+                  onFavorite={handleFavorite}
+                  showStatus={true}
+                  showRating={true}
+                  showTags={true}
+                  compact={viewMode === 'list'}
+                />
               </FadeIn>
             ))}
           </div>

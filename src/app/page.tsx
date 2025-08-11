@@ -116,7 +116,7 @@ export default function HomePage() {
           <div style={{ position: 'relative', zIndex: 2 }}>
             <FadeIn delay={400}>
               <div style={{
-                fontSize: '56px',
+                fontSize: '42px',
                 fontWeight: '800',
                 marginBottom: '20px',
                 textShadow: '0 4px 8px rgba(0,0,0,0.1)',
@@ -130,8 +130,8 @@ export default function HomePage() {
                   src="/main-image-cart.svg" 
                   alt="AI & Fines Herbes"
                   style={{
-                    width: '56px',
-                    height: '56px',
+                    width: '42px',
+                    height: '42px',
                     objectFit: 'contain'
                   }}
                 />
@@ -158,16 +158,16 @@ export default function HomePage() {
                   style={{
                     background: 'linear-gradient(135deg, #20B251 0%, #1a8f42 50%, #147a3a 100%)',
                     color: 'white',
-                    padding: '20px 40px',
+                    padding: '18px 36px',
                     border: 'none',
                     borderRadius: '60px',
-                    fontSize: '20px',
-                    fontWeight: '700',
+                    fontSize: '18px',
+                    fontWeight: '600',
                     cursor: 'pointer',
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                     boxShadow: '0 12px 40px rgba(32, 178, 81, 0.3)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    textTransform: 'none',
+                    letterSpacing: '0.3px'
                   }}
                   onMouseEnter={(e) => {
                     (e.target as HTMLButtonElement).style.transform = 'translateY(-3px) scale(1.02)';
@@ -246,16 +246,16 @@ export default function HomePage() {
                   style={{
                     background: 'linear-gradient(135deg, #20B251 0%, #1a8f42 50%, #147a3a 100%)',
                     color: 'white',
-                    padding: '20px 40px',
+                    padding: '18px 36px',
                     border: 'none',
                     borderRadius: '60px',
-                    fontSize: '20px',
-                    fontWeight: '700',
+                    fontSize: '18px',
+                    fontWeight: '600',
                     cursor: 'pointer',
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                     boxShadow: '0 12px 40px rgba(32, 178, 81, 0.3)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    textTransform: 'none',
+                    letterSpacing: '0.3px'
                   }}
                   onMouseEnter={(e) => {
                     (e.target as HTMLButtonElement).style.transform = 'translateY(-3px) scale(1.02)';

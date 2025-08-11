@@ -80,10 +80,20 @@ export default function Header() {
                     padding: '8px 0'
                   }}
                   onMouseEnter={(e) => {
-                    if (!isActive) e.target.style.color = '#20B251'
+                    if (!isActive) {
+                      const target = e.target as HTMLElement
+                      if (target && target.style) {
+                        target.style.color = '#20B251'
+                      }
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    if (!isActive) e.target.style.color = '#374151'
+                    if (!isActive) {
+                      const target = e.target as HTMLElement
+                      if (target && target.style) {
+                        target.style.color = '#374151'
+                      }
+                    }
                   }}
                 >
                   {item.name}
@@ -117,8 +127,18 @@ export default function Header() {
                 cursor: 'pointer',
                 transition: 'color 0.3s ease'
               }}
-              onMouseEnter={(e) => e.target.style.color = '#20B251'}
-              onMouseLeave={(e) => e.target.style.color = '#374151'}
+              onMouseEnter={(e) => {
+                const target = e.target as HTMLElement
+                if (target && target.style) {
+                  target.style.color = '#20B251'
+                }
+              }}
+              onMouseLeave={(e) => {
+                const target = e.target as HTMLElement
+                if (target && target.style) {
+                  target.style.color = '#374151'
+                }
+              }}
               >
                 <img 
                   src="/caddie-vert.svg" 
@@ -146,8 +166,18 @@ export default function Header() {
                   cursor: 'pointer',
                   transition: 'color 0.3s ease'
                 }}
-                onMouseEnter={(e) => e.target.style.color = '#20B251'}
-                onMouseLeave={(e) => e.target.style.color = '#374151'}
+                onMouseEnter={(e) => {
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.color = '#20B251'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.color = '#374151'
+                  }
+                }}
                 >
                   <span style={{ fontSize: '18px' }}>👤</span>
                   <span>Compte</span>
@@ -167,10 +197,16 @@ export default function Header() {
                   transition: 'background-color 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#1a8f42'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = '#1a8f42'
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#20B251'
+                  const target = e.target as HTMLElement
+                  if (target && target.style) {
+                    target.style.backgroundColor = '#20B251'
+                  }
                 }}
                 >
                   Connexion
