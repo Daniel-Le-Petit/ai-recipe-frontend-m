@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 // Types simplifiés
 interface RecipeCardProps {
@@ -170,9 +171,11 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
         data-testid="recipe-card"
       >
         <div style={{ position: 'relative' }}>
-          <img
+          <Image
             src={imageUrl}
             alt={title}
+            width={267}
+            height={192}
             style={{
               width: '100%',
               height: '192px',
@@ -364,9 +367,11 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
     >
       {/* Image */}
       <div style={{ position: 'relative', height: '192px', backgroundColor: '#f3f4f6' }}>
-        <img
+        <Image
           src={imageUrl}
           alt={title}
+          width={320}
+          height={192}
           style={{
             width: '100%',
             height: '100%',

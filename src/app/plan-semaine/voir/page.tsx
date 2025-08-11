@@ -2,14 +2,14 @@
 
 import { FadeIn } from '../../../components/FadeIn'
 import { SlideIn } from '../../../components/SlideIn'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 
 export default function PlanSemaineVoirPage() {
   const [mealStatuses, setMealStatuses] = useState<Record<string, string>>({})
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0)
 
   // Données des semaines (simulation - en vrai ça viendrait de l'API)
-  const weeklyPlans = [
+  const weeklyPlans = useMemo(() => [
     {
       weekStart: '21-Jul-2025',
       filters: {
@@ -37,7 +37,7 @@ export default function PlanSemaineVoirPage() {
         { name: 'Dîner', icon: '🍽️' }
       ]
     }
-  ]
+  ], [])
 
   // Initialiser les statuts des repas (tous acceptés par défaut)
   useEffect(() => {

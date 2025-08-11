@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useAppContext } from '../context/AppContext'
 
@@ -284,10 +285,10 @@ export default function Header() {
                           borderBottom: '1px solid #f3f4f6'
                         }}
                         onMouseEnter={(e) => {
-                          if (!isActive) e.target.style.color = '#20B251'
+                          if (!isActive) (e.target as HTMLElement).style.color = '#20B251'
                         }}
                         onMouseLeave={(e) => {
-                          if (!isActive) e.target.style.color = '#374151'
+                          if (!isActive) (e.target as HTMLElement).style.color = '#374151'
                         }}
                       >
                         {item.name}
@@ -311,8 +312,8 @@ export default function Header() {
                       alignItems: 'center',
                       gap: '8px'
                     }}
-                    onMouseEnter={(e) => e.target.style.color = '#20B251'}
-                    onMouseLeave={(e) => e.target.style.color = '#374151'}
+                    onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+                    onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#374151'}
                   >
                     <img 
                       src="/caddie-vert.svg" 
@@ -342,8 +343,8 @@ export default function Header() {
                         alignItems: 'center',
                         gap: '8px'
                       }}
-                      onMouseEnter={(e) => e.target.style.color = '#20B251'}
-                      onMouseLeave={(e) => e.target.style.color = '#374151'}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#374151'}
                     >
                       <span>👤</span>
                       <span>Compte</span>
@@ -363,8 +364,8 @@ export default function Header() {
                         alignItems: 'center',
                         gap: '8px'
                       }}
-                      onMouseEnter={(e) => e.target.style.color = '#1a8f42'}
-                      onMouseLeave={(e) => e.target.style.color = '#20B251'}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#1a8f42'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#20B251'}
                     >
                       <span>🔐</span>
                       <span>Connexion</span>
