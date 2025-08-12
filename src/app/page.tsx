@@ -70,19 +70,20 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ 
-      padding: '24px', 
+    <div className="homepage-container" style={{ 
+      padding: '16px', 
+      paddingTop: '100px',
       background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)',
       minHeight: '100vh',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
       {/* Hero Section avec design moderne */}
       <SlideIn direction="down" delay={200}>
-        <div style={{
+        <div className="hero-section" style={{
           background: 'white',
-          borderRadius: '24px',
-          padding: '60px 40px',
-          marginBottom: '40px',
+          borderRadius: '16px',
+          padding: '40px 20px',
+          marginBottom: '24px',
           color: '#10b981',
           textAlign: 'center',
           position: 'relative',
@@ -116,25 +117,27 @@ export default function HomePage() {
           
           <div style={{ position: 'relative', zIndex: 2 }}>
             <FadeIn delay={400}>
-              <div style={{
-                fontSize: '42px',
+              <div className="hero-title" style={{
+                fontSize: '28px',
                 fontWeight: '800',
-                marginBottom: '20px',
+                marginBottom: '16px',
                 textShadow: '0 4px 8px rgba(0,0,0,0.1)',
                 color: '#20B251',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '16px'
+                gap: '12px',
+                flexWrap: 'wrap'
               }}>
                 <Image 
+                  className="hero-image"
                   src="/main-image-cart.svg" 
                   alt="AI & Fines Herbes"
-                  width={42}
-                  height={42}
+                  width={28}
+                  height={28}
                   style={{
-                    width: '42px',
-                    height: '42px',
+                    width: '28px',
+                    height: '28px',
                     objectFit: 'contain'
                   }}
                 />
@@ -142,12 +145,12 @@ export default function HomePage() {
               </div>
             </FadeIn>
             <FadeIn delay={600}>
-              <p style={{
-                fontSize: '20px',
-                marginBottom: '40px',
-                lineHeight: '1.7',
+              <p className="hero-description" style={{
+                fontSize: '16px',
+                marginBottom: '24px',
+                lineHeight: '1.6',
                 maxWidth: '600px',
-                margin: '0 auto 40px auto',
+                margin: '0 auto 24px auto',
                 fontWeight: '400',
                 color: '#64748b'
               }}>
@@ -157,18 +160,19 @@ export default function HomePage() {
             <FadeIn delay={800}>
               <Pulse>
                 <button
+                  className="hero-button"
                   onClick={() => window.location.href = '/creer-recette'}
                   style={{
                     background: 'linear-gradient(135deg, #20B251 0%, #1a8f42 50%, #147a3a 100%)',
                     color: 'white',
-                    padding: '18px 36px',
+                    padding: '14px 28px',
                     border: 'none',
-                    borderRadius: '60px',
-                    fontSize: '18px',
+                    borderRadius: '50px',
+                    fontSize: '16px',
                     fontWeight: '600',
                     cursor: 'pointer',
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                    boxShadow: '0 12px 40px rgba(32, 178, 81, 0.3)',
+                    boxShadow: '0 8px 30px rgba(32, 178, 81, 0.3)',
                     textTransform: 'none',
                     letterSpacing: '0.3px'
                   }}
@@ -178,7 +182,7 @@ export default function HomePage() {
                   }}
                   onMouseLeave={(e) => {
                     (e.target as HTMLButtonElement).style.transform = 'translateY(0) scale(1)';
-                    (e.target as HTMLButtonElement).style.boxShadow = '0 12px 40px rgba(32, 178, 81, 0.3)';
+                    (e.target as HTMLButtonElement).style.boxShadow = '0 8px 30px rgba(32, 178, 81, 0.3)';
                   }}
                 >
                   Créer une recette
@@ -193,9 +197,9 @@ export default function HomePage() {
       <SlideIn direction="up" delay={1000}>
         <div style={{
           background: 'white',
-          borderRadius: '24px',
-          padding: '50px',
-          marginBottom: '40px',
+          borderRadius: '16px',
+          padding: '30px 20px',
+          marginBottom: '24px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
           border: '1px solid rgba(0,0,0,0.03)',
           position: 'relative',
@@ -240,8 +244,6 @@ export default function HomePage() {
               </div>
             </FadeIn>
             
-
-            
             <FadeIn delay={1600}>
               <div style={{ textAlign: 'center' }}>
                 <button
@@ -277,63 +279,30 @@ export default function HomePage() {
         </div>
       </SlideIn>
 
-      {/* Section Recettes populaires avec design amélioré */}
-      <SlideIn direction="left" delay={1800}>
-        <div style={{ 
-          background: 'white',
-          borderRadius: '24px',
-          padding: '40px', 
-          marginBottom: '30px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
-          border: '1px solid rgba(0,0,0,0.03)'
-        }}>
-          <FadeIn delay={2000}>
-            <h2 style={{ 
-              color: '#20B251', 
-              fontSize: '32px', 
-              margin: '0 0 30px 0', 
-              textAlign: 'center',
-              fontWeight: '800'
-            }}>
-              🏆 Recettes populaires
-            </h2>
-          </FadeIn>
-          <div style={{ padding: '0 20px' }}>
-            <RecipeCardHorizontal
-              recipes={mockRecipes}
-              title=""
-              onStartCooking={handleStartCooking}
-              onFavorite={handleFavorite}
-              showStatus={true}
-              showRating={true}
-              compact={true}
-            />
-          </div>
-        </div>
-      </SlideIn>
-
       {/* Section Recettes récentes avec design amélioré */}
       <SlideIn direction="right" delay={2200}>
-        <div style={{ 
+        <div className="content-section" style={{ 
           background: 'white',
-          borderRadius: '24px',
-          padding: '40px', 
-          marginBottom: '30px',
+          borderRadius: '16px',
+          padding: '24px 16px', 
+          marginBottom: '20px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
           border: '1px solid rgba(0,0,0,0.03)'
         }}>
           <FadeIn delay={2400}>
-            <h2 style={{ 
+            <h2 className="section-title" style={{ 
               color: '#20B251', 
-              fontSize: '32px', 
-              margin: '0 0 30px 0', 
+              fontSize: '24px', 
+              margin: '0 0 20px 0', 
               textAlign: 'center',
               fontWeight: '800'
             }}>
               ⏰ Recettes récentes
             </h2>
           </FadeIn>
-          <div style={{ padding: '0 20px' }}>
+          <div className="section-content" style={{ 
+            padding: '0 10px'
+          }}>
             <RecipeCardHorizontal
               recipes={mockRecipes}
               title=""
@@ -355,24 +324,26 @@ export default function HomePage() {
 
       {/* Section Recettes compatibles robot avec design amélioré */}
       <FadeIn delay={2600}>
-        <div style={{ 
+        <div className="content-section" style={{ 
           background: 'white',
-          borderRadius: '24px',
-          padding: '40px', 
-          marginBottom: '30px',
+          borderRadius: '16px',
+          padding: '24px 16px', 
+          marginBottom: '20px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
           border: '1px solid rgba(0,0,0,0.03)'
         }}>
-          <h2 style={{ 
+          <h2 className="section-title" style={{ 
             color: '#20B251', 
-            fontSize: '32px', 
-            margin: '0 0 30px 0', 
+            fontSize: '24px', 
+            margin: '0 0 20px 0', 
             textAlign: 'center',
             fontWeight: '800'
           }}>
             🤖 Recettes compatibles robot
           </h2>
-          <div style={{ padding: '0 20px' }}>
+          <div className="section-content" style={{ 
+            padding: '0 10px'
+          }}>
             <RecipeCardHorizontal
               recipes={mockRecipes.filter(r => r.isRobotCompatible)}
               title=""
@@ -388,13 +359,13 @@ export default function HomePage() {
 
       {/* Footer avec design amélioré */}
       <FadeIn delay={2800}>
-        <div style={{ 
+        <div className="footer-section" style={{ 
           background: 'white',
-          borderRadius: '20px',
-          padding: '30px', 
+          borderRadius: '16px',
+          padding: '20px 16px', 
           textAlign: 'center',
           color: '#64748b',
-          fontSize: '16px',
+          fontSize: '14px',
           boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
           border: '1px solid rgba(0,0,0,0.03)'
         }}>

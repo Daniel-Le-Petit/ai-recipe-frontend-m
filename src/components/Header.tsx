@@ -66,7 +66,11 @@ export default function Header() {
           </div>
 
           {/* Navigation desktop - visible sur PC, laptop, iPad */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }} className="hidden md:flex">
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '40px'
+          }}>
             {navigation.map((item) => {
               const isActive = pathname === item.href
               return (

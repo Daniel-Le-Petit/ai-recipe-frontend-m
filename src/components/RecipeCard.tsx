@@ -150,14 +150,14 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
           backgroundColor: 'white',
           borderRadius: '12px',
           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-          padding: '16px',
+          padding: '12px',
           cursor: 'pointer',
           transition: 'all 0.2s ease',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
-          maxWidth: '267px'
+          maxWidth: '100%'
         }}
         onClick={handleCardClick}
         onMouseEnter={(e) => {
@@ -178,9 +178,9 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
             height={192}
             style={{
               width: '100%',
-              height: '192px',
+              height: '160px',
               objectFit: 'cover',
-              borderRadius: '12px 12px 0 0',
+              borderRadius: '8px 8px 0 0',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
               marginBottom: '0'
             }}
