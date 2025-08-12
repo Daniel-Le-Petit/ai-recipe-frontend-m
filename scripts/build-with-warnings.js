@@ -27,8 +27,8 @@ function filterImageWarnings(data) {
   return filteredLines.join('\n');
 }
 
-// Lancer le build Next.js
-const buildProcess = spawn('npm', ['run', 'build'], {
+// Lancer le build Next.js directement
+const buildProcess = spawn('npx', ['next', 'build'], {
   stdio: ['inherit', 'pipe', 'pipe'],
   shell: true
 });

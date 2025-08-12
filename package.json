@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/build-with-warnings.js",
+    "build": "node scripts/build-simple.js",
     "build:strict": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -122,15 +122,6 @@ export default function AdminRecipesPage() {
     setRefreshing(false)
   }
 
-  useEffect(() => {
-    fetchRecipesByStatus(selectedStatus)
-    fetchAllStatusCounts()
-  }, [selectedStatus])
-
-  useEffect(() => {
-    applyFilters()
-  }, [recipes, filters, applyFilters])
-
   const applyFilters = useCallback(() => {
     let filtered = [...recipes]
 
@@ -155,6 +146,13 @@ export default function AdminRecipesPage() {
 
     setFilteredRecipes(filtered)
   }, [recipes, filters])
+
+  useEffect(() => {
+    fetchRecipesByStatus(selectedStatus)
+    fetchAllStatusCounts()
+  }, [selectedStatus])
+
+
 
   const handleStatusChange = async (recipeId: number, newStatus: RecipeStatus) => {
     try {
