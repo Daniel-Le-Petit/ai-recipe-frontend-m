@@ -4,7 +4,11 @@ import type {
   StrapiRecipe, 
   RecipeFilters, 
   RecipeSort, 
-  UseRecipesOptions 
+  UseRecipesOptions,
+  StrapiWeeklyPlan,
+  StrapiWeeklyPlanMealAlternative,
+  StrapiWeeklyPlanMealChange,
+  ChangeReason
 } from '@/types/api'
 
 interface UseRecipesReturn {
@@ -41,7 +45,7 @@ export function useRecipes(options: UseRecipesOptions = {}): UseRecipesReturn {
     } finally {
       setLoading(false)
     }
-  }, [filters, sort, options.pagination, options.enabled])
+  }, [options.enabled])
 
   const refetch = useCallback(async () => {
     await fetchRecipes()

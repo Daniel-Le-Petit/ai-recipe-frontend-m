@@ -2,6 +2,15 @@
 
 import React from 'react';
 
+// Extend Window interface for Google Analytics
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+    plausible: (eventName: string, options?: any) => void;
+  }
+}
+
 // Types for analytics
 interface AnalyticsEvent {
   action: string
