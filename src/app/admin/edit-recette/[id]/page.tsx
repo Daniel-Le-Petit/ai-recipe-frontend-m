@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { StrapiRecipe } from '@/types/api';
@@ -35,11 +35,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
     recipe_state: 'draft'
   });
 
-  useEffect(() => {
-    fetchRecipe();
-  }, [params.id]);
-
-  const fetchRecipe = async () => {
+  const fetchRecipe = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -76,7 +72,9 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id]);
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

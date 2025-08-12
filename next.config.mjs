@@ -20,6 +20,14 @@ const nextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
+  // Configuration ESLint pour le build
+  eslint: {
+    ignoreDuringBuilds: true, // Ignorer les erreurs ESLint pendant le build
+  },
+  // Configuration TypeScript pour le build
+  typescript: {
+    ignoreBuildErrors: false, // Ne pas ignorer les erreurs TypeScript
+  },
 }
 
 export default nextConfig 

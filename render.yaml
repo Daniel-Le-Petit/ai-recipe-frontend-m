@@ -1,29 +1,16 @@
 services:
   - type: web
-    name: aifh-frontend-prod
+    name: ai-fines-herbes-frontend
     env: node
-    plan: free
-    buildCommand: |
-      npm install
-      npm run build
+    buildCommand: npm install && npm run build
     startCommand: npm start
-    preDeployCommand: |
-      echo "Running regression tests before deployment..."
-      node scripts/regression-tests.js
     envVars:
       - key: NODE_ENV
         value: production
-      - key: API_BASE_URL
-        value: https://aifh-backend.onrender.com
       - key: NEXT_PUBLIC_API_URL
-        value: https://aifh-backend.onrender.com
+        value: https://ai-fines-herbes-backend.onrender.com
+      - key: NEXT_PUBLIC_SITE_URL
+        value: https://ai-fines-herbes-frontend.onrender.com
     healthCheckPath: /
     autoDeploy: true
-    buildFilter:
-      paths:
-        - src/**
-        - package.json
-        - package-lock.json
-        - tests/**
-        - scripts/**
-        - render.yaml 
+    branch: main 

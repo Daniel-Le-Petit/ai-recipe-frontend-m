@@ -49,9 +49,11 @@ export default function Header() {
                 gap: '12px',
                 transition: 'transform 0.3s ease'
               }}>
-                <img 
+                <Image 
                   src="/logo-aietfinesherbes.svg" 
                   alt="AI & Fines Herbes Logo"
+                  width={120}
+                  height={40}
                   style={{
                     width: '120px',
                     height: 'auto',
@@ -315,9 +317,11 @@ export default function Header() {
                     onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#20B251'}
                     onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#374151'}
                   >
-                    <img 
+                    <Image 
                       src="/caddie-vert.svg" 
                       alt="Panier"
+                      width={20}
+                      height={20}
                       style={{
                         width: '20px',
                         height: '20px',

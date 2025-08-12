@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Check, X, Edit, Copy, ArrowLeft, Clock, User, Calendar } from 'lucide-react';
 
@@ -47,9 +47,9 @@ export default function ValidationRecettePage() {
   useEffect(() => {
     checkAdminStatus();
     loadRecipe();
-  }, [recipeId]);
+  }, [recipeId, checkAdminStatus, loadRecipe]);
 
-  const checkAdminStatus = async () => {
+  const checkAdminStatus = useCallback(async () => {
     // Temporairement désactivé pour les tests
     setIsAdmin(true);
     return;
@@ -77,9 +77,9 @@ export default function ValidationRecettePage() {
       console.error('Erreur lors de la vérification admin:', error);
       setIsAdmin(false);
     }
-  };
+  }, [router]);
 
-  const loadRecipe = async () => {
+  const loadRecipe = useCallback(async () => {
     try {
       console.log('Chargement de la recette ID:', recipeId);
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1338';
@@ -132,7 +132,7 @@ export default function ValidationRecettePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [recipeId]);
 
   const copyToChatGPT = () => {
     if (!recipe) return;

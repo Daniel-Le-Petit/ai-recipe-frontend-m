@@ -12,23 +12,6 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
 }
 
-interface ServiceWorkerRegistration {
-  installing?: ServiceWorker
-  waiting?: ServiceWorker
-  active?: ServiceWorker
-  scope: string
-  updateViaCache: 'all' | 'imports' | 'none'
-  onupdatefound: ((this: ServiceWorkerRegistration, ev: Event) => any) | null
-  oncontrollerchange: ((this: ServiceWorkerRegistration, ev: Event) => any) | null
-  onstatechange: ((this: ServiceWorkerRegistration, ev: Event) => any) | null
-  update(): Promise<void>
-  unregister(): Promise<boolean>
-  getNotifications(filter?: GetNotificationOptions): Promise<Notification[]>
-  showNotification(title: string, options?: NotificationOptions): Promise<void>
-  getPushSubscription(): Promise<PushSubscription | null>
-  pushManager: PushManager
-}
-
 // PWA state management
 export class PWAManager {
   private deferredPrompt: BeforeInstallPromptEvent | null = null

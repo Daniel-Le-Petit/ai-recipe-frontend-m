@@ -5,6 +5,7 @@ import { FadeIn } from '../components/FadeIn'
 import { SlideIn } from '../components/SlideIn'
 import { Pulse } from '../components/Pulse'
 import { StaggeredList } from '../components/StaggeredList'
+import Image from 'next/image'
 
 // Données de test pour les recettes
 const mockRecipes = [
@@ -126,9 +127,11 @@ export default function HomePage() {
                 justifyContent: 'center',
                 gap: '16px'
               }}>
-                <img 
+                <Image 
                   src="/main-image-cart.svg" 
                   alt="AI & Fines Herbes"
+                  width={42}
+                  height={42}
                   style={{
                     width: '42px',
                     height: '42px',

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { RecipeStatus, RECIPE_STATUSES, StrapiRecipe } from '@/types/api'
 import { RecipeCard } from '@/components/RecipeCard'
 import { RecipeStatusBadge } from '@/components/RecipeStatusBadge'
@@ -129,9 +129,9 @@ export default function AdminRecipesPage() {
 
   useEffect(() => {
     applyFilters()
-  }, [recipes, filters])
+  }, [recipes, filters, applyFilters])
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...recipes]
 
     // Filter by status
@@ -154,7 +154,7 @@ export default function AdminRecipesPage() {
     }
 
     setFilteredRecipes(filtered)
-  }
+  }, [recipes, filters])
 
   const handleStatusChange = async (recipeId: number, newStatus: RecipeStatus) => {
     try {
