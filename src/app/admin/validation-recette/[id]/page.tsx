@@ -44,11 +44,6 @@ export default function ValidationRecettePage() {
 
   const recipeId = params.id;
 
-  useEffect(() => {
-    checkAdminStatus();
-    loadRecipe();
-  }, [recipeId, checkAdminStatus, loadRecipe]);
-
   const checkAdminStatus = useCallback(async () => {
     // Temporairement désactivé pour les tests
     setIsAdmin(true);
@@ -133,6 +128,11 @@ export default function ValidationRecettePage() {
       setLoading(false);
     }
   }, [recipeId]);
+
+  useEffect(() => {
+    checkAdminStatus();
+    loadRecipe();
+  }, [checkAdminStatus, loadRecipe]);
 
   const copyToChatGPT = () => {
     if (!recipe) return;

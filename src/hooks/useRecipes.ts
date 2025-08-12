@@ -32,12 +32,7 @@ export function useRecipes(options: UseRecipesOptions = {}): UseRecipesReturn {
       setLoading(true)
       setError(null)
 
-      const response = await apiService.getRecipes({
-        populate: '*',
-        filters,
-        sort,
-        pagination: options.pagination
-      })
+      const response = await apiService.getRecipes()
 
       setRecipes(response.data || [])
     } catch (err) {
